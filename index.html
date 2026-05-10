@@ -1,0 +1,291 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>テクモピア - ぴんくの探検ラリー</title>
+    <style>
+        :root { 
+            --main-bg: #fff5f8; 
+            --container-bg: #ffffff;
+            --primary: #ff8ab4; 
+            --accent: #ff4081; 
+            --staff: #66bb6a; 
+            --text: #5d4037;
+        }
+        
+        body { 
+            font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', sans-serif; 
+            background-color: var(--main-bg); 
+            margin: 0; 
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        .container { 
+            max-width: 480px; 
+            margin: 0 auto; 
+            min-height: 100vh; 
+            background: var(--container-bg); 
+            display: flex; 
+            flex-direction: column; 
+            box-shadow: 0 0 15px rgba(255, 138, 180, 0.2);
+            position: relative;
+        }
+
+        .header { 
+            background: white;
+            color: var(--primary); 
+            padding: 40px 20px; 
+            text-align: center; 
+            border-bottom: 5px solid var(--main-bg);
+        }
+        .header h1 { margin: 0; font-size: 1.6rem; font-weight: 900; }
+        .header p { margin: 8px 0 0; font-size: 0.9rem; color: #f48fb1; font-weight: bold; }
+
+        .screen { 
+            display: none; 
+            padding: 30px 20px; 
+            flex-grow: 1; 
+            animation: fadeIn 0.4s ease-out;
+        }
+        .active { display: flex; flex-direction: column; align-items: center; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+        /* スタンプのデザイン */
+        .stamp-rally { display: flex; justify-content: space-around; width: 100%; margin: 35px 0; }
+        .stamp { 
+            width: 130px; height: 130px; 
+            border: 3px solid #fce4ec; 
+            border-radius: 30px; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            background: #fff; 
+            transition: 0.4s; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            position: relative;
+        }
+        .stamp.on { 
+            border: 4px solid var(--primary); 
+            background: #fff; 
+            box-shadow: 0 8px 20px rgba(255, 138, 180, 0.2);
+        }
+        
+        /* 獲得時のアニメーション */
+        .stamp-get-anim {
+            animation: stampGetEffect 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes stampGetEffect {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3) rotate(10deg); }
+            100% { transform: scale(1.05); }
+        }
+
+        .stamp-icon { font-size: 3.5rem; margin-bottom: 5px; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1)); }
+        .stamp small { font-size: 0.75rem; color: #888; font-weight: bold; }
+        .stamp.on small { color: var(--primary); }
+
+        /* 獲得通知メッセージ */
+        #get-notif {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: rgba(255, 138, 180, 0.95); color: white;
+            padding: 15px 30px; border-radius: 50px; font-weight: bold; font-size: 1.2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 1000; display: none; pointer-events: none;
+            animation: popMsg 1.5s ease-out forwards;
+        }
+        @keyframes popMsg {
+            0% { opacity: 0; transform: translate(-50%, -30%); }
+            20% { opacity: 1; transform: translate(-50%, -50%); }
+            80% { opacity: 1; transform: translate(-50%, -50%); }
+            100% { opacity: 0; transform: translate(-50%, -70%); }
+        }
+
+        .btn { 
+            border: none; padding: 20px; width: 90%; border-radius: 15px; 
+            font-size: 1.2rem; font-weight: bold; color: white; cursor: pointer; 
+            transition: 0.3s; box-shadow: 0 4px 0 #d81b60; 
+            background: var(--primary);
+            text-decoration: none; text-align: center;
+        }
+        .btn:active { transform: translateY(3px); box-shadow: none; }
+        .btn:disabled { background: #eee; color: #bbb; box-shadow: 0 4px 0 #ddd; }
+        .btn-staff { background: var(--staff); box-shadow: 0 4px 0 #388e3c; margin-top: 40px; }
+
+        #garapon-stage { position: relative; width: 180px; height: 180px; margin: 40px 0; }
+        #garapon-unit {
+            width: 100%; height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="none" stroke="%23ff8ab4" stroke-width="5" stroke-dasharray="10,5"/><circle cx="50" cy="50" r="35" fill="%23fff" stroke="%23ff8ab4" stroke-width="2"/></svg>') center center no-repeat;
+            background-size: contain;
+            display: flex; justify-content: center; align-items: center; font-size: 4.5rem;
+            transition: transform 0.1s linear;
+        }
+        .spin-anime { animation: rotate 0.1s infinite linear; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .result-box { 
+            display: none; border: 3px solid var(--primary); border-radius: 20px; 
+            padding: 25px; background: white; margin-top: 20px; width: 90%; box-sizing: border-box;
+            animation: fadeIn 0.5s ease-out;
+        }
+        .result-header { font-size: 1.8rem; font-weight: 900; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="get-notif">🌸 スタンプGET！ 🌸</div>
+
+    <div class="header">
+        <h1>TECMOPIA</h1>
+        <p>〜 探検スタンプラリー 〜</p>
+    </div>
+
+    <div id="screen-rally" class="screen active">
+        <div class="stamp-rally">
+            <div id="st-1" class="stamp"><span class="stamp-icon">🔑</span><small>B1ミニクレ</small></div>
+            <div id="st-2" class="stamp"><span class="stamp-icon">🎮</span><small>3Fテクモピア</small></div>
+        </div>
+        <p id="rally-hint" style="text-align:center; font-weight:bold; color:var(--primary);">
+            お店を回ってスタンプをあつめよう！
+        </p>
+        <button id="to-check-btn" class="btn" disabled onclick="showScreen('screen-check')">2箇所達成！スタッフ確認へ</button>
+    </div>
+
+    <div id="screen-check" class="screen" style="text-align:center;">
+        <h3 style="color:var(--primary);">スタッフ確認</h3>
+        <p>3Fカウンターのスタッフに<br>この画面を見せてね！</p>
+        <div style="font-size: 5rem; margin: 20px; animation: bounce 2s infinite;">🌸</div>
+        <button class="btn btn-staff" onclick="staffApprove()">スタッフが確認しました</button>
+        <button style="background:none; border:none; color:#bbb; margin-top:30px; cursor:pointer; font-weight:bold;" onclick="showScreen('screen-rally')">← スタンプ画面にもどる</button>
+    </div>
+
+    <div id="screen-garapon" class="screen" style="text-align:center;">
+        <h3 style="color:var(--primary);">ドキドキ！ガラポン</h3>
+        <div id="garapon-stage"><div id="garapon-unit">🎡</div></div>
+        <button id="draw-btn" class="btn" onclick="runGarapon()">ガラポンを回す！</button>
+        
+        <div id="result-area" class="result-box">
+            <h2 id="result-grade" class="result-header"></h2>
+            <p id="result-desc" style="font-weight:bold; font-size: 1.1rem; line-height: 1.5;"></p>
+            <hr style="border: 1px dashed #ffc0cb; margin: 20px 0;">
+            <p style="font-size:0.85rem; color:#888; font-weight:bold;">🎁 この画面をスタッフに見せてね！</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbySrqbkG3sX5kzAZwshkQMOR6M1J2bkXPOtfzHzFs-x6d-rWT23nPHBN8W-hwWAm79lzQ/exec";
+    
+    const todayStr = new Date().toLocaleDateString();
+    if (localStorage.getItem('tp_used') !== todayStr) {
+        if(localStorage.getItem('tp_used')){
+            localStorage.removeItem('tp_used');
+            localStorage.removeItem('tp_stamps');
+        }
+    }
+
+    const stamps = JSON.parse(localStorage.getItem('tp_stamps')) || [];
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+
+    // 🌟 スタンプ獲得処理
+    let isNewStamp = false;
+    if (id && !stamps.includes(id) && stamps.length < 2) {
+        stamps.push(id);
+        localStorage.setItem('tp_stamps', JSON.stringify(stamps));
+        isNewStamp = true; // 新しく獲得したフラグ
+    }
+
+    function updateUI() {
+        stamps.forEach(s => {
+            const el = document.getElementById(`st-${s}`);
+            if (el) {
+                el.classList.add('on');
+                // 新しく獲得したスタンプならアニメーション適用
+                if (isNewStamp && s === id) {
+                    el.classList.add('stamp-get-anim');
+                    document.getElementById('get-notif').style.display = 'block';
+                }
+            }
+        });
+        if (stamps.length >= 2) {
+            document.getElementById('to-check-btn').disabled = false;
+            if(isNewStamp) document.getElementById('rally-hint').innerText = "おめでとう！2つそろったよ！";
+        }
+    }
+
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    function staffApprove() {
+        if(confirm("スタッフ確認：ガラポンを開始しますか？")) showScreen('screen-garapon');
+    }
+
+    function runGarapon() {
+        const btn = document.getElementById('draw-btn');
+        const unit = document.getElementById('garapon-unit');
+        btn.disabled = true;
+        btn.innerText = "抽選中...";
+        unit.classList.add('spin-anime');
+
+setTimeout(() => {
+            unit.classList.remove('spin-anime');
+            const rand = Math.random() * 100;
+            let res = { g: "", d: "", color: "" };
+
+            // 等級の判定（バラけ感を出した70%設定）
+            if (rand < 0.8) res = { g: "1等", d: "金：クレーンゲーム6プレイ無料", color: "#FFB300" }; 
+            else if (rand < 2.0) res = { g: "2等", d: "銀：メダル50枚セット ＋ 増量券", color: "#9E9E9E" }; 
+            else if (rand < 5.5) res = { g: "3等", d: "赤：クレーンゲーム3プレイ無料", color: "#F44336" }; 
+            else if (rand < 12.0) res = { g: "4等", d: "黄：メダル30枚セット ＋ 増量券", color: "#FFCA28" }; 
+            else if (rand < 20.0) res = { g: "5等", d: "ピンク：クレーンゲーム1プレイ無料", color: "#E91E63" }; 
+            else if (rand < 30.0) res = { g: "6等", d: "水色：メダル10枚セット ＋ 増量券", color: "#00BCD4" }; 
+            else res = { g: "7等", d: "白：クレーンゲーム1プレイ増量券", color: "#5D4037" }; // 残り70%
+
+            // 🌟 ド派手なポップアップ演出（以下、既存の演出コード）
+            unit.innerText = res.g;
+            unit.style.fontSize = "3rem";
+            // ...以下、以前の完ぺきなコードと同じ
+            unit.style.fontWeight = "900";
+            unit.style.color = res.color;
+            unit.style.textShadow = "2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 0 4px 10px rgba(0,0,0,0.3)";
+            
+            unit.animate([
+                { transform: 'scale(0) rotate(-15deg)', opacity: 0 },
+                { transform: 'scale(1.2) rotate(5deg)', opacity: 1 },
+                { transform: 'scale(1) rotate(0deg)', opacity: 1 }
+            ], { duration: 600, easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)' });
+
+            document.getElementById('result-grade').innerText = "✨ " + res.g + " ✨";
+            document.getElementById('result-grade').style.color = res.color;
+            document.getElementById('result-desc').innerText = res.d;
+            document.getElementById('result-area').style.display = 'block';
+
+            saveResultToSheet(res.g);
+
+            localStorage.setItem('tp_used', todayStr);
+            localStorage.removeItem('tp_stamps'); 
+            btn.innerText = "結果を確認してね！";
+        }, 2000);
+    }
+
+    function saveResultToSheet(grade) {
+        fetch(`${GAS_URL}?grade=${encodeURIComponent(grade)}`, { mode: 'no-cors' })
+          .then(() => console.log("記録リクエストを送信しました"))
+          .catch(err => console.error("通信エラー:", err));
+    }
+
+    if (localStorage.getItem('tp_used') === todayStr) {
+        document.body.innerHTML = "<div style='padding:100px 20px; text-align:center; color:#ff8ab4;'><h2 style='font-size:3rem; margin:0;'>🌸</h2><h2>本日は終了しました</h2><p style='color:#5d4037; font-weight:bold;'>また明日遊びにきてね！</p></div>";
+    } else {
+        updateUI();
+    }
+</script>
+</body>
+</html>
