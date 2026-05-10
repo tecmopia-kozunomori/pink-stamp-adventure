@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>テクモピア - ぴんくの探検ラリー</title>
+    <title>テクモピア - 探検ラリー</title>
     <style>
         :root { 
             --main-bg: #fff5f8; 
@@ -136,7 +135,7 @@
 <body>
 
 <div class="container">
-    <div id="get-notif">🌸 スタンプGET！ 🌸</div>
+    <div id="get-notif">スタンプGET🎉</div>
 
     <div class="header">
         <h1>TECMOPIA</h1>
@@ -157,7 +156,7 @@
     <div id="screen-check" class="screen" style="text-align:center;">
         <h3 style="color:var(--primary);">スタッフ確認</h3>
         <p>3Fカウンターのスタッフに<br>この画面を見せてね！</p>
-        <div style="font-size: 5rem; margin: 20px; animation: bounce 2s infinite;">🌸</div>
+        <div style="font-size: 5rem; margin: 20px; animation: bounce 2s infinite;">🎁</div>
         <button class="btn btn-staff" onclick="staffApprove()">スタッフが確認しました</button>
         <button style="background:none; border:none; color:#bbb; margin-top:30px; cursor:pointer; font-weight:bold;" onclick="showScreen('screen-rally')">← スタンプ画面にもどる</button>
     </div>
@@ -240,13 +239,13 @@ setTimeout(() => {
             let res = { g: "", d: "", color: "" };
 
             // 等級の判定（バラけ感を出した70%設定）
-            if (rand < 0.8) res = { g: "1等", d: "金：クレーンゲーム6プレイ無料", color: "#FFB300" }; 
-            else if (rand < 2.0) res = { g: "2等", d: "銀：メダル50枚セット ＋ 増量券", color: "#9E9E9E" }; 
-            else if (rand < 5.5) res = { g: "3等", d: "赤：クレーンゲーム3プレイ無料", color: "#F44336" }; 
-            else if (rand < 12.0) res = { g: "4等", d: "黄：メダル30枚セット ＋ 増量券", color: "#FFCA28" }; 
-            else if (rand < 20.0) res = { g: "5等", d: "ピンク：クレーンゲーム1プレイ無料", color: "#E91E63" }; 
-            else if (rand < 30.0) res = { g: "6等", d: "水色：メダル10枚セット ＋ 増量券", color: "#00BCD4" }; 
-            else res = { g: "7等", d: "白：クレーンゲーム1プレイ増量券", color: "#5D4037" }; // 残り70%
+            if (rand < 0.8) res = { g: "1等", d: "クレーンゲーム6プレイ無料", color: "#FFB300" }; 
+            else if (rand < 2.0) res = { g: "2等", d: "メダル50枚セット ＋ 増量券", color: "#9E9E9E" }; 
+            else if (rand < 5.5) res = { g: "3等", d: "クレーンゲーム3プレイ無料", color: "#F44336" }; 
+            else if (rand < 12.0) res = { g: "4等", d: "メダル30枚セット ＋ 増量券", color: "#FFCA28" }; 
+            else if (rand < 20.0) res = { g: "5等", d: "クレーンゲーム1プレイ無料", color: "#E91E63" }; 
+            else if (rand < 30.0) res = { g: "6等", d: "メダル10枚セット ＋ 増量券", color: "#00BCD4" }; 
+            else res = { g: "7等", d: "クレーンゲーム1プレイ増量券", color: "#5D4037" }; // 残り70%
 
             // 🌟 ド派手なポップアップ演出（以下、既存の演出コード）
             unit.innerText = res.g;
