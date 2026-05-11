@@ -4,34 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>テクモピア - 探検ラリー</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=DotGothic16&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --main-bg: #0a0a0a; 
-            --container-bg: #161616;
-            --primary: #00f2fe; 
-            --accent: #ff00de; 
-            --stamp-bg: #333;
-            --stamp-border: #444;
-            --stamp-on-border: var(--accent);
-            --stamp-on-bg: #fff;
-            --stamp-icon-on-shadow: 0 0 15px var(--accent);
-            --btn-bg: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
-            --btn-hover-bg: linear-gradient(90deg, #ff00de 0%, #fe4f9e 100%);
-            --btn-staff-bg: #00e676;
-            --text-color: #fff;
-            --font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', sans-serif;
+            --main-bg: #050505; 
+            --container-bg: #111;
+            --primary: #00f2fe; /* ネオンブルー */
+            --accent: #ff00de;  /* ネオンピンク */
+            --staff-color: #39ff14; /* ネオングリーン */
+            --text-color: #ffffff;
             --pixel-font: 'Press Start 2P', cursive;
+            --jp-pixel-font: 'DotGothic16', sans-serif;
         }
         
         body { 
-            font-family: var(--font-family); 
+            font-family: 'Hiragino Sans', sans-serif; 
             background-color: var(--main-bg); 
             margin: 0; 
             color: var(--text-color);
             overflow-x: hidden;
-            background-image: radial-gradient(var(--container-bg) 1px, transparent 1px);
-            background-size: 20px 20px;
         }
 
         .container { 
@@ -41,390 +32,133 @@
             background: var(--container-bg); 
             display: flex; 
             flex-direction: column; 
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.5), 0 0 40px rgba(255, 0, 127, 0.3);
-            position: relative;
-            border-left: 3px solid var(--primary);
-            border-right: 3px solid var(--accent);
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.3);
+            border-left: 2px solid #222;
+            border-right: 2px solid #222;
         }
 
+        /* ヘッダー：ネオンタイトル */
         .header { 
             background: #000;
-            color: #fff; 
-            padding: 50px 20px; 
+            padding: 40px 20px; 
             text-align: center; 
-            border-bottom: 3px solid var(--primary);
-            position: relative;
-            overflow: hidden;
-        }
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0, 242, 254, 0.2) 0%, rgba(255, 0, 222, 0.2) 50%, transparent 70%);
-            animation: rotateBg 10s linear infinite;
-            z-index: 0;
-        }
-        @keyframes rotateBg {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            border-bottom: 4px solid var(--primary);
+            box-shadow: 0 5px 15px rgba(0, 242, 254, 0.2);
         }
         .header h1 { 
             margin: 0; 
-            font-size: 2.5rem; 
+            font-size: 2.2rem; 
             font-family: var(--pixel-font);
-            text-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary), 0 0 30px var(--primary);
-            position: relative;
-            z-index: 1;
+            color: #fff;
+            text-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary), 0 0 40px var(--primary);
+            letter-spacing: 2px;
         }
         .header p { 
-            margin: 15px 0 0; 
-            font-size: 1rem; 
-            color: #fff;
-            text-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent);
-            position: relative;
-            z-index: 1;
+            margin: 10px 0 0; 
+            font-size: 0.9rem; 
+            font-family: var(--jp-pixel-font);
+            color: var(--accent);
+            text-shadow: 0 0 5px var(--accent);
         }
 
         .screen { 
             display: none; 
-            padding: 40px 20px; 
+            padding: 30px 20px; 
             flex-grow: 1; 
             animation: fadeIn 0.4s ease-out;
-            position: relative;
         }
         .active { display: flex; flex-direction: column; align-items: center; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 0, 222, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(255, 0, 222, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 0, 222, 0); } }
 
-        /* スタンプのデザイン */
-        .stamp-rally { display: flex; justify-content: space-around; width: 100%; margin: 50px 0; }
+        /* スタンプのデザイン修正：はみ出し防止 */
+        .stamp-rally { 
+            display: flex; 
+            justify-content: space-around; 
+            width: 100%; 
+            margin: 40px 0; 
+            gap: 15px;
+        }
         .stamp { 
-            width: 140px; height: 140px; 
-            border: 5px solid var(--stamp-border); 
-            border-radius: 50%; 
+            width: 140px; 
+            height: 140px; 
+            border: 3px solid #333; 
+            border-radius: 20px; 
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            background: var(--stamp-bg); 
-            transition: 0.4s; 
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
-            position: relative;
-        }
-        .stamp.on { 
-            border: 5px solid var(--stamp-on-border); 
-            background: var(--stamp-on-bg); 
-            box-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent);
-            animation: pulse 1.5s infinite;
-        }
-        
-        /* 獲得時のアニメーション */
-        .stamp-get-anim {
-            animation: stampGetEffect 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, pulse 1.5s infinite;
-        }
-        @keyframes stampGetEffect {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.4) rotate(15deg); }
-            100% { transform: scale(1.1); }
-        }
-
-        .stamp-icon { 
-            font-size: 5rem; 
-            margin-bottom: 5px; 
-            color: #555;
+            background: #1a1a1a; 
             transition: 0.4s;
-            text-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
-        .stamp.on .stamp-icon {
-            color: #fff;
-            text-shadow: var(--stamp-icon-on-shadow);
-        }
-        .stamp small { font-size: 0.8rem; color: #888; font-weight: bold; margin-top: 5px; }
-        .stamp.on small { color: var(--accent); text-shadow: 0 0 5px var(--accent); }
-
-        /* 獲得通知メッセージ */
-        #get-notif {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: rgba(255, 0, 222, 0.9); color: white;
-            padding: 20px 40px; border-radius: 50px; font-weight: bold; font-size: 1.5rem;
-            box-shadow: 0 0 30px var(--accent);
-            z-index: 1000; display: none; pointer-events: none;
-            animation: popMsg 1.5s ease-out forwards;
-            font-family: var(--pixel-font);
-        }
-        @keyframes popMsg {
-            0% { opacity: 0; transform: translate(-50%, -30%); }
-            20% { opacity: 1; transform: translate(-50%, -50%); }
-            80% { opacity: 1; transform: translate(-50%, -50%); }
-            100% { opacity: 0; transform: translate(-50%, -70%); }
-        }
-
-        .btn { 
-            border: none; padding: 25px; width: 95%; border-radius: 15px; 
-            font-size: 1.4rem; font-weight: bold; color: white; cursor: pointer; 
-            transition: 0.3s; 
-            box-shadow: 0 6px 0 #00acc1, 0 10px 20px rgba(0, 229, 255, 0.4);
-            background: var(--btn-bg);
-            text-decoration: none; text-align: center;
-            font-family: var(--pixel-font);
-            text-shadow: 0 0 5px rgba(0,0,0,0.5);
-        }
-        .btn:hover {
-            background: var(--btn-hover-bg);
-            box-shadow: 0 6px 0 #d81b60, 0 10px 20px rgba(255, 0, 127, 0.4);
-        }
-        .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #00acc1; }
-        .btn:disabled { 
-            background: #444; color: #888; 
-            box-shadow: 0 6px 0 #333, 0 10px 20px rgba(0,0,0,0.2); 
-            text-shadow: none;
-        }
-        .btn-staff { 
-            background: var(--btn-staff-bg); 
-            box-shadow: 0 6px 0 #00a14b, 0 10px 20px rgba(0, 230, 118, 0.4); 
-            margin-top: 50px; 
-        }
-        .btn-staff:hover {
-            background: #00c853;
-            box-shadow: 0 6px 0 #009624, 0 10px 20px rgba(0, 200, 83, 0.4);
-        }
-
-        #garapon-stage { position: relative; width: 220px; height: 220px; margin: 50px 0; }
-        #garapon-unit {
-            width: 100%; height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23ffd700" stroke="%23b8860b" stroke-width="5"/><circle cx="50" cy="50" r="35" fill="%23fff" stroke="%23ffd700" stroke-width="2"/><text x="50" y="65" font-size="40" text-anchor="middle" fill="%23b8860b">G</text></svg>') center center no-repeat;
-            background-size: contain;
-            display: flex; justify-content: center; align-items: center; font-size: 5rem;
-            transition: transform 0.1s linear;
-            position: relative;
-        }
-        #garapon-unit::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, rgba(255, 215, 0, 0.5) 0%, transparent 70%);
-            animation: pulseGarapon 1s infinite;
-        }
-        @keyframes pulseGarapon {
-            0% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(1); opacity: 0.5; }
-        }
-        .spin-anime { animation: rotate 0.05s infinite linear; }
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        .result-box { 
-            display: none; border: 5px solid var(--accent); border-radius: 20px; 
-            padding: 30px; background: rgba(0, 0, 0, 0.9); margin-top: 30px; width: 95%; box-sizing: border-box;
-            animation: fadeIn 0.5s ease-out;
-            box-shadow: 0 0 20px var(--accent), 0 0 40px rgba(255, 0, 127, 0.5);
             position: relative;
             overflow: hidden;
+            box-sizing: border-box;
+            padding: 10px;
         }
-        .result-box::before {
-            content: 'CONGRATULATIONS!';
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
+        .stamp.on { 
+            border: 3px solid var(--accent); 
+            background: #fff; 
+            box-shadow: 0 0 20px var(--accent);
+        }
+        
+        .stamp-icon { 
+            font-size: 3.5rem; 
+            margin-bottom: 5px; 
+            filter: grayscale(1) opacity(0.3);
+        }
+        .stamp.on .stamp-icon { 
+            filter: grayscale(0) opacity(1);
+            animation: stampBounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes stampBounce {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        .stamp small { 
+            font-size: 0.8rem; 
+            color: #666; 
+            font-family: var(--jp-pixel-font);
+            text-align: center;
+            line-height: 1.2;
+            word-break: break-all;
+        }
+        .stamp.on small { color: #000; font-weight: bold; }
+
+        /* ボタン：共通 */
+        .btn { 
+            border: none; padding: 20px; width: 100%; border-radius: 12px; 
+            font-size: 1.2rem; font-family: var(--jp-pixel-font); 
+            color: white; cursor: pointer; transition: 0.2s; 
+            box-shadow: 0 6px 0 #008ba3; 
+            background: var(--primary);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 15px;
+        }
+        .btn:active { transform: translateY(4px); box-shadow: none; }
+        .btn:disabled { background: #444; color: #888; box-shadow: 0 6px 0 #222; }
+
+        .btn-staff { 
+            background: var(--staff-color); 
+            box-shadow: 0 6px 0 #2db30f; 
+            color: #000; 
+            font-weight: bold;
+        }
+
+        .btn-close {
             background: var(--accent);
-            color: #fff;
-            padding: 5px 20px;
-            font-family: var(--pixel-font);
-            font-size: 0.8rem;
-            border-radius: 10px;
-        }
-        .result-header { 
-            font-size: 2.2rem; 
-            font-weight: 900; 
-            margin-bottom: 15px; 
-            font-family: var(--pixel-font);
-            text-shadow: 0 0 10px var(--grade-color), 0 0 20px var(--grade-color), 0 0 30px var(--grade-color);
-        }
-        .result-desc { 
-            font-weight: bold; 
-            font-size: 1.2rem; 
-            line-height: 1.6; 
-            color: #fff;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-        }
-        .result-box hr { border: 1px dashed var(--accent); margin: 25px 0; opacity: 0.5; }
-        .result-footer { font-size: 1rem; color: #aaa; font-weight: bold; font-family: var(--pixel-font); }
-        .result-box::after {
-            content: '✨';
-            position: absolute;
-            font-size: 3rem;
-            animation: resultSparkle 2s infinite;
-        }
-        @keyframes resultSparkle {
-            0%, 100% { top: 10px; left: 10px; opacity: 0; }
-            25% { top: 10px; left: 10px; opacity: 1; }
-            50% { top: 90%; left: 90%; opacity: 1; }
-            75% { top: 90%; left: 90%; opacity: 0; }
+            box-shadow: 0 6px 0 #b3009b;
+            margin-top: 20px;
         }
 
-        #screen-check [style*="font-size: 5rem"] {
-            font-family: var(--pixel-font);
-            color: var(--primary);
-            text-shadow: 0 0 10px var(--primary);
+        /* ガラポン演出 */
+        #garapon-stage { position: relative; width: 200px; height: 200px; margin: 30px 0; }
+        #garapon-unit {
+            width: 100%; height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="none" stroke="%2300f2fe" stroke-width="4" stroke-dasharray="8,4"/><path d="M50 10 L50 90 M10 50 L90 50" stroke="%23ff00de" stroke-width="1" opacity="0.5"/></svg>') center center no-repeat;
+            display: flex; justify-content: center; align-items: center; font-size: 4rem;
         }
-        
-    </style>
-</head>
-<body>
+        .spin-anime { animation: rotate 0.1s infinite linear; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-<div class="container">
-    <div id="get-notif">スタンプGET🎉</div>
-
-    <div class="header">
-        <h1>TECMOPIA</h1>
-        <p>〜 探検スタンプラリー 〜</p>
-    </div>
-
-    <div id="screen-rally" class="screen active">
-        <div class="stamp-rally">
-            <div id="st-1" class="stamp"><span class="stamp-icon">🔑</span><small>B1ミニクレ</small></div>
-            <div id="st-2" class="stamp"><span class="stamp-icon">🎮</span><small>3Fテクモピア</small></div>
-        </div>
-        <p id="rally-hint" style="text-align:center; font-weight:bold; color:var(--primary); font-size: 1.1rem;">
-            お店を回ってスタンプをあつめよう！
-        </p>
-        <button id="to-check-btn" class="btn" disabled onclick="showScreen('screen-check')">2箇所達成！スタッフ確認へ</button>
-    </div>
-
-    <div id="screen-check" class="screen" style="text-align:center;">
-        <h3 style="color:var(--primary); font-family: var(--pixel-font); font-size: 1.5rem; text-shadow: 0 0 5px var(--primary);">スタッフ確認</h3>
-        <p style="font-size: 1.1rem; line-height: 1.6;">3Fカウンターのスタッフに<br>この画面を見せてね！</p>
-        <div style="font-size: 6rem; margin: 30px; animation: bounce 1.5s infinite; color: var(--accent); text-shadow: 0 0 15px var(--accent);">🎁</div>
-        <button class="btn btn-staff" onclick="staffApprove()">スタッフが確認しました</button>
-        <button style="background:none; border:none; color:#bbb; margin-top:40px; cursor:pointer; font-weight:bold; font-size: 1rem;" onclick="showScreen('screen-rally')">← スタンプ画面にもどる</button>
-    </div>
-
-    <div id="screen-garapon" class="screen" style="text-align:center;">
-        <h3 style="color:var(--primary); font-family: var(--pixel-font); font-size: 1.5rem; text-shadow: 0 0 5px var(--primary);">ドキドキ！ガラポン</h3>
-        <div id="garapon-stage"><div id="garapon-unit"></div></div>
-        <button id="draw-btn" class="btn" onclick="runGarapon()">ガラポンを回す！</button>
-        
-        <div id="result-area" class="result-box">
-            <h2 id="result-grade" class="result-header"></h2>
-            <p id="result-desc" class="result-desc"></p>
-            <hr>
-            <p class="result-footer">🎁 この画面をスタッフに見せてね！</p>
-        </div>
-    </div>
-</div>
-
-<script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbySrqbkG3sX5kzAZwshkQMOR6M1J2bkXPOtfzHzFs-x6d-rWT23nPHBN8W-hwWAm79lzQ/exec";
-    
-    const todayStr = new Date().toLocaleDateString();
-    if (localStorage.getItem('tp_used') !== todayStr) {
-        if(localStorage.getItem('tp_used')){
-            localStorage.removeItem('tp_used');
-            localStorage.removeItem('tp_stamps');
-        }
-    }
-
-    const stamps = JSON.parse(localStorage.getItem('tp_stamps')) || [];
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
-
-    // 🌟 スタンプ獲得処理
-    let isNewStamp = false;
-    if (id && !stamps.includes(id) && stamps.length < 2) {
-        stamps.push(id);
-        localStorage.setItem('tp_stamps', JSON.stringify(stamps));
-        isNewStamp = true; // 新しく獲得したフラグ
-    }
-
-    function updateUI() {
-        stamps.forEach(s => {
-            const el = document.getElementById(`st-${s}`);
-            if (el) {
-                el.classList.add('on');
-                // 新しく獲得したスタンプならアニメーション適用
-                if (isNewStamp && s === id) {
-                    el.classList.add('stamp-get-anim');
-                    document.getElementById('get-notif').style.display = 'block';
-                }
-            }
-        });
-        if (stamps.length >= 2) {
-            document.getElementById('to-check-btn').disabled = false;
-            if(isNewStamp) document.getElementById('rally-hint').innerText = "おめでとう！2つそろったよ！";
-        }
-    }
-
-    function showScreen(id) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        window.scrollTo(0,0);
-    }
-
-    function staffApprove() {
-        if(confirm("スタッフ確認：ガラポンを開始しますか？")) showScreen('screen-garapon');
-    }
-
-    function runGarapon() {
-        const btn = document.getElementById('draw-btn');
-        const unit = document.getElementById('garapon-unit');
-        btn.disabled = true;
-        btn.innerText = "抽選中...";
-        unit.classList.add('spin-anime');
-        unit.innerText = ""; // テキストをクリア
-
-        setTimeout(() => {
-            unit.classList.remove('spin-anime');
-            const rand = Math.random() * 100;
-            let res = { g: "", d: "", color: "" };
-
-            // 等級の判定（1等3%・6等15%・7等60%・その他バラけ設定）
-            if (rand < 3.0) res = { g: "1等", d: "金：クレーンゲーム6プレイ無料", color: "#FFB300" }; 
-            else if (rand < 6.8) res = { g: "2等", d: "銀：メダル50枚セット ＋ 増量券", color: "#9E9E9E" }; 
-            else if (rand < 11.5) res = { g: "3等", d: "赤：クレーンゲーム3プレイ無料", color: "#F44336" }; 
-            else if (rand < 17.7) res = { g: "4等", d: "黄：メダル30枚セット ＋ 増量券", color: "#FFCA28" }; 
-            else if (rand < 25.0) res = { g: "5等", d: "ピンク：クレーンゲーム1プレイ無料", color: "#E91E63" }; 
-            else if (rand < 40.0) res = { g: "6等", d: "水色：メダル10枚セット ＋ 増量券", color: "#00BCD4" }; 
-            else res = { g: "7等", d: "白：クレーンゲーム1プレイ増量券", color: "#FFFFFF" }; // 残り60%
-
-            // 🌟 演出コード
-            unit.innerText = res.g;
-            unit.style.fontSize = "3.5rem";
-            unit.style.fontWeight = "900";
-            unit.style.fontFamily = "var(--pixel-font)";
-            unit.style.color = res.color;
-            unit.style.textShadow = `0 0 10px ${res.color}, 0 0 20px ${res.color}`;
-            
-            unit.animate([
-                { transform: 'scale(0) rotate(-15deg)', opacity: 0 },
-                { transform: 'scale(1.2) rotate(5deg)', opacity: 1 },
-                { transform: 'scale(1) rotate(0deg)', opacity: 1 }
-            ], { duration: 600, easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)' });
-
-            document.getElementById('result-grade').innerText = "✨ " + res.g + " ✨";
-            document.getElementById('result-grade').style.setProperty('--grade-color', res.color);
-            document.getElementById('result-desc').innerText = res.d;
-            document.getElementById('result-area').style.display = 'block';
-
-            saveResultToSheet(res.g);
-
-            localStorage.setItem('tp_used', todayStr);
-            localStorage.removeItem('tp_stamps'); 
-            btn.innerText = "結果を確認してね！";
-        }, 2000);
-    }
-
-    function saveResultToSheet(grade) {
-        fetch(`${GAS_URL}?grade=${encodeURIComponent(grade)}`, { mode: 'no-cors' })
-          .then(() => console.log("記録リクエストを送信しました"))
-          .catch(err => console.error("通信エラー:", err));
-    }
-
-    if (localStorage.getItem('tp_used') === todayStr) {
-        document.body.innerHTML = "<div style='padding:100px 20px; text-align:center; color:var(--primary); font-family: var(--pixel-font);'><h2 style='font-size:5rem; margin:0; text-shadow: 0 0 15px var(--primary);'>🌸</h2><h2 style='margin-top: 30px; font-size: 1.5rem;'>本日は終了しました</h2><p style='color:var(--text-color); font-weight:bold; font-family: var(--font-family); margin-top: 20px;'>また明日遊びにきてね！</p></div>";
-    } else {
-        updateUI();
-    }
-</script>
+        /* 結果エリア */
+        .result-box { 
+            display: none; border: 4px double var(--accent); border-radius: 15px; 
+            padding: 20px; background
