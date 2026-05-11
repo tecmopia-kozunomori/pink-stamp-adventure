@@ -4,22 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>テクモピア - 探検ラリー</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --main-bg: #fff5f8; 
-            --container-bg: #ffffff;
-            --primary: #ff8ab4; 
-            --accent: #ff4081; 
-            --staff: #66bb6a; 
-            --text: #5d4037;
+            --main-bg: #0a0a0a; 
+            --container-bg: #161616;
+            --primary: #00f2fe; 
+            --accent: #ff00de; 
+            --stamp-bg: #333;
+            --stamp-border: #444;
+            --stamp-on-border: var(--accent);
+            --stamp-on-bg: #fff;
+            --stamp-icon-on-shadow: 0 0 15px var(--accent);
+            --btn-bg: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
+            --btn-hover-bg: linear-gradient(90deg, #ff00de 0%, #fe4f9e 100%);
+            --btn-staff-bg: #00e676;
+            --text-color: #fff;
+            --font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', sans-serif;
+            --pixel-font: 'Press Start 2P', cursive;
         }
         
         body { 
-            font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', sans-serif; 
+            font-family: var(--font-family); 
             background-color: var(--main-bg); 
             margin: 0; 
-            color: var(--text);
+            color: var(--text-color);
             overflow-x: hidden;
+            background-image: radial-gradient(var(--container-bg) 1px, transparent 1px);
+            background-size: 20px 20px;
         }
 
         .container { 
@@ -29,71 +41,118 @@
             background: var(--container-bg); 
             display: flex; 
             flex-direction: column; 
-            box-shadow: 0 0 15px rgba(255, 138, 180, 0.2);
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.5), 0 0 40px rgba(255, 0, 127, 0.3);
             position: relative;
+            border-left: 3px solid var(--primary);
+            border-right: 3px solid var(--accent);
         }
 
         .header { 
-            background: white;
-            color: var(--primary); 
-            padding: 40px 20px; 
+            background: #000;
+            color: #fff; 
+            padding: 50px 20px; 
             text-align: center; 
-            border-bottom: 5px solid var(--main-bg);
+            border-bottom: 3px solid var(--primary);
+            position: relative;
+            overflow: hidden;
         }
-        .header h1 { margin: 0; font-size: 1.6rem; font-weight: 900; }
-        .header p { margin: 8px 0 0; font-size: 0.9rem; color: #f48fb1; font-weight: bold; }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 242, 254, 0.2) 0%, rgba(255, 0, 222, 0.2) 50%, transparent 70%);
+            animation: rotateBg 10s linear infinite;
+            z-index: 0;
+        }
+        @keyframes rotateBg {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .header h1 { 
+            margin: 0; 
+            font-size: 2.5rem; 
+            font-family: var(--pixel-font);
+            text-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary), 0 0 30px var(--primary);
+            position: relative;
+            z-index: 1;
+        }
+        .header p { 
+            margin: 15px 0 0; 
+            font-size: 1rem; 
+            color: #fff;
+            text-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent);
+            position: relative;
+            z-index: 1;
+        }
 
         .screen { 
             display: none; 
-            padding: 30px 20px; 
+            padding: 40px 20px; 
             flex-grow: 1; 
             animation: fadeIn 0.4s ease-out;
+            position: relative;
         }
         .active { display: flex; flex-direction: column; align-items: center; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 0, 222, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(255, 0, 222, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 0, 222, 0); } }
 
         /* スタンプのデザイン */
-        .stamp-rally { display: flex; justify-content: space-around; width: 100%; margin: 35px 0; }
+        .stamp-rally { display: flex; justify-content: space-around; width: 100%; margin: 50px 0; }
         .stamp { 
-            width: 130px; height: 130px; 
-            border: 3px solid #fce4ec; 
-            border-radius: 30px; 
+            width: 140px; height: 140px; 
+            border: 5px solid var(--stamp-border); 
+            border-radius: 50%; 
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            background: #fff; 
+            background: var(--stamp-bg); 
             transition: 0.4s; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
             position: relative;
         }
         .stamp.on { 
-            border: 4px solid var(--primary); 
-            background: #fff; 
-            box-shadow: 0 8px 20px rgba(255, 138, 180, 0.2);
+            border: 5px solid var(--stamp-on-border); 
+            background: var(--stamp-on-bg); 
+            box-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent);
+            animation: pulse 1.5s infinite;
         }
         
         /* 獲得時のアニメーション */
         .stamp-get-anim {
-            animation: stampGetEffect 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation: stampGetEffect 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, pulse 1.5s infinite;
         }
         @keyframes stampGetEffect {
             0% { transform: scale(1); }
-            50% { transform: scale(1.3) rotate(10deg); }
-            100% { transform: scale(1.05); }
+            50% { transform: scale(1.4) rotate(15deg); }
+            100% { transform: scale(1.1); }
         }
 
-        .stamp-icon { font-size: 3.5rem; margin-bottom: 5px; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1)); }
-        .stamp small { font-size: 0.75rem; color: #888; font-weight: bold; }
-        .stamp.on small { color: var(--primary); }
+        .stamp-icon { 
+            font-size: 5rem; 
+            margin-bottom: 5px; 
+            color: #555;
+            transition: 0.4s;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        .stamp.on .stamp-icon {
+            color: #fff;
+            text-shadow: var(--stamp-icon-on-shadow);
+        }
+        .stamp small { font-size: 0.8rem; color: #888; font-weight: bold; margin-top: 5px; }
+        .stamp.on small { color: var(--accent); text-shadow: 0 0 5px var(--accent); }
 
         /* 獲得通知メッセージ */
         #get-notif {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: rgba(255, 138, 180, 0.95); color: white;
-            padding: 15px 30px; border-radius: 50px; font-weight: bold; font-size: 1.2rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: rgba(255, 0, 222, 0.9); color: white;
+            padding: 20px 40px; border-radius: 50px; font-weight: bold; font-size: 1.5rem;
+            box-shadow: 0 0 30px var(--accent);
             z-index: 1000; display: none; pointer-events: none;
             animation: popMsg 1.5s ease-out forwards;
+            font-family: var(--pixel-font);
         }
         @keyframes popMsg {
             0% { opacity: 0; transform: translate(-50%, -30%); }
@@ -103,33 +162,115 @@
         }
 
         .btn { 
-            border: none; padding: 20px; width: 90%; border-radius: 15px; 
-            font-size: 1.2rem; font-weight: bold; color: white; cursor: pointer; 
-            transition: 0.3s; box-shadow: 0 4px 0 #d81b60; 
-            background: var(--primary);
+            border: none; padding: 25px; width: 95%; border-radius: 15px; 
+            font-size: 1.4rem; font-weight: bold; color: white; cursor: pointer; 
+            transition: 0.3s; 
+            box-shadow: 0 6px 0 #00acc1, 0 10px 20px rgba(0, 229, 255, 0.4);
+            background: var(--btn-bg);
             text-decoration: none; text-align: center;
+            font-family: var(--pixel-font);
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
         }
-        .btn:active { transform: translateY(3px); box-shadow: none; }
-        .btn:disabled { background: #eee; color: #bbb; box-shadow: 0 4px 0 #ddd; }
-        .btn-staff { background: var(--staff); box-shadow: 0 4px 0 #388e3c; margin-top: 40px; }
+        .btn:hover {
+            background: var(--btn-hover-bg);
+            box-shadow: 0 6px 0 #d81b60, 0 10px 20px rgba(255, 0, 127, 0.4);
+        }
+        .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #00acc1; }
+        .btn:disabled { 
+            background: #444; color: #888; 
+            box-shadow: 0 6px 0 #333, 0 10px 20px rgba(0,0,0,0.2); 
+            text-shadow: none;
+        }
+        .btn-staff { 
+            background: var(--btn-staff-bg); 
+            box-shadow: 0 6px 0 #00a14b, 0 10px 20px rgba(0, 230, 118, 0.4); 
+            margin-top: 50px; 
+        }
+        .btn-staff:hover {
+            background: #00c853;
+            box-shadow: 0 6px 0 #009624, 0 10px 20px rgba(0, 200, 83, 0.4);
+        }
 
-        #garapon-stage { position: relative; width: 180px; height: 180px; margin: 40px 0; }
+        #garapon-stage { position: relative; width: 220px; height: 220px; margin: 50px 0; }
         #garapon-unit {
             width: 100%; height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="none" stroke="%23ff8ab4" stroke-width="5" stroke-dasharray="10,5"/><circle cx="50" cy="50" r="35" fill="%23fff" stroke="%23ff8ab4" stroke-width="2"/></svg>') center center no-repeat;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23ffd700" stroke="%23b8860b" stroke-width="5"/><circle cx="50" cy="50" r="35" fill="%23fff" stroke="%23ffd700" stroke-width="2"/><text x="50" y="65" font-size="40" text-anchor="middle" fill="%23b8860b">G</text></svg>') center center no-repeat;
             background-size: contain;
-            display: flex; justify-content: center; align-items: center; font-size: 4.5rem;
+            display: flex; justify-content: center; align-items: center; font-size: 5rem;
             transition: transform 0.1s linear;
+            position: relative;
         }
-        .spin-anime { animation: rotate 0.1s infinite linear; }
+        #garapon-unit::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.5) 0%, transparent 70%);
+            animation: pulseGarapon 1s infinite;
+        }
+        @keyframes pulseGarapon {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.5; }
+        }
+        .spin-anime { animation: rotate 0.05s infinite linear; }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         .result-box { 
-            display: none; border: 3px solid var(--primary); border-radius: 20px; 
-            padding: 25px; background: white; margin-top: 20px; width: 90%; box-sizing: border-box;
+            display: none; border: 5px solid var(--accent); border-radius: 20px; 
+            padding: 30px; background: rgba(0, 0, 0, 0.9); margin-top: 30px; width: 95%; box-sizing: border-box;
             animation: fadeIn 0.5s ease-out;
+            box-shadow: 0 0 20px var(--accent), 0 0 40px rgba(255, 0, 127, 0.5);
+            position: relative;
+            overflow: hidden;
         }
-        .result-header { font-size: 1.8rem; font-weight: 900; margin-bottom: 10px; }
+        .result-box::before {
+            content: 'CONGRATULATIONS!';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: #fff;
+            padding: 5px 20px;
+            font-family: var(--pixel-font);
+            font-size: 0.8rem;
+            border-radius: 10px;
+        }
+        .result-header { 
+            font-size: 2.2rem; 
+            font-weight: 900; 
+            margin-bottom: 15px; 
+            font-family: var(--pixel-font);
+            text-shadow: 0 0 10px var(--grade-color), 0 0 20px var(--grade-color), 0 0 30px var(--grade-color);
+        }
+        .result-desc { 
+            font-weight: bold; 
+            font-size: 1.2rem; 
+            line-height: 1.6; 
+            color: #fff;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+        .result-box hr { border: 1px dashed var(--accent); margin: 25px 0; opacity: 0.5; }
+        .result-footer { font-size: 1rem; color: #aaa; font-weight: bold; font-family: var(--pixel-font); }
+        .result-box::after {
+            content: '✨';
+            position: absolute;
+            font-size: 3rem;
+            animation: resultSparkle 2s infinite;
+        }
+        @keyframes resultSparkle {
+            0%, 100% { top: 10px; left: 10px; opacity: 0; }
+            25% { top: 10px; left: 10px; opacity: 1; }
+            50% { top: 90%; left: 90%; opacity: 1; }
+            75% { top: 90%; left: 90%; opacity: 0; }
+        }
+
+        #screen-check [style*="font-size: 5rem"] {
+            font-family: var(--pixel-font);
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary);
+        }
+        
     </style>
 </head>
 <body>
@@ -147,30 +288,30 @@
             <div id="st-1" class="stamp"><span class="stamp-icon">🔑</span><small>B1ミニクレ</small></div>
             <div id="st-2" class="stamp"><span class="stamp-icon">🎮</span><small>3Fテクモピア</small></div>
         </div>
-        <p id="rally-hint" style="text-align:center; font-weight:bold; color:var(--primary);">
+        <p id="rally-hint" style="text-align:center; font-weight:bold; color:var(--primary); font-size: 1.1rem;">
             お店を回ってスタンプをあつめよう！
         </p>
         <button id="to-check-btn" class="btn" disabled onclick="showScreen('screen-check')">2箇所達成！スタッフ確認へ</button>
     </div>
 
     <div id="screen-check" class="screen" style="text-align:center;">
-        <h3 style="color:var(--primary);">スタッフ確認</h3>
-        <p>3Fカウンターのスタッフに<br>この画面を見せてね！</p>
-        <div style="font-size: 5rem; margin: 20px; animation: bounce 2s infinite;">🎁</div>
+        <h3 style="color:var(--primary); font-family: var(--pixel-font); font-size: 1.5rem; text-shadow: 0 0 5px var(--primary);">スタッフ確認</h3>
+        <p style="font-size: 1.1rem; line-height: 1.6;">3Fカウンターのスタッフに<br>この画面を見せてね！</p>
+        <div style="font-size: 6rem; margin: 30px; animation: bounce 1.5s infinite; color: var(--accent); text-shadow: 0 0 15px var(--accent);">🎁</div>
         <button class="btn btn-staff" onclick="staffApprove()">スタッフが確認しました</button>
-        <button style="background:none; border:none; color:#bbb; margin-top:30px; cursor:pointer; font-weight:bold;" onclick="showScreen('screen-rally')">← スタンプ画面にもどる</button>
+        <button style="background:none; border:none; color:#bbb; margin-top:40px; cursor:pointer; font-weight:bold; font-size: 1rem;" onclick="showScreen('screen-rally')">← スタンプ画面にもどる</button>
     </div>
 
     <div id="screen-garapon" class="screen" style="text-align:center;">
-        <h3 style="color:var(--primary);">ドキドキ！ガラポン</h3>
-        <div id="garapon-stage"><div id="garapon-unit">🎡</div></div>
+        <h3 style="color:var(--primary); font-family: var(--pixel-font); font-size: 1.5rem; text-shadow: 0 0 5px var(--primary);">ドキドキ！ガラポン</h3>
+        <div id="garapon-stage"><div id="garapon-unit"></div></div>
         <button id="draw-btn" class="btn" onclick="runGarapon()">ガラポンを回す！</button>
         
         <div id="result-area" class="result-box">
             <h2 id="result-grade" class="result-header"></h2>
-            <p id="result-desc" style="font-weight:bold; font-size: 1.1rem; line-height: 1.5;"></p>
-            <hr style="border: 1px dashed #ffc0cb; margin: 20px 0;">
-            <p style="font-size:0.85rem; color:#888; font-weight:bold;">🎁 この画面をスタッフに見せてね！</p>
+            <p id="result-desc" class="result-desc"></p>
+            <hr>
+            <p class="result-footer">🎁 この画面をスタッフに見せてね！</p>
         </div>
     </div>
 </div>
@@ -232,28 +373,29 @@
         btn.disabled = true;
         btn.innerText = "抽選中...";
         unit.classList.add('spin-anime');
+        unit.innerText = ""; // テキストをクリア
 
-setTimeout(() => {
+        setTimeout(() => {
             unit.classList.remove('spin-anime');
             const rand = Math.random() * 100;
             let res = { g: "", d: "", color: "" };
 
-            // 等級の判定（バラけ感を出した70%設定）
-            if (rand < 0.8) res = { g: "1等", d: "クレーンゲーム6プレイ無料", color: "#FFB300" }; 
-            else if (rand < 2.0) res = { g: "2等", d: "メダル50枚 ＋ 増量券", color: "#9E9E9E" }; 
-            else if (rand < 5.5) res = { g: "3等", d: "クレーンゲーム3プレイ無料", color: "#F44336" }; 
-            else if (rand < 12.0) res = { g: "4等", d: "メダル30枚 ＋ 増量券", color: "#FFCA28" }; 
-            else if (rand < 20.0) res = { g: "5等", d: "クレーンゲーム1プレイ無料", color: "#E91E63" }; 
-            else if (rand < 30.0) res = { g: "6等", d: "メダル10枚 ＋ 増量券", color: "#00BCD4" }; 
-            else res = { g: "7等", d: "クレーンゲーム1プレイ増量券", color: "#5D4037" }; // 残り70%
+            // 等級の判定（1等3%・6等15%・7等60%・その他バラけ設定）
+            if (rand < 3.0) res = { g: "1等", d: "金：クレーンゲーム6プレイ無料", color: "#FFB300" }; 
+            else if (rand < 6.8) res = { g: "2等", d: "銀：メダル50枚セット ＋ 増量券", color: "#9E9E9E" }; 
+            else if (rand < 11.5) res = { g: "3等", d: "赤：クレーンゲーム3プレイ無料", color: "#F44336" }; 
+            else if (rand < 17.7) res = { g: "4等", d: "黄：メダル30枚セット ＋ 増量券", color: "#FFCA28" }; 
+            else if (rand < 25.0) res = { g: "5等", d: "ピンク：クレーンゲーム1プレイ無料", color: "#E91E63" }; 
+            else if (rand < 40.0) res = { g: "6等", d: "水色：メダル10枚セット ＋ 増量券", color: "#00BCD4" }; 
+            else res = { g: "7等", d: "白：クレーンゲーム1プレイ増量券", color: "#FFFFFF" }; // 残り60%
 
-            // 🌟 ド派手なポップアップ演出（以下、既存の演出コード）
+            // 🌟 演出コード
             unit.innerText = res.g;
-            unit.style.fontSize = "3rem";
-            // ...以下、以前の完ぺきなコードと同じ
+            unit.style.fontSize = "3.5rem";
             unit.style.fontWeight = "900";
+            unit.style.fontFamily = "var(--pixel-font)";
             unit.style.color = res.color;
-            unit.style.textShadow = "2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 0 4px 10px rgba(0,0,0,0.3)";
+            unit.style.textShadow = `0 0 10px ${res.color}, 0 0 20px ${res.color}`;
             
             unit.animate([
                 { transform: 'scale(0) rotate(-15deg)', opacity: 0 },
@@ -262,7 +404,7 @@ setTimeout(() => {
             ], { duration: 600, easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)' });
 
             document.getElementById('result-grade').innerText = "✨ " + res.g + " ✨";
-            document.getElementById('result-grade').style.color = res.color;
+            document.getElementById('result-grade').style.setProperty('--grade-color', res.color);
             document.getElementById('result-desc').innerText = res.d;
             document.getElementById('result-area').style.display = 'block';
 
@@ -281,10 +423,8 @@ setTimeout(() => {
     }
 
     if (localStorage.getItem('tp_used') === todayStr) {
-        document.body.innerHTML = "<div style='padding:100px 20px; text-align:center; color:#ff8ab4;'><h2 style='font-size:3rem; margin:0;'>🌸</h2><h2>本日は終了しました</h2><p style='color:#5d4037; font-weight:bold;'>また明日遊びにきてね！</p></div>";
+        document.body.innerHTML = "<div style='padding:100px 20px; text-align:center; color:var(--primary); font-family: var(--pixel-font);'><h2 style='font-size:5rem; margin:0; text-shadow: 0 0 15px var(--primary);'>🌸</h2><h2 style='margin-top: 30px; font-size: 1.5rem;'>本日は終了しました</h2><p style='color:var(--text-color); font-weight:bold; font-family: var(--font-family); margin-top: 20px;'>また明日遊びにきてね！</p></div>";
     } else {
         updateUI();
     }
 </script>
-</body>
-</html>
