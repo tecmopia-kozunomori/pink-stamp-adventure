@@ -161,4 +161,187 @@
         /* 結果エリア */
         .result-box { 
             display: none; border: 4px double var(--accent); border-radius: 15px; 
-            padding: 20px; background
+            padding: 20px; background: rgba(0,0,0,0.8); margin-top: 20px; width: 100%; box-sizing: border-box;
+            box-shadow: 0 0 20px var(--accent);
+        }
+        .result-header { 
+            font-family: var(--jp-pixel-font); font-size: 2rem; margin-bottom: 10px; 
+            color: var(--accent); text-shadow: 0 0 10px var(--accent);
+        }
+        .result-desc { font-size: 1.1rem; color: #fff; line-height: 1.5; font-family: var(--jp-pixel-font); }
+
+        /* 通知ポップアップ */
+        #get-notif {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: var(--accent); color: white; padding: 20px 40px; border-radius: 10px;
+            font-family: var(--jp-pixel-font); font-size: 1.5rem; z-index: 1000; display: none;
+            box-shadow: 0 0 30px var(--accent); animation: popMsg 1.5s ease-out forwards;
+        }
+        @keyframes popMsg {
+            0% { opacity: 0; transform: translate(-50%, -30%); }
+            20%, 80% { opacity: 1; transform: translate(-50%, -50%); }
+            100% { opacity: 0; transform: translate(-50%, -70%); }
+        }
+
+        /* 終了画面：クール＆キュート */
+        .end-screen {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100vh; text-align: center; padding: 20px;
+        }
+        .end-title { 
+            font-family: var(--pixel-font); font-size: 2.5rem; color: #ff0055;
+            text-shadow: 0 0 10px #ff0055, 0 0 20px #ff0055; margin: 0;
+        }
+        .end-msg { 
+            font-family: var(--jp-pixel-font); font-size: 1.2rem; color: var(--primary); 
+            margin-top: 20px; text-shadow: 0 0 5px var(--primary);
+        }
+        .end-icon { font-size: 5rem; margin: 30px 0; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 0.8; } }
+
+    </style>
+</head>
+<body>
+
+<div class="container" id="main-container">
+    <div id="get-notif">スタンプGET!!</div>
+
+    <div class="header">
+        <h1>TECMOPIA</h1>
+        <p>MISSION: 探検ラリー</p>
+    </div>
+
+    <div id="screen-rally" class="screen active">
+        <div class="stamp-rally">
+            <div id="st-1" class="stamp"><span class="stamp-icon">🔑</span><small>B1<br>ミニクレ</small></div>
+            <div id="st-2" class="stamp"><span class="stamp-icon">🎮</span><small>3F<br>テクモピア</small></div>
+        </div>
+        <p style="text-align:center; font-family: var(--jp-pixel-font); color:var(--primary); margin-bottom: 30px;">
+            店舗を回ってスタンプをコンプリートせよ！
+        </p>
+        <button id="to-check-btn" class="btn" disabled onclick="showScreen('screen-check')">2箇所達成！スタッフ確認へ</button>
+    </div>
+
+    <div id="screen-check" class="screen" style="text-align:center;">
+        <h3 style="color:var(--accent); font-family: var(--jp-pixel-font); font-size: 1.8rem;">STAFF CHECK</h3>
+        <p style="font-family: var(--jp-pixel-font);">3Fカウンターのスタッフに<br>この画面を見せてください</p>
+        <div style="font-size: 5rem; margin: 20px; filter: drop-shadow(0 0 10px var(--accent));">🎁</div>
+        <button class="btn btn-staff" onclick="staffApprove()">スタッフ確認済み</button>
+        <button style="background:none; border:none; color:#666; margin-top:20px; cursor:pointer; font-family: var(--jp-pixel-font);" onclick="showScreen('screen-rally')">BACK TO RALLY</button>
+    </div>
+
+    <div id="screen-garapon" class="screen" style="text-align:center;">
+        <h3 style="color:var(--primary); font-family: var(--jp-pixel-font); font-size: 1.8rem;">LUCKY DRAW</h3>
+        <div id="garapon-stage"><div id="garapon-unit">🎡</div></div>
+        <button id="draw-btn" class="btn" onclick="runGarapon()">ガラポンを回す！</button>
+        
+        <div id="result-area" class="result-box">
+            <h2 id="result-grade" class="result-header"></h2>
+            <p id="result-desc" class="result-desc"></p>
+            <p style="font-size:0.8rem; color:var(--accent); margin-top:15px; font-weight:bold;">※この画面をスタッフに提示してください</p>
+            <button class="btn btn-close" onclick="closeAndFinish()">終了する (閉じる)</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbySrqbkG3sX5kzAZwshkQMOR6M1J2bkXPOtfzHzFs-x6d-rWT23nPHBN8W-hwWAm79lzQ/exec";
+    const todayStr = new Date().toLocaleDateString();
+
+    // データの読み込み
+    const stamps = JSON.parse(localStorage.getItem('tp_stamps')) || [];
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+
+    // 🌟 スタンプ獲得処理
+    let isNewStamp = false;
+    if (id && !stamps.includes(id) && stamps.length < 2) {
+        stamps.push(id);
+        localStorage.setItem('tp_stamps', JSON.stringify(stamps));
+        isNewStamp = true;
+    }
+
+    function updateUI() {
+        stamps.forEach(s => {
+            const el = document.getElementById(`st-${s}`);
+            if (el) {
+                el.classList.add('on');
+                if (isNewStamp && s === id) {
+                    document.getElementById('get-notif').style.display = 'block';
+                }
+            }
+        });
+        if (stamps.length >= 2) {
+            document.getElementById('to-check-btn').disabled = false;
+        }
+    }
+
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    function staffApprove() {
+        if(confirm("スタッフ専用：ガラポンを開始します。よろしいですか？")) showScreen('screen-garapon');
+    }
+
+    function runGarapon() {
+        const btn = document.getElementById('draw-btn');
+        const unit = document.getElementById('garapon-unit');
+        btn.disabled = true;
+        unit.classList.add('spin-anime');
+
+        setTimeout(() => {
+            unit.classList.remove('spin-anime');
+            const rand = Math.random() * 100;
+            let res = { g: "", d: "", color: "" };
+
+            if (rand < 3.0) res = { g: "1等", d: "金：クレーンゲーム6回無料", color: "#FFD700" }; 
+            else if (rand < 7.0) res = { g: "2等", d: "銀：メダル50枚 ＋ 増量券", color: "#C0C0C0" }; 
+            else if (rand < 12.0) res = { g: "3等", d: "赤：クレーンゲーム3回無料", color: "#FF4444" }; 
+            else if (rand < 18.0) res = { g: "4等", d: "黄：メダル30枚 ＋ 増量券", color: "#FFEB3B" }; 
+            else if (rand < 25.0) res = { g: "5等", d: "ピンク：クレーンゲーム1回無料", color: "#FF69B4" }; 
+            else if (rand < 40.0) res = { g: "6等", d: "水色：メダル10枚 ＋ 増量券", color: "#00BCD4" }; 
+            else res = { g: "7等", d: "白：クレーンゲーム1回増量券", color: "#FFFFFF" };
+
+            unit.innerText = res.g;
+            unit.style.color = res.color;
+            unit.style.textShadow = `0 0 15px ${res.color}`;
+            
+            document.getElementById('result-grade').innerText = "WIN: " + res.g;
+            document.getElementById('result-grade').style.color = res.color;
+            document.getElementById('result-desc').innerText = res.d;
+            document.getElementById('result-area').style.display = 'block';
+
+            saveResultToSheet(res.g);
+            localStorage.setItem('tp_used', todayStr);
+            btn.style.display = "none";
+        }, 2000);
+    }
+
+    function saveResultToSheet(grade) {
+        fetch(`${GAS_URL}?grade=${encodeURIComponent(grade)}`, { mode: 'no-cors' });
+    }
+
+    // 終了処理
+    function closeAndFinish() {
+        localStorage.removeItem('tp_stamps'); 
+        location.reload();
+    }
+
+    // 1日1回制限のチェック
+    if (localStorage.getItem('tp_used') === todayStr) {
+        document.body.innerHTML = `
+            <div class="end-screen">
+                <h2 class="end-title">GAME OVER</h2>
+                <div class="end-icon">🎮✨</div>
+                <p class="end-msg">本日の探検は終了しました！<br>また明日挑戦してね！</p>
+                <p style="color:#444; font-size:0.8rem; margin-top:20px; font-family:var(--pixel-font);">SEE YOU NEXT TIME</p>
+            </div>`;
+    } else {
+        updateUI();
+    }
+</script>
+</body>
+</html>
