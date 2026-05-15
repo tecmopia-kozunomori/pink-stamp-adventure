@@ -42,7 +42,7 @@
             position: relative; 
         }
         
-        /* 🌟 ポップで明るいヘッダー */
+        /* ヘッダー */
         .header { 
             background: linear-gradient(135deg, var(--primary), #80deea); 
             padding: 30px 20px 20px; 
@@ -102,7 +102,7 @@
         .active { display: flex; flex-direction: column; align-items: center; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 🌟 スタンプ枠 */
+        /* スタンプ枠 */
         .stamp-rally { display: flex; justify-content: space-around; width: 100%; margin: 20px 0 30px; gap: 15px; }
         .stamp { 
             width: 140px; 
@@ -188,7 +188,7 @@
         .modal-title { color: var(--accent); font-size: 1.8rem; margin-top: 0; font-weight: 900; }
         .modal-desc { font-size: 1.2rem; color: #333; margin: 20px 0; font-weight: bold; line-height: 1.5; }
 
-        /* 🌟 クーポンBOX 一覧画面 */
+        /* クーポンBOX 一覧画面 */
         .box-header {
             background: #fff3e0;
             padding: 15px;
@@ -228,6 +228,17 @@
         /* キラキラエフェクト */
         .sparkle { position: absolute; font-size: 1.5rem; opacity: 0; animation: sparkleFloat 1.2s ease-out; }
         @keyframes sparkleFloat { 0% { transform: translate(0,0) scale(0.5); opacity: 1; } 100% { transform: translate(var(--x), var(--y)) scale(1.5); opacity: 0; } }
+
+        /* 🌟 修正：スタンプGET専用の可愛いアニメーション */
+        @keyframes getAnimIn {
+            0% { transform: scale(0.3) translateY(50px); opacity: 0; }
+            60% { transform: scale(1.1) translateY(-10px); opacity: 1; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        @keyframes getAnimOut {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0.8); opacity: 0; }
+        }
 
     </style>
 </head>
@@ -334,17 +345,28 @@
     const id = params.get('id');
     let selectedCouponIndex = -1;
 
-    // スタンプ通知
+    // 🌟 修正：可愛くてど真ん中に来るスタンプGETポップアップ
     function rallyNotif(txt) {
-        const d = document.createElement('div');
-        d.style = "position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:var(--accent); color:#fff; padding:15px 30px; border-radius:30px; font-weight:900; font-size:1.4rem; z-index:1000; box-shadow: 0 10px 20px rgba(255,64,129,0.3); animation:fadeInPop 0.3s, fadeOut 1s forwards; animation-delay: 0s, 1.5s;";
-        d.innerText = txt;
-        document.body.appendChild(d);
-        setTimeout(()=> d.remove(), 2500);
+        // 背景の透明な覆い（これがあることでど真ん中に固定できる）
+        const wrap = document.createElement('div');
+        wrap.style = "position:fixed; inset:0; display:flex; justify-content:center; align-items:center; z-index:9999; pointer-events:none;";
+        
+        // 白いポップアップカード
+        const box = document.createElement('div');
+        box.style = "background:white; border:4px solid var(--accent); padding:20px 40px; border-radius:25px; text-align:center; box-shadow:0 15px 30px rgba(255,64,129,0.3); animation:getAnimIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, getAnimOut 0.4s ease-in 2s forwards;";
+        
+        // アイコンとテキスト
+        box.innerHTML = `
+            <div style="font-size: 3.5rem; line-height: 1; margin-bottom: 5px;">💮</div>
+            <div style="color:var(--accent); font-family:var(--jp-pop-font); font-size:1.6rem; font-weight:900;">${txt}</div>
+        `;
+        
+        wrap.appendChild(box);
+        document.body.appendChild(wrap);
+        
+        // アニメーションが終わったら消す
+        setTimeout(()=> wrap.remove(), 2500);
     }
-    const fadeStyle = document.createElement('style');
-    fadeStyle.innerHTML = "@keyframes fadeOut { from { opacity: 1; transform:translate(-50%,-50%) scale(1); } to { opacity: 0; transform:translate(-50%,-60%) scale(0.9); } } @keyframes fadeInPop { 0% { opacity:0; transform:translate(-50%,-40%) scale(0.5); } 80% { transform:translate(-50%,-50%) scale(1.1); } 100% { opacity:1; transform:translate(-50%,-50%) scale(1); } }";
-    document.head.appendChild(fadeStyle);
 
     // 起動時のチェック
     if (localStorage.getItem('tp_used') === todayStr) {
@@ -363,14 +385,13 @@
         if (stamps.length >= 2) document.getElementById('to-check-btn').disabled = false;
     }
 
-    // 🌟 画面切り替え（ここでBOXボタンの表示/非表示をコントロールします）
+    // 画面切り替え
     function showScreen(screenId) {
         closeModal();
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(screenId).classList.add('active');
         window.scrollTo(0,0);
 
-        // ラリー画面（トップ）の時だけ、巨大BOXボタンを表示する
         const boxBtn = document.getElementById('main-box-btn');
         if (boxBtn) {
             if (screenId === 'screen-rally') {
