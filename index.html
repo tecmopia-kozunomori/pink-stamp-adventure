@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>テクモピア - 探検ラリー</title>
+    <title>TECMOPIA - 探検クエスト</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=DotGothic16&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --main-bg: #050505; 
+            --main-bg: #111; 
+            --header-bg: #000;
             --container-bg: #111;
             --primary: #00f2fe; /* ネオンブルー */
-            --accent: #ff00de;  /* ネオンピンク */
+            --accent: #ff00de; /* ネオンピンク */
             --staff-color: #39ff14; /* ネオングリーン */
+            --warning: #ff3333; /* ネオンレッド */
+            --gold: #ffeb3b; /* ゴールド */
+            --silver: #c0c0c0; /* シルバー */
             --text-color: #ffffff;
             --pixel-font: 'Press Start 2P', cursive;
             --jp-pixel-font: 'DotGothic16', sans-serif;
@@ -21,10 +25,15 @@
             font-family: 'Hiragino Sans', sans-serif; 
             background-color: var(--main-bg); 
             margin: 0; 
-            color: var(--text-color);
-            overflow-x: hidden;
+            color: var(--text-color); 
+            overflow-x: hidden; 
+            /* 背景にネオンの光の筋を薄く配置 */
+            background-image: repeating-linear-gradient(
+                -45deg,
+                rgba(0, 242, 254, 0.05) 0, rgba(0, 242, 254, 0.05) 20px,
+                transparent 20px, transparent 40px
+            );
         }
-
         .container { 
             max-width: 480px; 
             margin: 0 auto; 
@@ -32,315 +41,390 @@
             background: var(--container-bg); 
             display: flex; 
             flex-direction: column; 
-            box-shadow: 0 0 30px rgba(0, 242, 254, 0.3);
-            border-left: 2px solid #222;
-            border-right: 2px solid #222;
+            box-shadow: 0 0 50px rgba(0, 242, 254, 0.2); 
+            border-left: 3px solid #222; 
+            border-right: 3px solid #222; 
+            position: relative; 
         }
-
-        /* ヘッダー：ネオンタイトル */
+        
+        /* ヘッダー */
         .header { 
-            background: #000;
-            padding: 40px 20px; 
+            background: var(--header-bg); 
+            padding: 25px 20px 20px; 
             text-align: center; 
-            border-bottom: 4px solid var(--primary);
-            box-shadow: 0 5px 15px rgba(0, 242, 254, 0.2);
+            border-bottom: 5px solid var(--accent); 
+            position: relative; 
+            box-shadow: 0 5px 20px rgba(255, 0, 222, 0.3);
         }
         .header h1 { 
             margin: 0; 
-            font-size: 2.2rem; 
-            font-family: var(--pixel-font);
-            color: #fff;
-            text-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary), 0 0 40px var(--primary);
-            letter-spacing: 2px;
+            font-size: 2.3rem; 
+            font-family: var(--pixel-font); 
+            color: #fff; 
+            text-shadow: 0 0 10px #fff, 0 0 20px var(--primary), 0 0 30px var(--primary); 
         }
         .header p { 
-            margin: 10px 0 0; 
-            font-size: 0.9rem; 
-            font-family: var(--jp-pixel-font);
-            color: var(--accent);
-            text-shadow: 0 0 5px var(--accent);
-        }
-
-        .screen { 
-            display: none; 
-            padding: 30px 20px; 
-            flex-grow: 1; 
-            animation: fadeIn 0.4s ease-out;
-        }
-        .active { display: flex; flex-direction: column; align-items: center; }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* スタンプのデザイン修正：はみ出し防止 */
-        .stamp-rally { 
-            display: flex; 
-            justify-content: space-around; 
-            width: 100%; 
-            margin: 40px 0; 
-            gap: 15px;
-        }
-        .stamp { 
-            width: 140px; 
-            height: 140px; 
-            border: 3px solid #333; 
-            border-radius: 20px; 
-            display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            background: #1a1a1a; 
-            transition: 0.4s;
-            position: relative;
-            overflow: hidden;
-            box-sizing: border-box;
-            padding: 10px;
-        }
-        .stamp.on { 
-            border: 3px solid var(--accent); 
-            background: #fff; 
-            box-shadow: 0 0 20px var(--accent);
+            margin: 8px 0 0; 
+            font-size: 1.1rem; 
+            font-family: var(--jp-pixel-font); 
+            color: var(--accent); 
+            font-weight: bold;
         }
         
-        .stamp-icon { 
-            font-size: 3.5rem; 
-            margin-bottom: 5px; 
-            filter: grayscale(1) opacity(0.3);
+        /* 🌟 クーポBOXを巨大化＆最目立ちネオン看板に */
+        .box-btn { 
+            background: #222; 
+            border: 4px solid var(--accent); 
+            color: white; 
+            padding: 15px 0; 
+            border-radius: 15px; 
+            font-family: var(--jp-pixel-font); 
+            cursor: pointer; 
+            box-shadow: 0 0 15px var(--accent), inset 0 0 10px var(--accent); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin: 10px 10px 0;
+            transition: 0.3s;
+            animation: boxPulse 1.5s infinite; /* 点滅アニメーション */
         }
-        .stamp.on .stamp-icon { 
-            filter: grayscale(0) opacity(1);
-            animation: stampBounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        @keyframes stampBounce {
-            0% { transform: scale(0); }
-            100% { transform: scale(1); }
+        .box-btn:active { transform: scale(0.95); animation: none; }
+        .box-icon { font-size: 2.5rem; filter: drop-shadow(0 0 5px var(--gold)); }
+        
+        @keyframes boxPulse {
+            0%, 100% { box-shadow: 0 0 15px var(--accent), inset 0 0 10px var(--accent); }
+            50% { box-shadow: 0 0 30px var(--accent), inset 0 0 20px var(--accent); }
         }
 
+        .screen { display: none; padding: 30px 20px; flex-grow: 1; animation: fadeIn 0.4s ease-out; }
+        .active { display: flex; flex-direction: column; align-items: center; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* スタンプラリー画面 */
+        .stamp-rally { display: flex; justify-content: space-around; width: 100%; margin: 30px 0; gap: 15px; }
+        .stamp { 
+            width: 150px; 
+            height: 150px; 
+            border: 5px solid #444; 
+            border-radius: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            background: #1a1a1a; 
+            transition: 0.4s; 
+            padding: 10px; 
+            box-sizing: border-box; 
+        }
+        .stamp.on { 
+            border: 5px solid var(--gold); 
+            background: #fff; 
+            box-shadow: 0 0 25px var(--gold), 0 0 15px rgba(255, 235, 59, 0.5); 
+        }
+        .stamp-icon { 
+            font-size: 4rem; 
+            filter: grayscale(1) opacity(0.3); 
+        }
+        .stamp.on .stamp-icon { 
+            filter: grayscale(0) opacity(1); 
+            animation: stampBounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        }
+        @keyframes stampBounce { 0% { transform: scale(0); } 100% { transform: scale(1); } }
         .stamp small { 
-            font-size: 0.8rem; 
+            font-size: 0.9rem; 
             color: #666; 
-            font-family: var(--jp-pixel-font);
-            text-align: center;
-            line-height: 1.2;
-            word-break: break-all;
+            font-family: var(--jp-pixel-font); 
+            text-align: center; 
+            margin-top: 5px;
         }
         .stamp.on small { color: #000; font-weight: bold; }
 
-        /* ボタン：共通 */
+        /* ボタン */
         .btn { 
-            border: none; padding: 20px; width: 100%; border-radius: 12px; 
-            font-size: 1.2rem; font-family: var(--jp-pixel-font); 
-            color: white; cursor: pointer; transition: 0.2s; 
-            box-shadow: 0 6px 0 #008ba3; 
-            background: var(--primary);
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-            margin-bottom: 15px;
+            border: 3px solid var(--primary); 
+            padding: 20px; 
+            width: 100%; 
+            border-radius: 15px; 
+            font-size: 1.4rem; 
+            font-family: var(--jp-pixel-font); 
+            color: white; 
+            cursor: pointer; 
+            transition: 0.2s; 
+            background: #000; 
+            margin-bottom: 15px; 
+            text-shadow: 0 0 5px #fff, 0 0 10px var(--primary);
+            box-shadow: 0 0 10px var(--primary);
         }
-        .btn:active { transform: translateY(4px); box-shadow: none; }
-        .btn:disabled { background: #444; color: #888; box-shadow: 0 6px 0 #222; }
-
+        .btn:active { transform: translateY(4px); box-shadow: 0 0 5px var(--primary); }
+        .btn:disabled { background: #222; color: #666; border: 3px solid #333; box-shadow: none; text-shadow: none; }
         .btn-staff { 
-            background: var(--staff-color); 
-            box-shadow: 0 6px 0 #2db30f; 
-            color: #000; 
-            font-weight: bold;
+            background: #000; 
+            border: 3px solid var(--staff-color); 
+            color: white; 
+            font-weight: bold; 
+            text-shadow: 0 0 5px #fff, 0 0 10px var(--staff-color);
+            box-shadow: 0 0 10px var(--staff-color);
+        }
+        .btn-staff:active { box-shadow: 0 0 5px var(--staff-color); }
+        .btn-close { 
+            background: #000; 
+            border: 3px solid #555; 
+            box-shadow: 0 0 10px #333; 
+            margin-top: 10px; 
+            text-shadow: none;
+            font-size: 1.1rem;
         }
 
-        .btn-close {
-            background: var(--accent);
-            box-shadow: 0 6px 0 #b3009b;
-            margin-top: 20px;
+        /* ガラポン */
+        #garapon-stage { position: relative; width: 220px; height: 220px; margin: 30px 0; display: flex; justify-content: center; align-items: center; }
+        #garapon-stage::before { 
+            content: ''; 
+            position: absolute; inset: 0; 
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="%23ff00de" stroke-width="2" stroke-dasharray="10,5"/><path d="M50 2 L50 98 M2 50 L98 50" stroke="%2300f2fe" stroke-width="1" opacity="0.3"/></svg>') center center no-repeat; 
+            animation: rotateBg 10s infinite linear;
         }
-
-        /* ガラポン演出 */
-        #garapon-stage { position: relative; width: 200px; height: 200px; margin: 30px 0; }
-        #garapon-unit {
-            width: 100%; height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="none" stroke="%2300f2fe" stroke-width="4" stroke-dasharray="8,4"/><path d="M50 10 L50 90 M10 50 L90 50" stroke="%23ff00de" stroke-width="1" opacity="0.5"/></svg>') center center no-repeat;
-            display: flex; justify-content: center; align-items: center; font-size: 4rem;
-        }
+        #garapon-unit { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; font-size: 6rem; position: relative; z-index: 2; filter: drop-shadow(0 0 10px var(--accent)); }
         .spin-anime { animation: rotate 0.1s infinite linear; }
+        @keyframes rotateBg { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* 結果エリア */
-        .result-box { 
-            display: none; border: 4px double var(--accent); border-radius: 15px; 
-            padding: 20px; background: rgba(0,0,0,0.8); margin-top: 20px; width: 100%; box-sizing: border-box;
-            box-shadow: 0 0 20px var(--accent);
-        }
-        .result-header { 
-            font-family: var(--jp-pixel-font); font-size: 2rem; margin-bottom: 10px; 
-            color: var(--accent); text-shadow: 0 0 10px var(--accent);
-        }
-        .result-desc { font-size: 1.1rem; color: #fff; line-height: 1.5; font-family: var(--jp-pixel-font); }
+        /* ポップ通知（alert廃止用） */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 20px; box-sizing: border-box; backdrop-filter: blur(8px); }
+        .modal { background: #000; width: 100%; max-width: 420px; border: 4px solid var(--primary); border-radius: 20px; padding: 30px; text-align: center; box-shadow: 0 0 50px rgba(0,242,254,0.3), inset 0 0 20px rgba(0,242,254,0.1); }
+        .modal-title { color: var(--gold); font-family: var(--jp-pixel-font); font-size: 2.2rem; margin-top: 0; text-shadow: 0 0 10px var(--gold); }
+        .modal-desc { font-size: 1.3rem; color: #fff; margin: 25px 0; font-weight: bold; line-height: 1.4; }
 
-        /* 通知ポップアップ */
-        #get-notif {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: var(--accent); color: white; padding: 20px 40px; border-radius: 10px;
-            font-family: var(--jp-pixel-font); font-size: 1.5rem; z-index: 1000; display: none;
-            box-shadow: 0 0 30px var(--accent); animation: popMsg 1.5s ease-out forwards;
-        }
-        @keyframes popMsg {
-            0% { opacity: 0; transform: translate(-50%, -30%); }
-            20%, 80% { opacity: 1; transform: translate(-50%, -50%); }
-            100% { opacity: 0; transform: translate(-50%, -70%); }
-        }
+        /* 🌟 クーポンBOX画面 */
+        .coupon-list { width: 100%; display: flex; flex-direction: column; gap: 18px; margin-top: 20px; }
+        .coupon-card { background: #1a1a1a; border: 3px solid #444; border-radius: 15px; padding: 18px; position: relative; cursor: pointer; transition: 0.2s; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+        .coupon-card:hover { border-color: var(--gold); box-shadow: 0 0 20px rgba(255,235,59,0.3); }
+        .c-grade { font-family: var(--jp-pixel-font); font-size: 1.6rem; font-weight: bold; margin: 0 0 5px 0; text-shadow: 0 0 5px; }
+        .c-desc { font-size: 1rem; color: #eee; margin: 0 0 12px 0; font-weight: bold; }
+        .c-date { font-size: 0.8rem; color: #888; text-align: right; margin: 0; }
+        .c-expiry { color: var(--accent); font-weight: bold; text-shadow: 0 0 3px var(--accent); }
+        .empty-msg { text-align: center; color: #666; font-family: var(--jp-pixel-font); margin-top: 60px; font-size: 1.1rem; }
 
-        /* 終了画面：クール＆キュート */
-        .end-screen {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100vh; text-align: center; padding: 20px;
-        }
-        .end-title { 
-            font-family: var(--pixel-font); font-size: 2.5rem; color: #ff0055;
-            text-shadow: 0 0 10px #ff0055, 0 0 20px #ff0055; margin: 0;
-        }
-        .end-msg { 
-            font-family: var(--jp-pixel-font); font-size: 1.2rem; color: var(--primary); 
-            margin-top: 20px; text-shadow: 0 0 5px var(--primary);
-        }
-        .end-icon { font-size: 5rem; margin: 30px 0; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 0.8; } }
+        /* パーティクル（キラキラ）用 */
+        .sparkle { position: absolute; font-size: 1.2rem; opacity: 0; animation: sparkleFloat 1.5s ease-out; }
+        @keyframes sparkleFloat { 0% { transform: translate(0,0) rotate(0); opacity: 1; } 100% { transform: translate(var(--x), var(--y)) rotate(360deg); opacity: 0; } }
 
     </style>
 </head>
 <body>
 
 <div class="container" id="main-container">
-    <div id="get-notif">スタンプGET!!</div>
 
     <div class="header">
         <h1>TECMOPIA</h1>
-        <p>MISSION: 探検ラリー</p>
+        <p>QUEST: お店を探検</p>
     </div>
 
+    <button class="box-btn" onclick="openCouponBox()">
+        <span class="box-icon">🎁</span>
+        <span>クーポンBOX</span>
+    </button>
+
     <div id="screen-rally" class="screen active">
-        <div class="stamp-rally">
-            <div id="st-1" class="stamp"><span class="stamp-icon">🔑</span><small>B1<br>ミニクレ</small></div>
-            <div id="st-2" class="stamp"><span class="stamp-icon">🎮</span><small>3F<br>テクモピア</small></div>
+        <div id="rally-content" style="width:100%; text-align:center;">
+            <div class="stamp-rally">
+                <div id="st-1" class="stamp"><span class="stamp-icon">🔑</span><small>B1F<br>ミニクレ</small></div>
+                <div id="st-2" class="stamp"><span class="stamp-icon">🎮</span><small>3F<br>テクモピア</small></div>
+            </div>
+            <p style="font-family: var(--jp-pixel-font); color:var(--primary); margin-bottom: 30px; font-weight:bold; text-shadow: 0 0 5px var(--primary);">
+                店舗を回ってスタンプをコンプリートせよ！
+            </p>
+            <button id="to-check-btn" class="btn" disabled onclick="showScreen('screen-check')">2箇所達成！スタッフ確認へ</button>
         </div>
-        <p style="text-align:center; font-family: var(--jp-pixel-font); color:var(--primary); margin-bottom: 30px;">
-            店舗を回ってスタンプをコンプリートせよ！
-        </p>
-        <button id="to-check-btn" class="btn" disabled onclick="showScreen('screen-check')">2箇所達成！スタッフ確認へ</button>
+        
+        <div id="played-content" style="display:none; text-align:center; width:100%;">
+            <div style="font-size: 6rem; margin: 30px 0; animation: pulse 2s infinite;">🕹️🎉</div>
+            <h2 style="font-family: var(--pixel-font); color: var(--gold); text-shadow: 0 0 10px var(--gold);">QUEST CLEAR!</h2>
+            <p style="font-family: var(--jp-pixel-font); color: var(--primary); margin-top: 20px; font-weight:bold;">本日の探検は終了しました！<br>また明日挑戦してね！</p>
+            <button class="btn" style="margin-top: 30px; border: 3px solid var(--accent); box-shadow: 0 0 10px var(--accent); text-shadow: 0 0 5px #fff, 0 0 10px var(--accent);" onclick="openCouponBox()">持っているクーポンを見る</button>
+        </div>
     </div>
 
     <div id="screen-check" class="screen" style="text-align:center;">
-        <h3 style="color:var(--accent); font-family: var(--jp-pixel-font); font-size: 1.8rem;">STAFF CHECK</h3>
-        <p style="font-family: var(--jp-pixel-font);">3Fカウンターのスタッフに<br>この画面を見せてください</p>
-        <div style="font-size: 5rem; margin: 20px; filter: drop-shadow(0 0 10px var(--accent));">🎁</div>
+        <h3 style="color:var(--warning); font-family: var(--jp-pixel-font); font-size: 2rem; text-shadow: 0 0 10px var(--warning);">STAFF CHECK</h3>
+        <p style="font-family: var(--jp-pixel-font); font-weight:bold; margin-top:20px;">3Fカウンターのスタッフに<br>この画面を見せてください</p>
+        <div style="font-size: 6rem; margin: 30px; filter: drop-shadow(0 0 10px var(--gold));">🎁</div>
         <button class="btn btn-staff" onclick="staffApprove()">スタッフ確認済み</button>
-        <button style="background:none; border:none; color:#666; margin-top:20px; cursor:pointer; font-family: var(--jp-pixel-font);" onclick="showScreen('screen-rally')">BACK TO RALLY</button>
+        <button class="btn btn-close" onclick="showScreen('screen-rally')">戻る</button>
     </div>
 
     <div id="screen-garapon" class="screen" style="text-align:center;">
-        <h3 style="color:var(--primary); font-family: var(--jp-pixel-font); font-size: 1.8rem;">LUCKY DRAW</h3>
+        <h3 style="color:var(--primary); font-family: var(--jp-pixel-font); font-size: 2rem; text-shadow: 0 0 10px var(--primary);">LUCKY DRAW</h3>
         <div id="garapon-stage"><div id="garapon-unit">🎡</div></div>
         <button id="draw-btn" class="btn" onclick="runGarapon()">ガラポンを回す！</button>
-        
-        <div id="result-area" class="result-box">
-            <h2 id="result-grade" class="result-header"></h2>
-            <p id="result-desc" class="result-desc"></p>
-            <p style="font-size:0.8rem; color:var(--accent); margin-top:15px; font-weight:bold;">※この画面をスタッフに提示してください</p>
-            <button class="btn btn-close" onclick="closeAndFinish()">終了する (閉じる)</button>
+    </div>
+
+    <div id="screen-box" class="screen">
+        <h3 style="color:var(--primary); font-family: var(--jp-pixel-font); font-size: 1.8rem; text-align:center; margin-top:0; text-shadow: 0 0 10px var(--primary);">🎫 クーポンBOX</h3>
+        <p style="font-size:0.9rem; color:#aaa; text-align:center; margin-top:0; font-weight:bold;">タップしてスタッフに見せて使おう！</p>
+        <div id="coupon-list" class="coupon-list">
         </div>
+        <button class="btn btn-close" style="margin-top: 30px;" onclick="showScreen('screen-rally')">トップへ戻る</button>
+    </div>
+
+</div>
+
+<div id="modal-result" class="overlay">
+    <div class="modal" id="result-modal-box">
+        <div id="result-sparkles" style="position:relative;"></div>
+        <h3 class="modal-title">🎉 おめでとう！ 🎉</h3>
+        <p style="font-size:1.1rem; color:var(--accent); font-family:var(--jp-pixel-font);">「LUCKY DRAW」の結果</p>
+        <p class="modal-desc" id="result-desc"></p>
+        <p style="color:#aaa; font-size:0.8rem; font-weight:bold; margin-top:30px;">
+            当たったクーポンは「クーポンBOX」に保存されました。<br>当月末までにお使いください。
+        </p>
+        <button class="btn btn-staff" style="margin-top: 25px; background:var(--gold); border-color:var(--gold); color:#000; text-shadow:none; box-shadow: 0 0 10px rgba(255,235,59,0.3);" onclick="openCouponBox()">クーポンBOXへ</button>
+    </div>
+</div>
+
+<div id="modal-use" class="overlay">
+    <div class="modal">
+        <h3 class="modal-title" style="color:var(--accent); text-shadow: 0 0 10px var(--accent);">クーポンを使う</h3>
+        <p class="modal-desc" id="use-target-desc"></p>
+        <p style="color:var(--warning); font-size:0.95rem; font-weight:bold; margin-bottom:20px; text-shadow: 0 0 5px var(--warning);">⚠️ 注意 ⚠️<br>必ずスタッフの目の前で<br>「使用する」を押してください。</p>
+        <button class="btn btn-staff" onclick="executeCoupon()">スタッフ確認済み(使用)</button>
+        <button class="btn btn-close" onclick="closeModal()">キャンセル</button>
     </div>
 </div>
 
 <script>
     const GAS_URL = "https://script.google.com/macros/s/AKfycbySrqbkG3sX5kzAZwshkQMOR6M1J2bkXPOtfzHzFs-x6d-rWT23nPHBN8W-hwWAm79lzQ/exec";
-    const todayStr = new Date().toLocaleDateString();
-
-    // データの読み込み
-    const stamps = JSON.parse(localStorage.getItem('tp_stamps')) || [];
+    const today = new Date();
+    const todayStr = today.toLocaleDateString();
+    const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+    const expiryStr = `${endOfMonth.getFullYear()}/${endOfMonth.getMonth() + 1}/${endOfMonth.getDate()}`;
+    let stamps = JSON.parse(localStorage.getItem('tp_stamps')) || [];
+    let myCoupons = JSON.parse(localStorage.getItem('tp_coupons')) || [];
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
+    let selectedCouponIndex = -1;
 
-    // 🌟 スタンプ獲得処理
-    let isNewStamp = false;
-    if (id && !stamps.includes(id) && stamps.length < 2) {
-        stamps.push(id);
-        localStorage.setItem('tp_stamps', JSON.stringify(stamps));
-        isNewStamp = true;
+    //通知ポップ(rallyのみ)
+    function rallyNotif(txt) {
+        const d = document.createElement('div');
+        d.style = "position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:var(--gold); color:#000; padding:15px 30px; border-radius:10px; font-family:var(--jp-pixel-font); font-size:1.3rem; font-weight:bold; z-index:1000; box-shadow: 0 0 20px var(--gold); animation:fadeIn 0.2s, fadeOut 1s forwards; animation-delay: 0s, 1s;";
+        d.innerText = txt;
+        document.body.appendChild(d);
+        setTimeout(()=> d.remove(), 2000);
     }
+    const fadeStyle = document.createElement('style');
+    fadeStyle.innerHTML = "@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }";
+    document.head.appendChild(fadeStyle);
 
-    function updateUI() {
+    if (localStorage.getItem('tp_used') === todayStr) {
+        document.getElementById('rally-content').style.display = 'none';
+        document.getElementById('played-content').style.display = 'block';
+    } else {
+        if (id && !stamps.includes(id) && stamps.length < 2) {
+            stamps.push(id);
+            localStorage.setItem('tp_stamps', JSON.stringify(stamps));
+            rallyNotif('スタンプ GET!!');
+        }
         stamps.forEach(s => {
             const el = document.getElementById(`st-${s}`);
-            if (el) {
-                el.classList.add('on');
-                if (isNewStamp && s === id) {
-                    document.getElementById('get-notif').style.display = 'block';
-                }
-            }
+            if (el) el.classList.add('on');
         });
-        if (stamps.length >= 2) {
-            document.getElementById('to-check-btn').disabled = false;
-        }
+        if (stamps.length >= 2) document.getElementById('to-check-btn').disabled = false;
     }
 
-    function showScreen(id) {
+    function showScreen(screenId) {
+        closeModal(); // モーダルが開いてれば閉じる
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
+        document.getElementById(screenId).classList.add('active');
         window.scrollTo(0,0);
     }
-
     function staffApprove() {
         if(confirm("スタッフ専用：ガラポンを開始します。よろしいですか？")) showScreen('screen-garapon');
     }
-
+    function createSparkles(color) {
+        const area = document.getElementById('result-sparkles');
+        area.innerHTML = '';
+        for (let i = 0; i < 30; i++) {
+            const sp = document.createElement('div');
+            sp.className = 'sparkle';
+            sp.innerText = Math.random() < 0.5 ? '✨' : '⭐';
+            sp.style.color = color;
+            sp.style.left = (Math.random() * 100) + '%';
+            sp.style.top = (Math.random() * 100) + '%';
+            sp.style.setProperty('--x', (Math.random() * 300 - 150) + 'px');
+            sp.style.setProperty('--y', (Math.random() * -300 - 50) + 'px');
+            area.appendChild(sp);
+        }
+    }
     function runGarapon() {
         const btn = document.getElementById('draw-btn');
         const unit = document.getElementById('garapon-unit');
         btn.disabled = true;
         unit.classList.add('spin-anime');
-
         setTimeout(() => {
             unit.classList.remove('spin-anime');
             const rand = Math.random() * 100;
-            let res = { g: "", d: "", color: "" };
-
-            if (rand < 3.0) res = { g: "1等", d: "金：クレーンゲーム6回無料", color: "#FFD700" }; 
-            else if (rand < 7.0) res = { g: "2等", d: "銀：メダル50枚 ＋ 増量券", color: "#C0C0C0" }; 
-            else if (rand < 12.0) res = { g: "3等", d: "赤：クレーンゲーム3回無料", color: "#FF4444" }; 
-            else if (rand < 18.0) res = { g: "4等", d: "黄：メダル30枚 ＋ 増量券", color: "#FFEB3B" }; 
-            else if (rand < 25.0) res = { g: "5等", d: "ピンク：クレーンゲーム1回無料", color: "#FF69B4" }; 
-            else if (rand < 40.0) res = { g: "6等", d: "水色：メダル10枚 ＋ 増量券", color: "#00BCD4" }; 
-            else res = { g: "7等", d: "白：クレーンゲーム1回増量券", color: "#FFFFFF" };
-
-            unit.innerText = res.g;
-            unit.style.color = res.color;
-            unit.style.textShadow = `0 0 15px ${res.color}`;
-            
-            document.getElementById('result-grade').innerText = "WIN: " + res.g;
-            document.getElementById('result-grade').style.color = res.color;
-            document.getElementById('result-desc').innerText = res.d;
-            document.getElementById('result-area').style.display = 'block';
-
-            saveResultToSheet(res.g);
+            let res = {};
+            if (rand < 3.0) res = { g: "1等", d: "金：クレーンゲーム6回無料券", color: var('--gold'), modalBorder: var('--gold') }; 
+            else if (rand < 7.0) res = { g: "2等", d: "銀：メダル50枚 ＋ 増量券", color: var('--silver'), modalBorder: var('--silver') }; 
+            else if (rand < 12.0) res = { g: "3等", d: "赤：クレーンゲーム3回無料券", color: "#FF4444", modalBorder: "#FF4444" }; 
+            else if (rand < 18.0) res = { g: "4等", d: "黄：メダル30枚 ＋ 増量券", color: "#FFEB3B", modalBorder: "#FFEB3B" }; 
+            else if (rand < 25.0) res = { g: "5等", d: "ピンク：クレーンゲーム1回無料券", color: "#FF69B4", modalBorder: "#FF69B4" }; 
+            else if (rand < 40.0) res = { g: "6等", d: "水色：メダル10枚 ＋ 増量券", color: "#00BCD4", modalBorder: "#00BCD4" }; 
+            else res = { g: "7等", d: "白：クレーンゲーム1回増量券", color: "#FFFFFF", modalBorder: "#FFFFFF" };
+            myCoupons.push({grade: res.g, desc: res.d, color: res.color, obtained: todayStr, expiry: expiryStr});
+            localStorage.setItem('tp_coupons', JSON.stringify(myCoupons));
             localStorage.setItem('tp_used', todayStr);
-            btn.style.display = "none";
+            localStorage.removeItem('tp_stamps');
+
+            // 派手な結果ポップアップを表示
+            document.getElementById('result-desc').innerHTML = `<span style="font-size:2rem; color:${res.color}; text-shadow: 0 0 10px;">${res.g}</span><br>${res.d}`;
+            document.getElementById('result-modal-box').style.borderColor = res.modalBorder;
+            document.getElementById('result-modal-box').style.boxShadow = `0 0 50px rgba(0,242,254,0.3), inset 0 0 20px ${res.modalBorder}`;
+            createSparkles(res.color); // キラキラ演出
+            document.getElementById('modal-result').style.display = 'flex';
         }, 2000);
     }
-
-    function saveResultToSheet(grade) {
-        fetch(`${GAS_URL}?grade=${encodeURIComponent(grade)}`, { mode: 'no-cors' });
+    function openCouponBox() {
+        showScreen('screen-box');
+        const listDiv = document.getElementById('coupon-list');
+        listDiv.innerHTML = '';
+        if (myCoupons.length === 0) {
+            listDiv.innerHTML = '<div class="empty-msg">現在持っているクーポンはありません。<br>ラリーに参加して当てよう！</div>';
+        } else {
+            myCoupons.slice().reverse().forEach((c, index) => {
+                const originalIndex = myCoupons.length - 1 - index; 
+                listDiv.innerHTML += `
+                    <div class="coupon-card" onclick="openUseModal(${originalIndex})">
+                        <p class="c-grade" style="color:${c.color}">${c.grade}</p>
+                        <p class="c-desc">${c.desc}</p>
+                        <p class="c-date">獲得日: ${c.obtained} <br> <span class="c-expiry">有効期限: ${c.expiry}</span></p>
+                    </div>
+                `;
+            });
+        }
     }
-
-    // 終了処理
-    function closeAndFinish() {
-        localStorage.removeItem('tp_stamps'); 
-        location.reload();
+    function openUseModal(index) {
+        selectedCouponIndex = index;
+        const c = myCoupons[index];
+        document.getElementById('use-target-desc').innerText = `【${c.grade}】\n${c.desc}`;
+        document.getElementById('modal-use').style.display = 'flex';
     }
-
-    // 1日1回制限のチェック
-    if (localStorage.getItem('tp_used') === todayStr) {
-        document.body.innerHTML = `
-            <div class="end-screen">
-                <h2 class="end-title">GAME OVER</h2>
-                <div class="end-icon">🎮✨</div>
-                <p class="end-msg">本日の探検は終了しました！<br>また明日挑戦してね！</p>
-                <p style="color:#444; font-size:0.8rem; margin-top:20px; font-family:var(--pixel-font);">SEE YOU NEXT TIME</p>
-            </div>`;
-    } else {
-        updateUI();
+    function closeModal() {
+        document.querySelectorAll('.overlay').forEach(m => m.style.display = 'none');
+        selectedCouponIndex = -1;
+    }
+    function executeCoupon() {
+        if (selectedCouponIndex === -1) return;
+        const usedCoupon = myCoupons[selectedCouponIndex];
+        fetch(`${GAS_URL}?grade=${encodeURIComponent("【BOX利用】" + usedCoupon.grade)}`, { mode: 'no-cors' });
+        myCoupons.splice(selectedCouponIndex, 1);
+        localStorage.setItem('tp_coupons', JSON.stringify(myCoupons));
+        closeModal();
+        alert("クーポンを使用しました！\nスタッフの案内に従ってください。");
+        openCouponBox(); 
     }
 </script>
 </body>
