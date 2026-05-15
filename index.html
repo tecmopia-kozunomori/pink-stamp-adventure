@@ -7,17 +7,17 @@
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;900&family=Fredoka+One&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --main-bg: #fffdf5; /* 明るいクリーム色 */
-            --header-bg: #4dd0e1; /* ポップな水色 */
+            --main-bg: #fffdf5; 
+            --header-bg: #4dd0e1; 
             --container-bg: #ffffff;
-            --primary: #00bcd4; /* シアン */
-            --accent: #ff4081; /* ビビッドピンク */
-            --staff-color: #69f0ae; /* 明るいグリーン */
+            --primary: #00bcd4; 
+            --accent: #ff4081; 
+            --staff-color: #69f0ae; 
             --warning: #ff5252;
             --gold: #ffc107;
-            --text-color: #333333; /* 暗い文字色で読みやすく */
-            --pop-font: 'Fredoka One', cursive; /* 丸っこい英語フォント */
-            --jp-pop-font: 'M PLUS Rounded 1c', sans-serif; /* 丸ゴシック */
+            --text-color: #333333; 
+            --pop-font: 'Fredoka One', cursive; 
+            --jp-pop-font: 'M PLUS Rounded 1c', sans-serif; 
         }
         
         body { 
@@ -26,7 +26,6 @@
             margin: 0; 
             color: var(--text-color); 
             overflow-x: hidden; 
-            /* ポップな水玉模様（明るいトーン） */
             background-image: radial-gradient(#ffe0b2 15%, transparent 15%), radial-gradient(#ffe0b2 15%, transparent 15%);
             background-position: 0 0, 20px 20px;
             background-size: 40px 40px;
@@ -68,7 +67,7 @@
             text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
         }
         
-        /* 🎟️ クーポンBOXボタン（目立つポップな看板） */
+        /* 🎟️ クーポンBOXボタン */
         .box-btn { 
             background: var(--accent); 
             border: none;
@@ -103,7 +102,7 @@
         .active { display: flex; flex-direction: column; align-items: center; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 🌟 明るいスタンプ枠 */
+        /* 🌟 スタンプ枠 */
         .stamp-rally { display: flex; justify-content: space-around; width: 100%; margin: 20px 0 30px; gap: 15px; }
         .stamp { 
             width: 140px; 
@@ -207,7 +206,6 @@
         }
         .coupon-list { width: 100%; display: flex; flex-direction: column; gap: 15px; }
         
-        /* チケット風のデザイン */
         .coupon-card { 
             background: #ffffff; 
             border: 2px solid #e0e0e0; 
@@ -242,7 +240,7 @@
         <p>QUEST: お店を探検</p>
     </div>
 
-    <button class="box-btn" onclick="openCouponBox()">
+    <button id="main-box-btn" class="box-btn" onclick="openCouponBox()">
         <span class="box-icon">🎁</span>
         <span>クーポンBOXを開く</span>
     </button>
@@ -291,7 +289,7 @@
         </div>
         
         <div id="coupon-list" class="coupon-list">
-            </div>
+        </div>
         <button class="btn btn-close" style="margin-top: 30px;" onclick="showScreen('screen-rally')">トップへ戻る</button>
     </div>
 
@@ -323,7 +321,6 @@
 </div>
 
 <script>
-    // 🌟 GASのURLは元のまま引き継いでいます
     const GAS_URL = "https://script.google.com/macros/s/AKfycbySrqbkG3sX5kzAZwshkQMOR6M1J2bkXPOtfzHzFs-x6d-rWT23nPHBN8W-hwWAm79lzQ/exec";
     
     const today = new Date();
@@ -366,12 +363,22 @@
         if (stamps.length >= 2) document.getElementById('to-check-btn').disabled = false;
     }
 
-    // 画面切り替え
+    // 🌟 画面切り替え（ここでBOXボタンの表示/非表示をコントロールします）
     function showScreen(screenId) {
         closeModal();
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(screenId).classList.add('active');
         window.scrollTo(0,0);
+
+        // ラリー画面（トップ）の時だけ、巨大BOXボタンを表示する
+        const boxBtn = document.getElementById('main-box-btn');
+        if (boxBtn) {
+            if (screenId === 'screen-rally') {
+                boxBtn.style.display = 'flex';
+            } else {
+                boxBtn.style.display = 'none';
+            }
+        }
     }
 
     function staffApprove() {
@@ -405,7 +412,6 @@
             unit.classList.remove('spin-anime');
             const rand = Math.random() * 100;
             let res = {};
-            // 明るいデザインに合わせたカラーコード
             if (rand < 3.0) res = { g: "1等", d: "金：クレーンゲーム6回無料券", color: "#fbc02d" }; 
             else if (rand < 7.0) res = { g: "2等", d: "銀：メダル50枚 ＋ 増量券", color: "#9e9e9e" }; 
             else if (rand < 12.0) res = { g: "3等", d: "赤：クレーンゲーム3回無料券", color: "#f44336" }; 
@@ -414,15 +420,12 @@
             else if (rand < 40.0) res = { g: "6等", d: "水色：メダル10枚 ＋ 増量券", color: "#00bcd4" }; 
             else res = { g: "7等", d: "白：クレーンゲーム1回増量券", color: "#78909c" };
             
-            // クーポンを配列に保存
             myCoupons.push({grade: res.g, desc: res.d, color: res.color, obtained: todayStr, expiry: expiryStr});
             localStorage.setItem('tp_coupons', JSON.stringify(myCoupons));
             
-            // プレイ済みフラグとスタンプリセット
             localStorage.setItem('tp_used', todayStr);
             localStorage.removeItem('tp_stamps');
 
-            // 結果ポップアップ
             document.getElementById('result-desc').innerHTML = `<span style="font-size:2.2rem; color:${res.color};">${res.g}</span><br>${res.d}`;
             document.getElementById('result-modal-box').style.borderColor = res.color;
             createSparkles(res.color);
@@ -430,7 +433,6 @@
         }, 2000);
     }
 
-    // 🌟 クーポン一覧画面を開く処理
     function openCouponBox() {
         showScreen('screen-box');
         const listDiv = document.getElementById('coupon-list');
@@ -439,7 +441,6 @@
         if (myCoupons.length === 0) {
             listDiv.innerHTML = '<div class="empty-msg">現在使えるクーポンはありません。<br>ラリーに参加してGETしよう！</div>';
         } else {
-            // 新しい順に表示
             myCoupons.slice().reverse().forEach((c, index) => {
                 const originalIndex = myCoupons.length - 1 - index; 
                 listDiv.innerHTML += `
@@ -465,21 +466,18 @@
         selectedCouponIndex = -1;
     }
 
-    // クーポン使用時の処理
     function executeCoupon() {
         if (selectedCouponIndex === -1) return;
         const usedCoupon = myCoupons[selectedCouponIndex];
         
-        // GASへ履歴送信
         fetch(`${GAS_URL}?grade=${encodeURIComponent("【BOX利用】" + usedCoupon.grade)}`, { mode: 'no-cors' });
         
-        // ローカルストレージから削除
         myCoupons.splice(selectedCouponIndex, 1);
         localStorage.setItem('tp_coupons', JSON.stringify(myCoupons));
         
         closeModal();
         alert("クーポンを使用しました！\nスタッフの案内に従ってください。");
-        openCouponBox(); // 一覧画面を再読み込み
+        openCouponBox(); 
     }
 </script>
 </body>
