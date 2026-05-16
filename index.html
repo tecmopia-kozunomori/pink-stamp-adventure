@@ -104,8 +104,6 @@
         .coupon-card.used { border-left-color: #bdbdbd !important; background: #f5f5f5; box-shadow: none; cursor: default; }
         .coupon-card.used:hover { transform: none; }
         .coupon-card.used .c-grade, .coupon-card.used .c-desc, .coupon-card.used .c-expiry { color: #9e9e9e !important; }
-        
-        /* 💡 変更：USEDスタンプを薄い赤色（朱色）に変更 */
         .used-stamp { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-20deg); font-size: 3rem; color: rgba(239, 154, 154, 0.85); font-weight: 900; border: 5px solid rgba(239, 154, 154, 0.85); padding: 5px 20px; border-radius: 15px; pointer-events: none; font-family: var(--pop-font); letter-spacing: 5px; z-index: 10; }
 
         .sparkle { position: absolute; font-size: 1.5rem; opacity: 0; animation: sparkleFloat 1.2s ease-out; }
@@ -113,32 +111,9 @@
         @keyframes bounceIcon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
         /* 🛡️ 偽造防止（アンチスクショ）用CSS */
-        .anti-fraud-bar {
-            background: repeating-linear-gradient(45deg, var(--accent), var(--accent) 15px, #ff80ab 15px, #ff80ab 30px);
-            background-size: 42px 42px;
-            animation: moveStripes 1s linear infinite;
-            height: 12px;
-            width: 100%;
-            margin-bottom: 15px;
-            border-radius: 6px;
-        }
-        @keyframes moveStripes {
-            0% { background-position: 0 0; }
-            100% { background-position: 42px 0; }
-        }
-        .live-clock {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: #333;
-            background: #eee;
-            padding: 8px 20px;
-            border-radius: 30px;
-            display: inline-block;
-            margin-bottom: 15px;
-            letter-spacing: 3px;
-            border: 2px solid #ddd;
-        }
+        .anti-fraud-bar { background: repeating-linear-gradient(45deg, var(--accent), var(--accent) 15px, #ff80ab 15px, #ff80ab 30px); background-size: 42px 42px; animation: moveStripes 1s linear infinite; height: 12px; width: 100%; margin-bottom: 15px; border-radius: 6px; }
+        @keyframes moveStripes { 0% { background-position: 0 0; } 100% { background-position: 42px 0; } }
+        .live-clock { font-family: 'Courier New', Courier, monospace; font-size: 1.8rem; font-weight: 900; color: #333; background: #eee; padding: 8px 20px; border-radius: 30px; display: inline-block; margin-bottom: 15px; letter-spacing: 3px; border: 2px solid #ddd; }
 
     </style>
 </head>
@@ -294,21 +269,34 @@
     }
 
     let stamps = JSON.parse(localStorage.getItem('tp_stamps')) || [];
-    let myCoupons = JSON.parse(localStorage.getItem('tp_coupons')) || [];
-    
-    const originalLength = myCoupons.length;
-    myCoupons = myCoupons.filter(c => {
-        let expTime = c.expiryTime; 
-        if (!expTime) {
-            const expDate = new Date(c.expiry.replace(/\//g, '-'));
-            expDate.setHours(23, 59, 59, 999);
-            expTime = expDate.getTime();
-        }
-        return today.getTime() <= expTime;
-    });
-    if (myCoupons.length !== originalLength) localStorage.setItem('tp_coupons', JSON.stringify(myCoupons));
+    let myCoupons = [];
+    let selectedCouponIndex = -1;
 
-    function syncStampUI() {
+    // 🛡️ 新機能1：クーポンの最新データを読み込む関数（同期用）
+    function reloadCoupons() {
+        let currentCoupons = JSON.parse(localStorage.getItem('tp_coupons')) || [];
+        const originalLength = currentCoupons.length;
+        currentCoupons = currentCoupons.filter(c => {
+            let expTime = c.expiryTime; 
+            if (!expTime) {
+                const expDate = new Date(c.expiry.replace(/\//g, '-'));
+                expDate.setHours(23, 59, 59, 999);
+                expTime = expDate.getTime();
+            }
+            return today.getTime() <= expTime;
+        });
+        if (currentCoupons.length !== originalLength) {
+            localStorage.setItem('tp_coupons', JSON.stringify(currentCoupons));
+        }
+        myCoupons = currentCoupons;
+    }
+    
+    // 初回読み込み
+    reloadCoupons();
+
+    // 🛡️ 新機能2：全データの最強同期機能（複数タブ対策）
+    function syncAllData() {
+        // スタンプの同期
         let currentStamps = JSON.parse(localStorage.getItem('tp_stamps')) || [];
         stamps = currentStamps;
         currentStamps.forEach(s => {
@@ -320,9 +308,30 @@
             const qrBtn = document.getElementById('qr-scan-btn');
             if (qrBtn) { qrBtn.innerHTML = `<span>🎉</span> 2箇所クリア！`; qrBtn.disabled = true; }
         }
+
+        // クーポンの最新情報を再取得
+        reloadCoupons();
+        
+        // もし今クーポンBOX画面を開いていたら、一瞬で最新状態（USED）に書き換える
+        const boxScreen = document.getElementById('screen-box');
+        if (boxScreen && boxScreen.classList.contains('active')) {
+            openCouponBox();
+        }
+
+        // ⚠️ 別のタブで使用された場合、今開いている使用モーダルを強制終了させる
+        const useModal = document.getElementById('modal-use');
+        if (useModal && useModal.style.display === 'flex' && selectedCouponIndex !== -1) {
+            if (myCoupons[selectedCouponIndex] && myCoupons[selectedCouponIndex].used) {
+                closeModal();
+                alert("⚠️ このクーポンは別のタブですでに使用されました！");
+                openCouponBox();
+            }
+        }
     }
-    window.addEventListener('storage', syncStampUI);
-    window.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') syncStampUI(); });
+
+    // 裏でデータが変わった時＆タブを開き直した時に同期発動
+    window.addEventListener('storage', syncAllData);
+    window.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') syncAllData(); });
 
     function rallyNotif(txt) {
         const d = document.createElement('div');
@@ -377,7 +386,7 @@
                 localStorage.setItem('tp_stamps', JSON.stringify(stamps));
                 rallyNotif('スタンプ GET!!');
                 if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-                syncStampUI();
+                syncAllData(); // 呼び出し変更
             } else if (stamps.includes(id)) { alert("このスタンプは既にGETしているよ！"); } 
             else { alert("スタンプは2箇所とも達成済みです！スタッフに見せよう！"); }
         } else { alert("このQRコードはスタンプ対象ではありません。"); }
@@ -399,7 +408,7 @@
             rallyNotif('スタンプ GET!!');
             if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
         }
-        syncStampUI();
+        syncAllData(); // 呼び出し変更
     }
 
     function showScreen(screenId) {
@@ -468,6 +477,8 @@
                 else if (rand < 40.0) res = { g: "6等", d: "メダル10枚 ＋ 増量券", color: "#00bcd4" }; 
                 else res = { g: "7等", d: "クレーンゲーム1回増量券", color: "#78909c" };
                 
+                // ガチャ結果保存前に一応最新情報を読み込む
+                reloadCoupons();
                 myCoupons.push({grade: res.g, desc: res.d, color: res.color, obtained: todayStr, expiry: expiryStr, expiryTime: expiryTimestamp, used: false});
                 localStorage.setItem('tp_coupons', JSON.stringify(myCoupons));
                 
@@ -520,9 +531,7 @@
         }
     }
 
-    // 🛡️ ライブUI（時計機能）の制御
     let clockInterval;
-    
     function updateClock() {
         const now = new Date();
         const h = String(now.getHours()).padStart(2, '0');
@@ -549,6 +558,16 @@
 
     function executeCoupon() {
         if (selectedCouponIndex === -1) return;
+
+        // 🛡️ 新機能3：使用ボタンを押した瞬間の「最終防衛ライン」
+        reloadCoupons();
+        if (myCoupons[selectedCouponIndex] && myCoupons[selectedCouponIndex].used) {
+            closeModal();
+            alert("⚠️ エラー：このクーポンはすでに使用済みです！");
+            openCouponBox();
+            return;
+        }
+
         const usedCoupon = myCoupons[selectedCouponIndex];
         
         fetch(`${GAS_URL}?grade=${encodeURIComponent("【BOX利用】" + usedCoupon.grade)}`, { mode: 'no-cors' });
