@@ -292,7 +292,8 @@
 </div>
 
 <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbySrqbkG3sX5kzAZwshkQMOR6M1J2bkXPOtfzHzFs-x6d-rWT23nPHBN8W-hwWAm79lzQ/exec";
+    // 💡 あなたの最新のGAS URLを設定済みです
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbxZjLW33e4Kja4FIn2WiTtGM0o5Qs0-ND-v0Jq6K8gE82zNEkVM2tTHdoMU6SPIRKrcNg/exec";
     
     // LINE等のアプリ内ブラウザ警告は一旦残しますが、内蔵カメラならLINE上でも正常に動きます！
     const ua = navigator.userAgent.toLowerCase();
@@ -535,6 +536,9 @@
                 myCoupons.push({grade: res.g, desc: res.d, color: res.color, obtained: todayStr, expiry: expiryStr, used: false});
                 localStorage.setItem('tp_coupons', JSON.stringify(myCoupons));
                 
+                // 💡 ガチャの排出データをスプレッドシート（管理パネル）へ送信！
+                fetch(`${GAS_URL}?grade=${encodeURIComponent(res.g)}`, { mode: 'no-cors' });
+                
                 localStorage.setItem('tp_used', todayStr);
                 localStorage.removeItem('tp_stamps');
                 
@@ -606,6 +610,7 @@
         if (selectedCouponIndex === -1) return;
         const usedCoupon = myCoupons[selectedCouponIndex];
         
+        // 💡 クーポンの利用データをスプレッドシート（管理パネル）へ送信！
         fetch(`${GAS_URL}?grade=${encodeURIComponent("【BOX利用】" + usedCoupon.grade)}`, { mode: 'no-cors' });
         
         myCoupons[selectedCouponIndex].used = true;
