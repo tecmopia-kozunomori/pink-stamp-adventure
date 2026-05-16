@@ -32,45 +32,19 @@
             background-image: radial-gradient(#ffe0b2 15%, transparent 15%), radial-gradient(#ffe0b2 15%, transparent 15%);
             background-position: 0 0, 20px 20px;
             background-size: 40px 40px;
-            
             user-select: none;
             -webkit-user-select: none;
             touch-action: manipulation;
             overscroll-behavior-y: none;
         }
         
-        .container { 
-            max-width: 480px; 
-            margin: 0 auto; 
-            min-height: 100vh; 
-            background: var(--container-bg); 
-            display: flex; 
-            flex-direction: column; 
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); 
-            position: relative; 
-        }
+        .container { max-width: 480px; margin: 0 auto; min-height: 100vh; background: var(--container-bg); display: flex; flex-direction: column; box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); position: relative; }
         
-        .header { 
-            background: linear-gradient(135deg, var(--primary), #80deea); 
-            padding: 30px 20px 20px; 
-            text-align: center; 
-            border-bottom: 6px solid #0097a7; 
-            position: relative; 
-            color: white;
-            border-radius: 0 0 20px 20px;
-        }
+        .header { background: linear-gradient(135deg, var(--primary), #80deea); padding: 30px 20px 20px; text-align: center; border-bottom: 6px solid #0097a7; position: relative; color: white; border-radius: 0 0 20px 20px; }
         .header h1 { margin: 0; font-size: 2.5rem; font-family: var(--pop-font); text-shadow: 2px 3px 0 #0097a7; letter-spacing: 2px; }
         .header p { margin: 5px 0 0; font-size: 1.1rem; font-weight: 900; color: #fff9c4; text-shadow: 1px 1px 0 rgba(0,0,0,0.2); }
         
-        .box-btn { 
-            background: var(--accent); 
-            border: none; color: white; padding: 15px 0; border-radius: 20px; 
-            font-family: var(--jp-pop-font); cursor: pointer; display: flex;
-            justify-content: center; align-items: center; gap: 10px;
-            font-size: 1.4rem; font-weight: 900; margin: 15px 15px 0;
-            box-shadow: 0 6px 0 #c51162, 0 10px 10px rgba(255, 64, 129, 0.3);
-            transition: 0.2s; animation: pulse-btn 2s infinite;
-        }
+        .box-btn { background: var(--accent); border: none; color: white; padding: 15px 0; border-radius: 20px; font-family: var(--jp-pop-font); cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 1.4rem; font-weight: 900; margin: 15px 15px 0; box-shadow: 0 6px 0 #c51162, 0 10px 10px rgba(255, 64, 129, 0.3); transition: 0.2s; animation: pulse-btn 2s infinite; }
         .box-btn:active { transform: translateY(6px); box-shadow: 0 0px 0 #c51162; animation: none; }
         .box-icon { font-size: 2rem; }
         @keyframes pulse-btn { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
@@ -95,51 +69,22 @@
         .btn-staff:active { box-shadow: 0 0 0 #00e676; }
         .btn-close { background: #9e9e9e; box-shadow: 0 6px 0 #757575; margin-top: 10px; }
 
-        /* 🎰 ガチャ演出CSS */
+        /* ガチャ演出CSS */
         #gacha-stage { position: relative; width: 100%; height: 280px; margin: 20px 0; display: flex; justify-content: center; align-items: center; overflow: hidden; }
-        .sunburst {
-            position: absolute; top: 50%; left: 50%; width: 600px; height: 600px;
-            margin-top: -300px; margin-left: -300px;
-            background: repeating-conic-gradient(#fff9c4 0 15deg, transparent 15deg 30deg);
-            animation: rotateBg 15s infinite linear; z-index: 0; opacity: 0.8;
-        }
+        .sunburst { position: absolute; top: 50%; left: 50%; width: 600px; height: 600px; margin-top: -300px; margin-left: -300px; background: repeating-conic-gradient(#fff9c4 0 15deg, transparent 15deg 30deg); animation: rotateBg 15s infinite linear; z-index: 0; opacity: 0.8; }
         @keyframes rotateBg { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
         .capsule { position: relative; width: 130px; height: 130px; z-index: 2; animation: floatCapsule 2.5s infinite ease-in-out; }
-        .capsule-top {
-            width: 130px; height: 65px; background: linear-gradient(135deg, var(--accent), #ff8a80);
-            border-radius: 65px 65px 0 0; border: 5px solid #fff; border-bottom: none; box-sizing: border-box;
-            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.2);
-            position: relative; z-index: 3; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .capsule-bottom {
-            width: 130px; height: 65px; background: #fffdf5; border-radius: 0 0 65px 65px;
-            border: 5px solid #fff; box-sizing: border-box;
-            box-shadow: inset -10px 10px 20px rgba(0,0,0,0.05), 0 5px 15px rgba(0,0,0,0.2);
-            position: relative; z-index: 1; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .capsule-belt {
-            position: absolute; top: 50%; left: -5px; width: calc(100% + 10px); height: 12px;
-            background: #fff; transform: translateY(-50%); z-index: 4; border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
+        .capsule-top { width: 130px; height: 65px; background: linear-gradient(135deg, var(--accent), #ff8a80); border-radius: 65px 65px 0 0; border: 5px solid #fff; border-bottom: none; box-sizing: border-box; box-shadow: inset -10px -10px 20px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.2); position: relative; z-index: 3; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .capsule-bottom { width: 130px; height: 65px; background: #fffdf5; border-radius: 0 0 65px 65px; border: 5px solid #fff; box-sizing: border-box; box-shadow: inset -10px 10px 20px rgba(0,0,0,0.05), 0 5px 15px rgba(0,0,0,0.2); position: relative; z-index: 1; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .capsule-belt { position: absolute; top: 50%; left: -5px; width: calc(100% + 10px); height: 12px; background: #fff; transform: translateY(-50%); z-index: 4; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         @keyframes floatCapsule { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(5deg); } }
-        
         .shake-anime { animation: shakeCapsule 0.1s infinite !important; }
-        @keyframes shakeCapsule {
-            0% { transform: translate(4px, 4px) rotate(0deg); }
-            25% { transform: translate(-4px, -3px) rotate(-5deg); }
-            50% { transform: translate(-4px, 4px) rotate(5deg); }
-            75% { transform: translate(4px, -4px) rotate(-5deg); }
-            100% { transform: translate(4px, 4px) rotate(0deg); }
-        }
-
+        @keyframes shakeCapsule { 0% { transform: translate(4px, 4px) rotate(0deg); } 25% { transform: translate(-4px, -3px) rotate(-5deg); } 50% { transform: translate(-4px, 4px) rotate(5deg); } 75% { transform: translate(4px, -4px) rotate(-5deg); } 100% { transform: translate(4px, 4px) rotate(0deg); } }
         #full-flash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; opacity: 0; pointer-events: none; z-index: 9999; transition: opacity 0.3s ease-in; }
 
-        .modal { background: #fff; width: 100%; max-width: 420px; border-radius: 30px; padding: 30px; text-align: center; box-shadow: 0 15px 30px rgba(0,0,0,0.2); position: relative; border: 5px solid white; box-sizing: border-box; }
+        .modal { background: #fff; width: 100%; max-width: 420px; border-radius: 30px; padding: 30px; text-align: center; box-shadow: 0 15px 30px rgba(0,0,0,0.2); position: relative; border: 5px solid white; box-sizing: border-box; overflow: hidden; }
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 20px; box-sizing: border-box; backdrop-filter: blur(5px); }
         
-        /* 📷 カメラ領域のスタイル */
         #qr-reader { width: 100%; border-radius: 15px; overflow: hidden; border: 4px solid var(--primary); margin-bottom: 15px; box-sizing: border-box; }
         
         .box-header { background: #fff3e0; padding: 20px 15px; border-radius: 15px; margin-bottom: 20px; width: 100%; box-sizing: border-box; border: 3px dashed #ffb74d; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
@@ -159,17 +104,49 @@
         .coupon-card.used { border-left-color: #bdbdbd !important; background: #f5f5f5; box-shadow: none; cursor: default; }
         .coupon-card.used:hover { transform: none; }
         .coupon-card.used .c-grade, .coupon-card.used .c-desc, .coupon-card.used .c-expiry { color: #9e9e9e !important; }
-        .used-stamp { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-20deg); font-size: 3rem; color: rgba(224, 224, 224, 0.8); font-weight: 900; border: 5px solid rgba(224, 224, 224, 0.8); padding: 5px 20px; border-radius: 15px; pointer-events: none; font-family: var(--pop-font); letter-spacing: 5px; z-index: 10; }
+        
+        /* 💡 変更：USEDスタンプを薄い赤色（朱色）に変更 */
+        .used-stamp { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-20deg); font-size: 3rem; color: rgba(239, 154, 154, 0.85); font-weight: 900; border: 5px solid rgba(239, 154, 154, 0.85); padding: 5px 20px; border-radius: 15px; pointer-events: none; font-family: var(--pop-font); letter-spacing: 5px; z-index: 10; }
 
         .sparkle { position: absolute; font-size: 1.5rem; opacity: 0; animation: sparkleFloat 1.2s ease-out; }
         @keyframes sparkleFloat { 0% { transform: translate(0,0) scale(0.5); opacity: 1; } 100% { transform: translate(var(--x), var(--y)) scale(1.5); opacity: 0; } }
         @keyframes bounceIcon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
+        /* 🛡️ 偽造防止（アンチスクショ）用CSS */
+        .anti-fraud-bar {
+            background: repeating-linear-gradient(45deg, var(--accent), var(--accent) 15px, #ff80ab 15px, #ff80ab 30px);
+            background-size: 42px 42px;
+            animation: moveStripes 1s linear infinite;
+            height: 12px;
+            width: 100%;
+            margin-bottom: 15px;
+            border-radius: 6px;
+        }
+        @keyframes moveStripes {
+            0% { background-position: 0 0; }
+            100% { background-position: 42px 0; }
+        }
+        .live-clock {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #333;
+            background: #eee;
+            padding: 8px 20px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+            border: 2px solid #ddd;
+        }
+
     </style>
 </head>
 <body>
 
-<div id="full-flash"></div> <div class="container" id="main-container">
+<div id="full-flash"></div>
+
+<div class="container" id="main-container">
 
     <div class="header">
         <h1>TECMOPIA</h1>
@@ -251,6 +228,7 @@
             <h3 class="box-title">🎁 クーポンBOX</h3>
             <div class="tap-badge">👇 使いたいクーポンをタップしてね 👇</div>
         </div>
+        
         <div id="coupon-list" class="coupon-list"></div>
         <button class="btn btn-close" style="margin-top: 30px;" onclick="showScreen('screen-rally')">トップへ戻る</button>
     </div>
@@ -272,30 +250,32 @@
         <h3 class="modal-title" style="margin-bottom: 5px;">🎉 おめでとう！ 🎉</h3>
         <p style="font-size:1.1rem; color:var(--accent); font-weight:bold; margin-top:0;">ガチャの結果</p>
         <p class="modal-desc" id="result-desc"></p>
-        <div style="background:#fff9c4; padding:15px; border-radius:10px; margin-top:20px;">
-            <p style="color:#d84315; font-size:0.9rem; font-weight:bold; margin:0;">
-                当たったクーポンは<br>「クーポンBOX」に入ったよ！<br>当月末までにお使いください。
-            </p>
-        </div>
+        
         <button class="btn" style="margin-top: 20px; background:var(--gold); box-shadow: 0 6px 0 #ff9800; color:#fff;" onclick="openCouponBox()">クーポンBOXを見る</button>
     </div>
 </div>
 
 <div id="modal-use" class="overlay">
-    <div class="modal">
-        <h3 class="modal-title">クーポンを使う</h3>
+    <div class="modal" style="padding: 20px 30px 30px;">
+        <div class="anti-fraud-bar"></div>
+        
+        <h3 class="modal-title" style="font-size: 1.5rem; margin-bottom: 10px;">クーポンを使う</h3>
+        
+        <div id="live-clock" class="live-clock">--:--:--</div>
+        
         <p class="modal-desc" id="use-target-desc" style="background:#f5f5f5; padding:15px; border-radius:10px;"></p>
         <p style="color:var(--warning); font-size:1rem; font-weight:900; margin-bottom:20px;">⚠️ 注意 ⚠️<br>必ずスタッフの目の前で<br>「使用する」を押してください。</p>
+        
         <button class="btn btn-staff" onclick="executeCoupon()">スタッフ確認済み(使用)</button>
         <button class="btn btn-close" onclick="closeModal()">キャンセル</button>
+        
+        <div class="anti-fraud-bar" style="margin-top: 15px; margin-bottom: 0;"></div>
     </div>
 </div>
 
 <script>
-    // 💡 あなたの最新のGAS URLを設定済みです
     const GAS_URL = "https://script.google.com/macros/s/AKfycbxZjLW33e4Kja4FIn2WiTtGM0o5Qs0-ND-v0Jq6K8gE82zNEkVM2tTHdoMU6SPIRKrcNg/exec";
     
-    // LINE等のアプリ内ブラウザ警告は一旦残しますが、内蔵カメラならLINE上でも正常に動きます！
     const ua = navigator.userAgent.toLowerCase();
     if (ua.indexOf('line') > -1 || ua.indexOf('twitter') > -1 || ua.indexOf('instagram') > -1) {
         alert("【💡 お知らせ】\nLINE等のブラウザでも「QRコードを読み取る」ボタンを使えばスタンプを貯められます！\n※もしカメラが起動しない場合は「Safari」か「Chrome」で開き直してください。");
@@ -303,8 +283,10 @@
 
     const today = new Date();
     const todayStr = today.toLocaleDateString();
-    const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+    
+    const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0, 23, 59, 59);
     const expiryStr = `${endOfMonth.getFullYear()}/${endOfMonth.getMonth() + 1}/${endOfMonth.getDate()}`;
+    const expiryTimestamp = endOfMonth.getTime();
     
     if (localStorage.getItem('tp_stamp_date') !== todayStr) {
         localStorage.removeItem('tp_stamps');
@@ -314,40 +296,34 @@
     let stamps = JSON.parse(localStorage.getItem('tp_stamps')) || [];
     let myCoupons = JSON.parse(localStorage.getItem('tp_coupons')) || [];
     
-    // 月またぎのクリーンアップ
     const originalLength = myCoupons.length;
     myCoupons = myCoupons.filter(c => {
-        const expiryDate = new Date(c.expiry);
-        expiryDate.setHours(23, 59, 59, 999);
-        return today <= expiryDate;
+        let expTime = c.expiryTime; 
+        if (!expTime) {
+            const expDate = new Date(c.expiry.replace(/\//g, '-'));
+            expDate.setHours(23, 59, 59, 999);
+            expTime = expDate.getTime();
+        }
+        return today.getTime() <= expTime;
     });
     if (myCoupons.length !== originalLength) localStorage.setItem('tp_coupons', JSON.stringify(myCoupons));
 
-    // スタンプUIの同期・描画（タブ同期機能込み）
     function syncStampUI() {
         let currentStamps = JSON.parse(localStorage.getItem('tp_stamps')) || [];
-        stamps = currentStamps; // 内部メモリも更新
-        
+        stamps = currentStamps;
         currentStamps.forEach(s => {
             const el = document.getElementById(`st-${s}`);
             if (el && !el.classList.contains('on')) el.classList.add('on');
         });
-        
-        // 2個溜まったらQRボタンを無効化し、確認ボタンを有効化
         if (currentStamps.length >= 2) {
             document.getElementById('to-check-btn').disabled = false;
             const qrBtn = document.getElementById('qr-scan-btn');
-            if (qrBtn) {
-                qrBtn.innerHTML = `<span>🎉</span> 2箇所クリア！`;
-                qrBtn.disabled = true;
-            }
+            if (qrBtn) { qrBtn.innerHTML = `<span>🎉</span> 2箇所クリア！`; qrBtn.disabled = true; }
         }
     }
-    // 別タブで操作があった場合に自動で画面を同期
     window.addEventListener('storage', syncStampUI);
     window.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') syncStampUI(); });
 
-    // 🌟 ハッピー通知
     function rallyNotif(txt) {
         const d = document.createElement('div');
         d.style = "position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:linear-gradient(135deg, var(--accent), #ff8a80); color:#fff; padding:20px 40px; border-radius:30px; font-weight:900; font-size:1.6rem; z-index:3000; box-shadow: 0 10px 25px rgba(255,64,129,0.4); text-align:center; border: 4px solid #fff; display:flex; flex-direction:column; align-items:center; justify-content:center; white-space:nowrap; animation:fadeInPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), fadeOut 1s forwards; animation-delay: 0s, 2s;";
@@ -356,30 +332,20 @@
         setTimeout(()=> d.remove(), 3000);
     }
 
-    // 📷 内蔵カメラ（QRリーダー）の処理
     let html5QrCode = null;
 
     function openQRReader() {
         document.getElementById('modal-qr').style.display = 'flex';
-        
-        if (!html5QrCode) {
-            html5QrCode = new Html5Qrcode("qr-reader");
-        }
-        
-        // 背面カメラを優先して起動
+        if (!html5QrCode) html5QrCode = new Html5Qrcode("qr-reader");
         html5QrCode.start(
-            { facingMode: "environment" }, 
-            { fps: 10, qrbox: { width: 250, height: 250 } },
-            (decodedText, decodedResult) => {
-                // 読み取り成功！
+            { facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } },
+            (decodedText) => {
                 html5QrCode.stop().then(() => {
                     document.getElementById('modal-qr').style.display = 'none';
                     handleQRResult(decodedText);
                 }).catch(err => console.log(err));
             },
-            (errorMessage) => {
-                // 解析中のエラー（無視してOK）
-            }
+            (errorMessage) => {}
         ).catch((err) => {
             alert("カメラの起動に失敗しました。\n・https://環境であるか確認してください。\n・ブラウザの設定でカメラを「許可」してください。");
             document.getElementById('modal-qr').style.display = 'none';
@@ -388,29 +354,19 @@
 
     function closeQRModal() {
         if (html5QrCode) {
-            html5QrCode.stop().then(() => {
-                document.getElementById('modal-qr').style.display = 'none';
-            }).catch(() => {
-                document.getElementById('modal-qr').style.display = 'none';
-            });
+            html5QrCode.stop().then(() => document.getElementById('modal-qr').style.display = 'none').catch(() => document.getElementById('modal-qr').style.display = 'none');
         } else {
             document.getElementById('modal-qr').style.display = 'none';
         }
     }
 
-    // 💡 読み取ったQRコードの解析（URLにゴミ文字があっても賢く抽出！）
     function handleQRResult(text) {
         let id = null;
         try {
-            // URLとして解析を試みる
             const url = new URL(text);
             let rawId = url.searchParams.get('id');
-            if (rawId) {
-                rawId = rawId.replace(/[^12]/g, ''); // 1,2以外のゴミを排除
-                if (rawId === '1' || rawId === '2') id = rawId;
-            }
+            if (rawId) { rawId = rawId.replace(/[^12]/g, ''); if (rawId === '1' || rawId === '2') id = rawId; }
         } catch(e) {
-            // URLじゃない場合（ただの「1」などのテキストQRの場合）
             let rawId = text.replace(/[^12]/g, '');
             if (rawId === '1' || rawId === '2') id = rawId;
         }
@@ -422,23 +378,16 @@
                 rallyNotif('スタンプ GET!!');
                 if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
                 syncStampUI();
-            } else if (stamps.includes(id)) {
-                alert("このスタンプは既にGETしているよ！");
-            } else {
-                alert("スタンプは2箇所とも達成済みです！スタッフに見せよう！");
-            }
-        } else {
-            alert("このQRコードはスタンプ対象ではありません。");
-        }
+            } else if (stamps.includes(id)) { alert("このスタンプは既にGETしているよ！"); } 
+            else { alert("スタンプは2箇所とも達成済みです！スタッフに見せよう！"); }
+        } else { alert("このQRコードはスタンプ対象ではありません。"); }
     }
 
-    // （※フォールバック用）標準カメラ等でURLを開いてしまった場合の処理
     const params = new URLSearchParams(window.location.search);
     let fallbackRawId = params.get('id');
     if (fallbackRawId) fallbackRawId = fallbackRawId.replace(/[^12]/g, '');
     const fallbackId = (fallbackRawId === '1' || fallbackRawId === '2') ? fallbackRawId : null;
 
-    // 起動時の初期化
     if (localStorage.getItem('tp_used') === todayStr) {
         document.getElementById('rally-content').style.display = 'none';
         document.getElementById('played-content').style.display = 'block';
@@ -462,14 +411,9 @@
         const boxBtn = document.getElementById('main-box-btn');
         if (boxBtn) {
             if (screenId === 'screen-rally') {
-                if (document.getElementById('played-content').style.display === 'block') {
-                    boxBtn.style.display = 'none';
-                } else {
-                    boxBtn.style.display = 'flex';
-                }
-            } else {
-                boxBtn.style.display = 'none';
-            }
+                if (document.getElementById('played-content').style.display === 'block') { boxBtn.style.display = 'none'; } 
+                else { boxBtn.style.display = 'flex'; }
+            } else { boxBtn.style.display = 'none'; }
         }
     }
 
@@ -493,7 +437,6 @@
         }
     }
 
-    // 🎰 激アツ！ガチャ演出ロジック
     function runGacha() {
         const btn = document.getElementById('draw-btn');
         const cap = document.getElementById('gacha-capsule');
@@ -503,28 +446,20 @@
         
         btn.disabled = true;
         btn.innerText = "抽選中...";
-        
-        // カプセルがブルブル震える
         cap.classList.add('shake-anime');
         if (navigator.vibrate) navigator.vibrate([50, 50, 50, 50, 50, 50, 50, 50, 50, 50]);
         
         setTimeout(() => {
             cap.classList.remove('shake-anime');
-            
-            // カプセルをパカッと開く
             capTop.style.transform = 'translateY(-60px) rotate(-15deg)';
             capBot.style.transform = 'translateY(60px) rotate(15deg)';
-            capTop.style.opacity = '0';
-            capBot.style.opacity = '0';
-            
-            // ピカッとフラッシュ
+            capTop.style.opacity = '0'; capBot.style.opacity = '0';
             flash.style.opacity = '1';
             if (navigator.vibrate) navigator.vibrate(200); 
             
             setTimeout(() => {
                 const rand = Math.random() * 100;
                 let res = {};
-                
                 if (rand < 3.0) res = { g: "1等", d: "クレーンゲーム6回無料券", color: "#fbc02d" }; 
                 else if (rand < 7.0) res = { g: "2等", d: "メダル50枚 ＋ 増量券", color: "#9e9e9e" }; 
                 else if (rand < 12.0) res = { g: "3等", d: "クレーンゲーム3回無料券", color: "#f44336" }; 
@@ -533,12 +468,10 @@
                 else if (rand < 40.0) res = { g: "6等", d: "メダル10枚 ＋ 増量券", color: "#00bcd4" }; 
                 else res = { g: "7等", d: "クレーンゲーム1回増量券", color: "#78909c" };
                 
-                myCoupons.push({grade: res.g, desc: res.d, color: res.color, obtained: todayStr, expiry: expiryStr, used: false});
+                myCoupons.push({grade: res.g, desc: res.d, color: res.color, obtained: todayStr, expiry: expiryStr, expiryTime: expiryTimestamp, used: false});
                 localStorage.setItem('tp_coupons', JSON.stringify(myCoupons));
                 
-                // 💡 ガチャの排出データをスプレッドシート（管理パネル）へ送信！
                 fetch(`${GAS_URL}?grade=${encodeURIComponent(res.g)}`, { mode: 'no-cors' });
-                
                 localStorage.setItem('tp_used', todayStr);
                 localStorage.removeItem('tp_stamps');
                 
@@ -551,15 +484,9 @@
                 document.getElementById('result-modal-box').style.borderColor = res.color;
                 createSparkles(res.color);
                 
-                setTimeout(() => {
-                    capTop.style = '';
-                    capBot.style = '';
-                    btn.innerText = "ガチャを回す！";
-                }, 1000);
-
+                setTimeout(() => { capTop.style = ''; capBot.style = ''; btn.innerText = "ガチャを回す！"; }, 1000);
                 document.getElementById('modal-result').style.display = 'flex';
                 flash.style.opacity = '0';
-                
             }, 500); 
         }, 1500); 
     }
@@ -577,7 +504,6 @@
             
             myCoupons.slice().reverse().forEach((c, index) => {
                 const originalIndex = myCoupons.length - 1 - index; 
-                
                 const isUsedClass = c.used ? 'used' : '';
                 const clickEvent = c.used ? '' : `onclick="openUseModal(${originalIndex})"`;
                 const usedMark = c.used ? '<div class="used-stamp">USED</div>' : '';
@@ -594,23 +520,37 @@
         }
     }
 
+    // 🛡️ ライブUI（時計機能）の制御
+    let clockInterval;
+    
+    function updateClock() {
+        const now = new Date();
+        const h = String(now.getHours()).padStart(2, '0');
+        const m = String(now.getMinutes()).padStart(2, '0');
+        const s = String(now.getSeconds()).padStart(2, '0');
+        document.getElementById('live-clock').innerText = `${h}:${m}:${s}`;
+    }
+
     function openUseModal(index) {
         selectedCouponIndex = index;
         const c = myCoupons[index];
         document.getElementById('use-target-desc').innerHTML = `<strong style="color:${c.color}; font-size:1.4rem;">${c.grade}</strong><br>${c.desc}`;
         document.getElementById('modal-use').style.display = 'flex';
+        
+        updateClock();
+        clockInterval = setInterval(updateClock, 1000);
     }
 
     function closeModal() {
         document.querySelectorAll('.overlay').forEach(m => m.style.display = 'none');
         selectedCouponIndex = -1;
+        clearInterval(clockInterval);
     }
 
     function executeCoupon() {
         if (selectedCouponIndex === -1) return;
         const usedCoupon = myCoupons[selectedCouponIndex];
         
-        // 💡 クーポンの利用データをスプレッドシート（管理パネル）へ送信！
         fetch(`${GAS_URL}?grade=${encodeURIComponent("【BOX利用】" + usedCoupon.grade)}`, { mode: 'no-cors' });
         
         myCoupons[selectedCouponIndex].used = true;
