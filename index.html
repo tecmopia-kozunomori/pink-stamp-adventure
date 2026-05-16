@@ -386,16 +386,23 @@
                 localStorage.setItem('tp_stamps', JSON.stringify(stamps));
                 rallyNotif('スタンプ GET!!');
                 if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-                syncAllData(); // 呼び出し変更
+                syncAllData();
             } else if (stamps.includes(id)) { alert("このスタンプは既にGETしているよ！"); } 
             else { alert("スタンプは2箇所とも達成済みです！スタッフに見せよう！"); }
         } else { alert("このQRコードはスタンプ対象ではありません。"); }
     }
 
+    // 💡 URLのIDパラメータ処理
     const params = new URLSearchParams(window.location.search);
     let fallbackRawId = params.get('id');
     if (fallbackRawId) fallbackRawId = fallbackRawId.replace(/[^12]/g, '');
     const fallbackId = (fallbackRawId === '1' || fallbackRawId === '2') ? fallbackRawId : null;
+
+    // 🛡️ 新機能4：URLに残った「?id=1」を読み取り直後に消去する（翌日の自動付与バグ防止）
+    if (window.history && window.history.replaceState && window.location.search) {
+        const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+        window.history.replaceState(null, null, cleanUrl);
+    }
 
     if (localStorage.getItem('tp_used') === todayStr) {
         document.getElementById('rally-content').style.display = 'none';
@@ -408,7 +415,7 @@
             rallyNotif('スタンプ GET!!');
             if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
         }
-        syncAllData(); // 呼び出し変更
+        syncAllData();
     }
 
     function showScreen(screenId) {
