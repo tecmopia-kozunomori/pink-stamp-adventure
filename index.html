@@ -217,7 +217,6 @@
             text-align: center;
         }
         
-        /* 💡 新しくなった「タップしてね」バッジ */
         .tap-badge {
             display: inline-block;
             background: #ff9800;
@@ -334,7 +333,10 @@
             <div style="font-size: 6rem; margin: 20px 0;">🎉</div>
             <h2 style="font-family: var(--pop-font); color: var(--gold); font-size: 2.5rem; margin:0; text-shadow: 2px 2px 0 #fff9c4;">CLEAR!</h2>
             <p style="color: var(--primary); margin-top: 10px; font-weight:900; font-size: 1.2rem;">本日の探検は終了！<br>また明日遊んでね！</p>
-            <button class="btn" style="margin-top: 30px; background:var(--gold); box-shadow: 0 6px 0 #ff9800;" onclick="openCouponBox()">お持ちのクーポンを見る</button>
+            <button class="box-btn" style="margin-top: 30px;" onclick="openCouponBox()">
+                <span class="box-icon">🎁</span>
+                <span>クーポンBOXを開く</span>
+            </button>
         </div>
     </div>
 
@@ -393,7 +395,6 @@
 <script>
     const GAS_URL = "https://script.google.com/macros/s/AKfycbySrqbkG3sX5kzAZwshkQMOR6M1J2bkXPOtfzHzFs-x6d-rWT23nPHBN8W-hwWAm79lzQ/exec";
     
-    // 💡 警告：アプリ内ブラウザ（LINE等）で開かれた場合の検知
     const ua = navigator.userAgent.toLowerCase();
     if (ua.indexOf('line') > -1 || ua.indexOf('twitter') > -1 || ua.indexOf('instagram') > -1) {
         alert("【警告】\nLINEやSNSのブラウザで開いています。\nクーポンが保存されない（消えてしまう）可能性があるため、右上のメニューから「デフォルトのブラウザ(SafariやChrome)で開く」を選び直してください。");
@@ -404,7 +405,6 @@
     const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
     const expiryStr = `${endOfMonth.getFullYear()}/${endOfMonth.getMonth() + 1}/${endOfMonth.getDate()}`;
     
-    // 💡 不具合修正：日付リセット（前日のやりかけスタンプをクリア）
     if (localStorage.getItem('tp_stamp_date') !== todayStr) {
         localStorage.removeItem('tp_stamps');
         localStorage.setItem('tp_stamp_date', todayStr);
@@ -412,35 +412,29 @@
 
     let stamps = JSON.parse(localStorage.getItem('tp_stamps')) || [];
     
-    // 💡 期限切れ（月末を過ぎた）クーポンの自動お掃除機能
     let myCoupons = JSON.parse(localStorage.getItem('tp_coupons')) || [];
     const originalLength = myCoupons.length;
     myCoupons = myCoupons.filter(c => {
         const expiryDate = new Date(c.expiry);
-        expiryDate.setHours(23, 59, 59, 999); // 有効期限日の23:59:59まで有効
-        return today <= expiryDate; // 今日が有効期限内なら残す
+        expiryDate.setHours(23, 59, 59, 999);
+        return today <= expiryDate;
     });
-    // もし古いクーポンが削除されていたら、スマホの保存データも上書き更新
     if (myCoupons.length !== originalLength) {
         localStorage.setItem('tp_coupons', JSON.stringify(myCoupons));
     }
 
-    // 💡 不具合修正：IDの厳密判定 (1か2のみ受け付ける)
     const params = new URLSearchParams(window.location.search);
     let rawId = params.get('id');
     const id = (rawId === '1' || rawId === '2') ? rawId : null;
     
     let selectedCouponIndex = -1;
 
-    // 🌟 ハッピーにリニューアルしたスタンプ通知
     function rallyNotif(txt) {
         const d = document.createElement('div');
-        // ポップなグラデーション背景と、しっかり中央に揃えるためのFlexboxスタイル
         d.style = "position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:linear-gradient(135deg, var(--accent), #ff8a80); color:#fff; padding:20px 40px; border-radius:30px; font-weight:900; font-size:1.6rem; z-index:1000; box-shadow: 0 10px 25px rgba(255,64,129,0.4); text-align:center; border: 4px solid #fff; display:flex; flex-direction:column; align-items:center; justify-content:center; white-space:nowrap; animation:fadeInPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), fadeOut 1s forwards; animation-delay: 0s, 2s;";
-        // ピョンピョン跳ねるクラッカーアイコンを追加
         d.innerHTML = `<div style="font-size:3.5rem; margin-bottom:5px; animation:bounceIcon 0.8s infinite;">🎉</div><div>${txt}</div>`;
         document.body.appendChild(d);
-        setTimeout(()=> d.remove(), 3000); // 3秒後に消える
+        setTimeout(()=> d.remove(), 3000);
     }
     const fadeStyle = document.createElement('style');
     fadeStyle.innerHTML = "@keyframes fadeOut { from { opacity: 1; transform:translate(-50%,-50%) scale(1); } to { opacity: 0; transform:translate(-50%,-60%) scale(0.9); } } @keyframes fadeInPop { 0% { opacity:0; transform:translate(-50%,-40%) scale(0.5); } 80% { transform:translate(-50%,-50%) scale(1.1); } 100% { opacity:1; transform:translate(-50%,-50%) scale(1); } }";
@@ -450,13 +444,13 @@
     if (localStorage.getItem('tp_used') === todayStr) {
         document.getElementById('rally-content').style.display = 'none';
         document.getElementById('played-content').style.display = 'block';
+        // 💡 起動時にCLEAR画面の時は上のメインボタンを隠す
+        document.getElementById('main-box-btn').style.display = 'none';
     } else {
         if (id && !stamps.includes(id) && stamps.length < 2) {
             stamps.push(id);
             localStorage.setItem('tp_stamps', JSON.stringify(stamps));
             rallyNotif('スタンプ GET!!');
-            
-            // 📱 触覚フィードバック（ブルッと震える）
             if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
         }
         stamps.forEach(s => {
@@ -466,7 +460,6 @@
         if (stamps.length >= 2) document.getElementById('to-check-btn').disabled = false;
     }
 
-    // 🌟 画面切り替え
     function showScreen(screenId) {
         closeModal();
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -476,7 +469,12 @@
         const boxBtn = document.getElementById('main-box-btn');
         if (boxBtn) {
             if (screenId === 'screen-rally') {
-                boxBtn.style.display = 'flex';
+                // 💡 トップ画面に戻った際、CLEAR状態なら上部のボタンは表示しない
+                if (document.getElementById('played-content').style.display === 'block') {
+                    boxBtn.style.display = 'none';
+                } else {
+                    boxBtn.style.display = 'flex';
+                }
             } else {
                 boxBtn.style.display = 'none';
             }
@@ -510,7 +508,6 @@
         btn.disabled = true;
         unit.classList.add('spin-anime');
         
-        // 📱 触覚フィードバック（回っている間ブルブルさせる）
         if (navigator.vibrate) navigator.vibrate([50, 50, 50, 50, 100]);
         
         setTimeout(() => {
@@ -518,7 +515,6 @@
             const rand = Math.random() * 100;
             let res = {};
             
-            // 💡 景品名から「金：」「銀：」などの色表記を削除しました
             if (rand < 3.0) res = { g: "1等", d: "クレーンゲーム6回無料券", color: "#fbc02d" }; 
             else if (rand < 7.0) res = { g: "2等", d: "メダル50枚 ＋ 増量券", color: "#9e9e9e" }; 
             else if (rand < 12.0) res = { g: "3等", d: "クレーンゲーム3回無料券", color: "#f44336" }; 
@@ -527,17 +523,17 @@
             else if (rand < 40.0) res = { g: "6等", d: "メダル10枚 ＋ 増量券", color: "#00bcd4" }; 
             else res = { g: "7等", d: "クレーンゲーム1回増量券", color: "#78909c" };
             
-            // 💡 クーポンデータに「used: false」を追加して保存
             myCoupons.push({grade: res.g, desc: res.d, color: res.color, obtained: todayStr, expiry: expiryStr, used: false});
             localStorage.setItem('tp_coupons', JSON.stringify(myCoupons));
             
             localStorage.setItem('tp_used', todayStr);
             localStorage.removeItem('tp_stamps');
             
-            // 💡 不具合修正：ガラポン直後にトップ画面の表示を「CLEAR!」状態に強制切り替え
             document.getElementById('rally-content').style.display = 'none';
             document.getElementById('played-content').style.display = 'block';
-            stamps = []; // 内部メモリのスタンプ状態もリセット
+            // 💡 ガラポン直後も、裏側で上部のボタンを隠しておく
+            document.getElementById('main-box-btn').style.display = 'none'; 
+            stamps = []; 
 
             document.getElementById('result-desc').innerHTML = `<span style="font-size:2.2rem; color:${res.color};">${res.g}</span><br>${res.d}`;
             document.getElementById('result-modal-box').style.borderColor = res.color;
@@ -553,16 +549,13 @@
         
         if (myCoupons.length === 0) {
             listDiv.innerHTML = '<div class="empty-msg">現在使えるクーポンはありません。<br>ラリーに参加してGETしよう！</div>';
-            // クーポンが無い時は「タップしてね」バッジを隠す
             document.querySelector('.tap-badge').style.display = 'none';
         } else {
-            // クーポンがある時はバッジを表示
             document.querySelector('.tap-badge').style.display = 'inline-block';
             
             myCoupons.slice().reverse().forEach((c, index) => {
                 const originalIndex = myCoupons.length - 1 - index; 
                 
-                // 🎟️ 使用済みクーポンの処理
                 const isUsedClass = c.used ? 'used' : '';
                 const clickEvent = c.used ? '' : `onclick="openUseModal(${originalIndex})"`;
                 const usedMark = c.used ? '<div class="used-stamp">USED</div>' : '';
@@ -597,7 +590,6 @@
         
         fetch(`${GAS_URL}?grade=${encodeURIComponent("【BOX利用】" + usedCoupon.grade)}`, { mode: 'no-cors' });
         
-        // 🎟️ 削除せず、usedをtrueにして保存し直す
         myCoupons[selectedCouponIndex].used = true;
         localStorage.setItem('tp_coupons', JSON.stringify(myCoupons));
         
