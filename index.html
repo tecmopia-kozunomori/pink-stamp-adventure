@@ -30,7 +30,6 @@
             background-position: 0 0, 20px 20px;
             background-size: 40px 40px;
             
-            /* 📱 アプリ感アップ：ブラウザ特有の挙動を防止 */
             user-select: none;
             -webkit-user-select: none;
             touch-action: manipulation;
@@ -48,7 +47,6 @@
             position: relative; 
         }
         
-        /* 🌟 ポップで明るいヘッダー */
         .header { 
             background: linear-gradient(135deg, var(--primary), #80deea); 
             padding: 30px 20px 20px; 
@@ -58,199 +56,107 @@
             color: white;
             border-radius: 0 0 20px 20px;
         }
-        .header h1 { 
-            margin: 0; 
-            font-size: 2.5rem; 
-            font-family: var(--pop-font); 
-            text-shadow: 2px 3px 0 #0097a7; 
-            letter-spacing: 2px;
-        }
-        .header p { 
-            margin: 5px 0 0; 
-            font-size: 1.1rem; 
-            font-weight: 900;
-            color: #fff9c4;
-            text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
-        }
+        .header h1 { margin: 0; font-size: 2.5rem; font-family: var(--pop-font); text-shadow: 2px 3px 0 #0097a7; letter-spacing: 2px; }
+        .header p { margin: 5px 0 0; font-size: 1.1rem; font-weight: 900; color: #fff9c4; text-shadow: 1px 1px 0 rgba(0,0,0,0.2); }
         
-        /* 🎟️ クーポンBOXボタン */
         .box-btn { 
             background: var(--accent); 
-            border: none;
-            color: white; 
-            padding: 15px 0; 
-            border-radius: 20px; 
-            font-family: var(--jp-pop-font); 
-            cursor: pointer; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.4rem;
-            font-weight: 900;
-            margin: 15px 15px 0;
+            border: none; color: white; padding: 15px 0; border-radius: 20px; 
+            font-family: var(--jp-pop-font); cursor: pointer; display: flex;
+            justify-content: center; align-items: center; gap: 10px;
+            font-size: 1.4rem; font-weight: 900; margin: 15px 15px 0;
             box-shadow: 0 6px 0 #c51162, 0 10px 10px rgba(255, 64, 129, 0.3);
-            transition: 0.2s;
-            animation: pulse-btn 2s infinite;
+            transition: 0.2s; animation: pulse-btn 2s infinite;
         }
-        .box-btn:active { 
-            transform: translateY(6px); 
-            box-shadow: 0 0px 0 #c51162; 
-            animation: none; 
-        }
+        .box-btn:active { transform: translateY(6px); box-shadow: 0 0px 0 #c51162; animation: none; }
         .box-icon { font-size: 2rem; }
-        @keyframes pulse-btn {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
+        @keyframes pulse-btn { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
 
         .screen { display: none; padding: 30px 20px; flex-grow: 1; animation: fadeIn 0.3s ease-out; }
         .active { display: flex; flex-direction: column; align-items: center; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 🌟 スタンプ枠 */
         .stamp-rally { display: flex; justify-content: space-around; width: 100%; margin: 20px 0 30px; gap: 15px; }
-        .stamp { 
-            width: 140px; 
-            height: 140px; 
-            border: 4px dashed #ccc; 
-            border-radius: 25px; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            align-items: center; 
-            background: #fafafa; 
-            transition: 0.4s; 
-            padding: 10px; 
-            box-sizing: border-box; 
-        }
-        .stamp.on { 
-            border: 4px solid var(--accent); 
-            background: #fff0f5; 
-            box-shadow: 0 8px 15px rgba(255, 64, 129, 0.2); 
-        }
+        .stamp { width: 140px; height: 140px; border: 4px dashed #ccc; border-radius: 25px; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #fafafa; transition: 0.4s; padding: 10px; box-sizing: border-box; }
+        .stamp.on { border: 4px solid var(--accent); background: #fff0f5; box-shadow: 0 8px 15px rgba(255, 64, 129, 0.2); }
         .stamp-icon { font-size: 3.5rem; filter: grayscale(1) opacity(0.2); }
-        .stamp.on .stamp-icon { 
-            filter: grayscale(0) opacity(1); 
-            animation: stampBounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-        }
+        .stamp.on .stamp-icon { filter: grayscale(0) opacity(1); animation: stampBounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         @keyframes stampBounce { 0% { transform: scale(0); } 100% { transform: scale(1); } }
-        .stamp small { 
-            font-size: 0.95rem; 
-            color: #999; 
-            text-align: center; 
-            margin-top: 5px;
-            font-weight: 700;
-        }
+        .stamp small { font-size: 0.95rem; color: #999; text-align: center; margin-top: 5px; font-weight: 700; }
         .stamp.on small { color: var(--accent); }
 
-        /* 立体的なポップボタン */
-        .btn { 
-            border: none; 
-            padding: 20px; 
-            width: 100%; 
-            border-radius: 20px; 
-            font-size: 1.3rem; 
-            font-family: var(--jp-pop-font); 
-            font-weight: 900;
-            color: white; 
-            cursor: pointer; 
-            transition: 0.1s; 
-            background: var(--primary); 
-            margin-bottom: 15px; 
-            box-shadow: 0 6px 0 #0097a7;
-        }
+        .btn { border: none; padding: 20px; width: 100%; border-radius: 20px; font-size: 1.3rem; font-family: var(--jp-pop-font); font-weight: 900; color: white; cursor: pointer; transition: 0.1s; background: var(--primary); margin-bottom: 15px; box-shadow: 0 6px 0 #0097a7; }
         .btn:active { transform: translateY(6px); box-shadow: 0 0 0 #0097a7; }
         .btn:disabled { background: #e0e0e0; color: #9e9e9e; box-shadow: 0 6px 0 #bdbdbd; pointer-events: none; }
-        .btn-staff { 
-            background: var(--staff-color); 
-            color: #004d40; 
-            box-shadow: 0 6px 0 #00e676;
-        }
+        .btn-staff { background: var(--staff-color); color: #004d40; box-shadow: 0 6px 0 #00e676; }
         .btn-staff:active { box-shadow: 0 0 0 #00e676; }
-        .btn-close { 
-            background: #9e9e9e; 
-            box-shadow: 0 6px 0 #757575; 
-            margin-top: 10px; 
-        }
+        .btn-close { background: #9e9e9e; box-shadow: 0 6px 0 #757575; margin-top: 10px; }
 
-        /* ガラポンステージ */
-        #garapon-stage { position: relative; width: 200px; height: 200px; margin: 30px 0; display: flex; justify-content: center; align-items: center; }
-        #garapon-stage::before { 
-            content: ''; 
-            position: absolute; inset: 0; 
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23fff9c4" stroke="%23ffc107" stroke-width="4" stroke-dasharray="10,5"/></svg>') center center no-repeat; 
-            animation: rotateBg 15s infinite linear;
-            z-index: 0;
-        }
-        #garapon-unit { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; font-size: 6rem; position: relative; z-index: 2; }
-        .spin-anime { animation: rotate 0.1s infinite linear; }
-        @keyframes rotateBg { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        /* モーダル (ポップアップ) */
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 20px; box-sizing: border-box; backdrop-filter: blur(5px); }
-        .modal { background: #fff; width: 100%; max-width: 420px; border-radius: 30px; padding: 30px; text-align: center; box-shadow: 0 15px 30px rgba(0,0,0,0.2); position: relative; border: 5px solid white; }
-        .modal-title { color: var(--accent); font-size: 1.8rem; margin-top: 0; font-weight: 900; }
-        .modal-desc { font-size: 1.2rem; color: #333; margin: 20px 0; font-weight: bold; line-height: 1.5; }
-
-        /* 🌟 クーポンBOX 一覧画面 */
-        .box-header {
-            background: #fff3e0;
-            padding: 20px 15px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            width: 100%;
-            box-sizing: border-box;
-            border: 3px dashed #ffb74d;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .box-title {
-            color: #ef6c00;
-            font-size: 1.6rem;
-            margin: 0;
-            font-weight: 900;
-            text-align: center;
-        }
+        /* 🎰 ガチャ演出CSSの大改修！ */
+        #gacha-stage { position: relative; width: 100%; height: 280px; margin: 20px 0; display: flex; justify-content: center; align-items: center; overflow: hidden; }
         
-        .tap-badge {
-            display: inline-block;
-            background: #ff9800;
-            color: #fff;
-            padding: 8px 20px;
-            border-radius: 30px;
-            font-size: 0.95rem;
-            font-weight: bold;
-            margin-top: 15px;
-            box-shadow: 0 4px 0 #ef6c00, 0 6px 10px rgba(239, 108, 0, 0.3);
-            animation: bounceBadge 2s infinite;
-            text-align: center;
+        .sunburst {
+            position: absolute; top: 50%; left: 50%; width: 600px; height: 600px;
+            margin-top: -300px; margin-left: -300px;
+            background: repeating-conic-gradient(#fff9c4 0 15deg, transparent 15deg 30deg);
+            animation: rotateBg 15s infinite linear; z-index: 0; opacity: 0.8;
         }
-        @keyframes bounceBadge {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-8px); }
-            60% { transform: translateY(-4px); }
+        @keyframes rotateBg { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .capsule {
+            position: relative; width: 130px; height: 130px; z-index: 2;
+            animation: floatCapsule 2.5s infinite ease-in-out;
         }
+        .capsule-top {
+            width: 130px; height: 65px;
+            background: linear-gradient(135deg, var(--accent), #ff8a80);
+            border-radius: 65px 65px 0 0;
+            border: 5px solid #fff; border-bottom: none; box-sizing: border-box;
+            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.2);
+            position: relative; z-index: 3; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .capsule-bottom {
+            width: 130px; height: 65px; background: #fffdf5;
+            border-radius: 0 0 65px 65px;
+            border: 5px solid #fff; box-sizing: border-box;
+            box-shadow: inset -10px 10px 20px rgba(0,0,0,0.05), 0 5px 15px rgba(0,0,0,0.2);
+            position: relative; z-index: 1; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .capsule-belt {
+            position: absolute; top: 50%; left: -5px; width: calc(100% + 10px); height: 12px;
+            background: #fff; transform: translateY(-50%); z-index: 4; border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        @keyframes floatCapsule { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(5deg); } }
+        
+        .shake-anime { animation: shakeCapsule 0.1s infinite !important; }
+        @keyframes shakeCapsule {
+            0% { transform: translate(4px, 4px) rotate(0deg); }
+            25% { transform: translate(-4px, -3px) rotate(-5deg); }
+            50% { transform: translate(-4px, 4px) rotate(5deg); }
+            75% { transform: translate(4px, -4px) rotate(-5deg); }
+            100% { transform: translate(4px, 4px) rotate(0deg); }
+        }
+
+        /* ピカッと光るフラッシュ画面 */
+        #full-flash {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #fff; opacity: 0; pointer-events: none; z-index: 9999;
+            transition: opacity 0.3s ease-in;
+        }
+
+        .modal { background: #fff; width: 100%; max-width: 420px; border-radius: 30px; padding: 30px; text-align: center; box-shadow: 0 15px 30px rgba(0,0,0,0.2); position: relative; border: 5px solid white; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 20px; box-sizing: border-box; backdrop-filter: blur(5px); }
+        
+        .box-header { background: #fff3e0; padding: 20px 15px; border-radius: 15px; margin-bottom: 20px; width: 100%; box-sizing: border-box; border: 3px dashed #ffb74d; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .box-title { color: #ef6c00; font-size: 1.6rem; margin: 0; font-weight: 900; text-align: center; }
+        
+        .tap-badge { display: inline-block; background: #ff9800; color: #fff; padding: 8px 20px; border-radius: 30px; font-size: 0.95rem; font-weight: bold; margin-top: 15px; box-shadow: 0 4px 0 #ef6c00, 0 6px 10px rgba(239, 108, 0, 0.3); animation: bounceBadge 2s infinite; text-align: center; }
+        @keyframes bounceBadge { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-8px); } 60% { transform: translateY(-4px); } }
 
         .coupon-list { width: 100%; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; padding-bottom: 20px; }
-        
-        .coupon-card { 
-            background: #ffffff; 
-            border: 2px solid #e0e0e0; 
-            border-left: 10px solid var(--primary);
-            border-radius: 12px; 
-            padding: 15px 20px; 
-            position: relative; 
-            cursor: pointer; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
-            text-align: left;
-            transition: 0.2s;
-            overflow: hidden;
-        }
+        .coupon-card { background: #ffffff; border: 2px solid #e0e0e0; border-left: 10px solid var(--primary); border-radius: 12px; padding: 15px 20px; position: relative; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: left; transition: 0.2s; overflow: hidden; }
         .coupon-card:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
         .c-grade { font-size: 1.4rem; font-weight: 900; margin: 0 0 5px 0; }
         .c-desc { font-size: 1rem; color: #555; margin: 0 0 10px 0; font-weight: bold; }
@@ -258,51 +164,20 @@
         .c-expiry { color: var(--warning); font-weight: bold; }
         .empty-msg { text-align: center; color: #999; margin-top: 40px; font-weight: bold; font-size: 1.1rem; }
 
-        /* 🎟️ 使用済みクーポンの専用スタイル */
-        .coupon-card.used {
-            border-left-color: #bdbdbd !important;
-            background: #f5f5f5;
-            box-shadow: none;
-            cursor: default;
-        }
+        .coupon-card.used { border-left-color: #bdbdbd !important; background: #f5f5f5; box-shadow: none; cursor: default; }
         .coupon-card.used:hover { transform: none; }
-        .coupon-card.used .c-grade, 
-        .coupon-card.used .c-desc, 
-        .coupon-card.used .c-expiry {
-            color: #9e9e9e !important;
-        }
-        .used-stamp {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-20deg);
-            font-size: 3rem;
-            color: rgba(224, 224, 224, 0.8);
-            font-weight: 900;
-            border: 5px solid rgba(224, 224, 224, 0.8);
-            padding: 5px 20px;
-            border-radius: 15px;
-            pointer-events: none;
-            font-family: var(--pop-font);
-            letter-spacing: 5px;
-            z-index: 10;
-        }
+        .coupon-card.used .c-grade, .coupon-card.used .c-desc, .coupon-card.used .c-expiry { color: #9e9e9e !important; }
+        .used-stamp { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-20deg); font-size: 3rem; color: rgba(224, 224, 224, 0.8); font-weight: 900; border: 5px solid rgba(224, 224, 224, 0.8); padding: 5px 20px; border-radius: 15px; pointer-events: none; font-family: var(--pop-font); letter-spacing: 5px; z-index: 10; }
 
-        /* キラキラエフェクト */
         .sparkle { position: absolute; font-size: 1.5rem; opacity: 0; animation: sparkleFloat 1.2s ease-out; }
         @keyframes sparkleFloat { 0% { transform: translate(0,0) scale(0.5); opacity: 1; } 100% { transform: translate(var(--x), var(--y)) scale(1.5); opacity: 0; } }
-
-        /* 🎉 ハッピー通知用アニメーション */
-        @keyframes bounceIcon {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
+        @keyframes bounceIcon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
     </style>
 </head>
 <body>
 
-<div class="container" id="main-container">
+<div id="full-flash"></div> <div class="container" id="main-container">
 
     <div class="header">
         <h1>TECMOPIA</h1>
@@ -320,7 +195,7 @@
                 お店を探検せよ！
             </p>
             <p style="color:#666; font-size: 0.9rem; font-weight: bold; margin-top: 0;">
-                2箇所回るとガラポンが回せるよ
+                2箇所回るとガチャが回せるよ
             </p>
             <div class="stamp-rally">
                 <div id="st-1" class="stamp"><span class="stamp-icon">🔑</span><small>B1F<br>ミニクレ</small></div>
@@ -333,7 +208,7 @@
             <div style="font-size: 6rem; margin: 20px 0;">🎉</div>
             <h2 style="font-family: var(--pop-font); color: var(--gold); font-size: 2.5rem; margin:0; text-shadow: 2px 2px 0 #fff9c4;">CLEAR!</h2>
             <p style="color: var(--primary); margin-top: 10px; font-weight:900; font-size: 1.2rem;">本日の探検は終了！<br>また明日遊んでね！</p>
-            <button class="box-btn" style="margin-top: 30px;" onclick="openCouponBox()">
+            <button class="box-btn" style="margin: 30px auto 0; width: 80%; max-width: 300px;" onclick="openCouponBox()">
                 <span class="box-icon">🎁</span>
                 <span>クーポンBOXを開く</span>
             </button>
@@ -348,10 +223,20 @@
         <button class="btn btn-close" onclick="showScreen('screen-rally')">戻る</button>
     </div>
 
-    <div id="screen-garapon" class="screen" style="text-align:center;">
-        <h3 style="color:var(--primary); font-size: 2rem; font-family: var(--pop-font);">LUCKY DRAW</h3>
-        <div id="garapon-stage"><div id="garapon-unit">🎡</div></div>
-        <button id="draw-btn" class="btn" onclick="runGarapon()">ガラポンを回す！</button>
+    <div id="screen-gacha" class="screen" style="text-align:center;">
+        <h3 style="color:var(--primary); font-size: 2rem; font-family: var(--pop-font); margin-top: 0;">GACHA TIME!</h3>
+        <p style="font-weight:bold; color:#555; margin-top:0;">タップしてガチャを引こう！</p>
+        
+        <div id="gacha-stage">
+            <div class="sunburst"></div>
+            <div class="capsule" id="gacha-capsule">
+                <div class="capsule-top" id="capsule-top"></div>
+                <div class="capsule-belt"></div>
+                <div class="capsule-bottom" id="capsule-bottom"></div>
+            </div>
+        </div>
+        
+        <button id="draw-btn" class="btn" style="background:var(--accent); box-shadow: 0 6px 0 #c51162;" onclick="runGacha()">ガチャを回す！</button>
     </div>
 
     <div id="screen-box" class="screen">
@@ -370,8 +255,8 @@
 <div id="modal-result" class="overlay">
     <div class="modal" id="result-modal-box">
         <div id="result-sparkles" style="position:relative;"></div>
-        <h3 class="modal-title">🎉 おめでとう！ 🎉</h3>
-        <p style="font-size:1.1rem; color:var(--accent); font-weight:bold; margin-top:0;">ガラポンの結果</p>
+        <h3 class="modal-title" style="margin-bottom: 5px;">🎉 おめでとう！ 🎉</h3>
+        <p style="font-size:1.1rem; color:var(--accent); font-weight:bold; margin-top:0;">ガチャの結果</p>
         <p class="modal-desc" id="result-desc"></p>
         <div style="background:#fff9c4; padding:15px; border-radius:10px; margin-top:20px;">
             <p style="color:#d84315; font-size:0.9rem; font-weight:bold; margin:0;">
@@ -440,11 +325,9 @@
     fadeStyle.innerHTML = "@keyframes fadeOut { from { opacity: 1; transform:translate(-50%,-50%) scale(1); } to { opacity: 0; transform:translate(-50%,-60%) scale(0.9); } } @keyframes fadeInPop { 0% { opacity:0; transform:translate(-50%,-40%) scale(0.5); } 80% { transform:translate(-50%,-50%) scale(1.1); } 100% { opacity:1; transform:translate(-50%,-50%) scale(1); } }";
     document.head.appendChild(fadeStyle);
 
-    // 起動時のチェック
     if (localStorage.getItem('tp_used') === todayStr) {
         document.getElementById('rally-content').style.display = 'none';
         document.getElementById('played-content').style.display = 'block';
-        // 💡 起動時にCLEAR画面の時は上のメインボタンを隠す
         document.getElementById('main-box-btn').style.display = 'none';
     } else {
         if (id && !stamps.includes(id) && stamps.length < 2) {
@@ -469,7 +352,6 @@
         const boxBtn = document.getElementById('main-box-btn');
         if (boxBtn) {
             if (screenId === 'screen-rally') {
-                // 💡 トップ画面に戻った際、CLEAR状態なら上部のボタンは表示しない
                 if (document.getElementById('played-content').style.display === 'block') {
                     boxBtn.style.display = 'none';
                 } else {
@@ -482,7 +364,7 @@
     }
 
     function staffApprove() {
-        if(confirm("スタッフ専用：ガラポンを開始します。よろしいですか？")) showScreen('screen-garapon');
+        if(confirm("スタッフ専用：ガチャを開始します。よろしいですか？")) showScreen('screen-gacha');
     }
 
     function createSparkles(color) {
@@ -501,45 +383,77 @@
         }
     }
 
-    // ガラポン抽選
-    function runGarapon() {
+    // 🎰 ソシャゲ風！激アツガチャ演出ロジック
+    function runGacha() {
         const btn = document.getElementById('draw-btn');
-        const unit = document.getElementById('garapon-unit');
+        const cap = document.getElementById('gacha-capsule');
+        const capTop = document.getElementById('capsule-top');
+        const capBot = document.getElementById('capsule-bottom');
+        const flash = document.getElementById('full-flash');
+        
         btn.disabled = true;
-        unit.classList.add('spin-anime');
+        btn.innerText = "抽選中...";
         
-        if (navigator.vibrate) navigator.vibrate([50, 50, 50, 50, 100]);
+        // カプセルがブルブル震える
+        cap.classList.add('shake-anime');
+        if (navigator.vibrate) navigator.vibrate([50, 50, 50, 50, 50, 50, 50, 50, 50, 50]);
         
+        // 1.5秒後にカプセルが弾けて光る
         setTimeout(() => {
-            unit.classList.remove('spin-anime');
-            const rand = Math.random() * 100;
-            let res = {};
+            cap.classList.remove('shake-anime');
             
-            if (rand < 3.0) res = { g: "1等", d: "クレーンゲーム6回無料券", color: "#fbc02d" }; 
-            else if (rand < 7.0) res = { g: "2等", d: "メダル50枚 ＋ 増量券", color: "#9e9e9e" }; 
-            else if (rand < 12.0) res = { g: "3等", d: "クレーンゲーム3回無料券", color: "#f44336" }; 
-            else if (rand < 18.0) res = { g: "4等", d: "メダル30枚 ＋ 増量券", color: "#fbc02d" }; 
-            else if (rand < 25.0) res = { g: "5等", d: "クレーンゲーム1回無料券", color: "#e91e63" }; 
-            else if (rand < 40.0) res = { g: "6等", d: "メダル10枚 ＋ 増量券", color: "#00bcd4" }; 
-            else res = { g: "7等", d: "クレーンゲーム1回増量券", color: "#78909c" };
+            // カプセルを上下に開く
+            capTop.style.transform = 'translateY(-60px) rotate(-15deg)';
+            capBot.style.transform = 'translateY(60px) rotate(15deg)';
+            capTop.style.opacity = '0';
+            capBot.style.opacity = '0';
             
-            myCoupons.push({grade: res.g, desc: res.d, color: res.color, obtained: todayStr, expiry: expiryStr, used: false});
-            localStorage.setItem('tp_coupons', JSON.stringify(myCoupons));
+            // 画面を白く飛ばす
+            flash.style.opacity = '1';
+            if (navigator.vibrate) navigator.vibrate(200); // 弾けた瞬間に大きく震える
             
-            localStorage.setItem('tp_used', todayStr);
-            localStorage.removeItem('tp_stamps');
-            
-            document.getElementById('rally-content').style.display = 'none';
-            document.getElementById('played-content').style.display = 'block';
-            // 💡 ガラポン直後も、裏側で上部のボタンを隠しておく
-            document.getElementById('main-box-btn').style.display = 'none'; 
-            stamps = []; 
+            // 0.5秒後（画面が真っ白の瞬間）に結果を計算してモーダル表示
+            setTimeout(() => {
+                const rand = Math.random() * 100;
+                let res = {};
+                
+                if (rand < 3.0) res = { g: "1等", d: "クレーンゲーム6回無料券", color: "#fbc02d" }; 
+                else if (rand < 7.0) res = { g: "2等", d: "メダル50枚 ＋ 増量券", color: "#9e9e9e" }; 
+                else if (rand < 12.0) res = { g: "3等", d: "クレーンゲーム3回無料券", color: "#f44336" }; 
+                else if (rand < 18.0) res = { g: "4等", d: "メダル30枚 ＋ 増量券", color: "#fbc02d" }; 
+                else if (rand < 25.0) res = { g: "5等", d: "クレーンゲーム1回無料券", color: "#e91e63" }; 
+                else if (rand < 40.0) res = { g: "6等", d: "メダル10枚 ＋ 増量券", color: "#00bcd4" }; 
+                else res = { g: "7等", d: "クレーンゲーム1回増量券", color: "#78909c" };
+                
+                myCoupons.push({grade: res.g, desc: res.d, color: res.color, obtained: todayStr, expiry: expiryStr, used: false});
+                localStorage.setItem('tp_coupons', JSON.stringify(myCoupons));
+                
+                localStorage.setItem('tp_used', todayStr);
+                localStorage.removeItem('tp_stamps');
+                
+                document.getElementById('rally-content').style.display = 'none';
+                document.getElementById('played-content').style.display = 'block';
+                document.getElementById('main-box-btn').style.display = 'none'; 
+                stamps = []; 
 
-            document.getElementById('result-desc').innerHTML = `<span style="font-size:2.2rem; color:${res.color};">${res.g}</span><br>${res.d}`;
-            document.getElementById('result-modal-box').style.borderColor = res.color;
-            createSparkles(res.color);
-            document.getElementById('modal-result').style.display = 'flex';
-        }, 2000);
+                document.getElementById('result-desc').innerHTML = `<span style="font-size:2.2rem; color:${res.color};">${res.g}</span><br>${res.d}`;
+                document.getElementById('result-modal-box').style.borderColor = res.color;
+                createSparkles(res.color);
+                
+                // 次回のためにカプセルを元に戻す
+                setTimeout(() => {
+                    capTop.style = '';
+                    capBot.style = '';
+                    btn.innerText = "ガチャを回す！";
+                }, 1000);
+
+                document.getElementById('modal-result').style.display = 'flex';
+                
+                // 光をフェードアウトさせて結果を見せる
+                flash.style.opacity = '0';
+                
+            }, 500); 
+        }, 1500); 
     }
 
     function openCouponBox() {
