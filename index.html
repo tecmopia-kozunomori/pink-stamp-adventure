@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TECMOPIA - 探検クエスト</title>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;900&family=Fredoka+One&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
     <style>
         :root { 
             --main-bg: #fffdf5; 
@@ -85,16 +88,15 @@
         .stamp small { font-size: 0.95rem; color: #999; text-align: center; margin-top: 5px; font-weight: 700; }
         .stamp.on small { color: var(--accent); }
 
-        .btn { border: none; padding: 20px; width: 100%; border-radius: 20px; font-size: 1.3rem; font-family: var(--jp-pop-font); font-weight: 900; color: white; cursor: pointer; transition: 0.1s; background: var(--primary); margin-bottom: 15px; box-shadow: 0 6px 0 #0097a7; }
+        .btn { border: none; padding: 20px; width: 100%; border-radius: 20px; font-size: 1.3rem; font-family: var(--jp-pop-font); font-weight: 900; color: white; cursor: pointer; transition: 0.1s; background: var(--primary); margin-bottom: 15px; box-shadow: 0 6px 0 #0097a7; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .btn:active { transform: translateY(6px); box-shadow: 0 0 0 #0097a7; }
-        .btn:disabled { background: #e0e0e0; color: #9e9e9e; box-shadow: 0 6px 0 #bdbdbd; pointer-events: none; }
+        .btn:disabled { background: #e0e0e0 !important; color: #9e9e9e !important; box-shadow: 0 6px 0 #bdbdbd !important; pointer-events: none; }
         .btn-staff { background: var(--staff-color); color: #004d40; box-shadow: 0 6px 0 #00e676; }
         .btn-staff:active { box-shadow: 0 0 0 #00e676; }
         .btn-close { background: #9e9e9e; box-shadow: 0 6px 0 #757575; margin-top: 10px; }
 
-        /* 🎰 ガチャ演出CSSの大改修！ */
+        /* 🎰 ガチャ演出CSS */
         #gacha-stage { position: relative; width: 100%; height: 280px; margin: 20px 0; display: flex; justify-content: center; align-items: center; overflow: hidden; }
-        
         .sunburst {
             position: absolute; top: 50%; left: 50%; width: 600px; height: 600px;
             margin-top: -300px; margin-left: -300px;
@@ -103,21 +105,15 @@
         }
         @keyframes rotateBg { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        .capsule {
-            position: relative; width: 130px; height: 130px; z-index: 2;
-            animation: floatCapsule 2.5s infinite ease-in-out;
-        }
+        .capsule { position: relative; width: 130px; height: 130px; z-index: 2; animation: floatCapsule 2.5s infinite ease-in-out; }
         .capsule-top {
-            width: 130px; height: 65px;
-            background: linear-gradient(135deg, var(--accent), #ff8a80);
-            border-radius: 65px 65px 0 0;
-            border: 5px solid #fff; border-bottom: none; box-sizing: border-box;
+            width: 130px; height: 65px; background: linear-gradient(135deg, var(--accent), #ff8a80);
+            border-radius: 65px 65px 0 0; border: 5px solid #fff; border-bottom: none; box-sizing: border-box;
             box-shadow: inset -10px -10px 20px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.2);
             position: relative; z-index: 3; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .capsule-bottom {
-            width: 130px; height: 65px; background: #fffdf5;
-            border-radius: 0 0 65px 65px;
+            width: 130px; height: 65px; background: #fffdf5; border-radius: 0 0 65px 65px;
             border: 5px solid #fff; box-sizing: border-box;
             box-shadow: inset -10px 10px 20px rgba(0,0,0,0.05), 0 5px 15px rgba(0,0,0,0.2);
             position: relative; z-index: 1; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -127,7 +123,6 @@
             background: #fff; transform: translateY(-50%); z-index: 4; border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-
         @keyframes floatCapsule { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(5deg); } }
         
         .shake-anime { animation: shakeCapsule 0.1s infinite !important; }
@@ -139,19 +134,16 @@
             100% { transform: translate(4px, 4px) rotate(0deg); }
         }
 
-        /* ピカッと光るフラッシュ画面 */
-        #full-flash {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #fff; opacity: 0; pointer-events: none; z-index: 9999;
-            transition: opacity 0.3s ease-in;
-        }
+        #full-flash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; opacity: 0; pointer-events: none; z-index: 9999; transition: opacity 0.3s ease-in; }
 
-        .modal { background: #fff; width: 100%; max-width: 420px; border-radius: 30px; padding: 30px; text-align: center; box-shadow: 0 15px 30px rgba(0,0,0,0.2); position: relative; border: 5px solid white; }
+        .modal { background: #fff; width: 100%; max-width: 420px; border-radius: 30px; padding: 30px; text-align: center; box-shadow: 0 15px 30px rgba(0,0,0,0.2); position: relative; border: 5px solid white; box-sizing: border-box; }
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 20px; box-sizing: border-box; backdrop-filter: blur(5px); }
+        
+        /* 📷 カメラ領域のスタイル */
+        #qr-reader { width: 100%; border-radius: 15px; overflow: hidden; border: 4px solid var(--primary); margin-bottom: 15px; box-sizing: border-box; }
         
         .box-header { background: #fff3e0; padding: 20px 15px; border-radius: 15px; margin-bottom: 20px; width: 100%; box-sizing: border-box; border: 3px dashed #ffb74d; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .box-title { color: #ef6c00; font-size: 1.6rem; margin: 0; font-weight: 900; text-align: center; }
-        
         .tap-badge { display: inline-block; background: #ff9800; color: #fff; padding: 8px 20px; border-radius: 30px; font-size: 0.95rem; font-weight: bold; margin-top: 15px; box-shadow: 0 4px 0 #ef6c00, 0 6px 10px rgba(239, 108, 0, 0.3); animation: bounceBadge 2s infinite; text-align: center; }
         @keyframes bounceBadge { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-8px); } 60% { transform: translateY(-4px); } }
 
@@ -201,6 +193,11 @@
                 <div id="st-1" class="stamp"><span class="stamp-icon">🔑</span><small>B1F<br>ミニクレ</small></div>
                 <div id="st-2" class="stamp"><span class="stamp-icon">🎮</span><small>3F<br>テクモピア</small></div>
             </div>
+            
+            <button id="qr-scan-btn" class="btn" style="background:#ff9800; box-shadow: 0 6px 0 #f57c00;" onclick="openQRReader()">
+                <span style="font-size: 1.5rem;">📷</span> QRコードを読み取る
+            </button>
+            
             <button id="to-check-btn" class="btn" disabled onclick="showScreen('screen-check')">2箇所達成！スタッフ確認へ</button>
         </div>
         
@@ -244,12 +241,19 @@
             <h3 class="box-title">🎁 クーポンBOX</h3>
             <div class="tap-badge">👇 使いたいクーポンをタップしてね 👇</div>
         </div>
-        
-        <div id="coupon-list" class="coupon-list">
-        </div>
+        <div id="coupon-list" class="coupon-list"></div>
         <button class="btn btn-close" style="margin-top: 30px;" onclick="showScreen('screen-rally')">トップへ戻る</button>
     </div>
 
+</div>
+
+<div id="modal-qr" class="overlay">
+    <div class="modal" style="padding: 20px;">
+        <h3 class="modal-title" style="font-size:1.5rem;">QRコードをスキャン</h3>
+        <p style="font-size:0.9rem; color:#555; margin-bottom: 10px;">枠内にQRコードを合わせてね</p>
+        <div id="qr-reader"></div>
+        <button class="btn btn-close" onclick="closeQRModal()">キャンセル</button>
+    </div>
 </div>
 
 <div id="modal-result" class="overlay">
@@ -280,9 +284,10 @@
 <script>
     const GAS_URL = "https://script.google.com/macros/s/AKfycbySrqbkG3sX5kzAZwshkQMOR6M1J2bkXPOtfzHzFs-x6d-rWT23nPHBN8W-hwWAm79lzQ/exec";
     
+    // LINE等のアプリ内ブラウザ警告は一旦残しますが、内蔵カメラならLINE上でも正常に動きます！
     const ua = navigator.userAgent.toLowerCase();
     if (ua.indexOf('line') > -1 || ua.indexOf('twitter') > -1 || ua.indexOf('instagram') > -1) {
-        alert("【警告】\nLINEやSNSのブラウザで開いています。\nクーポンが保存されない（消えてしまう）可能性があるため、右上のメニューから「デフォルトのブラウザ(SafariやChrome)で開く」を選び直してください。");
+        alert("【💡 お知らせ】\nLINE等のブラウザでも「QRコードを読み取る」ボタンを使えばスタンプを貯められます！\n※もしカメラが起動しない場合は「Safari」か「Chrome」で開き直してください。");
     }
 
     const today = new Date();
@@ -296,51 +301,145 @@
     }
 
     let stamps = JSON.parse(localStorage.getItem('tp_stamps')) || [];
-    
     let myCoupons = JSON.parse(localStorage.getItem('tp_coupons')) || [];
+    
+    // 月またぎのクリーンアップ
     const originalLength = myCoupons.length;
     myCoupons = myCoupons.filter(c => {
         const expiryDate = new Date(c.expiry);
         expiryDate.setHours(23, 59, 59, 999);
         return today <= expiryDate;
     });
-    if (myCoupons.length !== originalLength) {
-        localStorage.setItem('tp_coupons', JSON.stringify(myCoupons));
+    if (myCoupons.length !== originalLength) localStorage.setItem('tp_coupons', JSON.stringify(myCoupons));
+
+    // スタンプUIの同期・描画（タブ同期機能込み）
+    function syncStampUI() {
+        let currentStamps = JSON.parse(localStorage.getItem('tp_stamps')) || [];
+        stamps = currentStamps; // 内部メモリも更新
+        
+        currentStamps.forEach(s => {
+            const el = document.getElementById(`st-${s}`);
+            if (el && !el.classList.contains('on')) el.classList.add('on');
+        });
+        
+        // 2個溜まったらQRボタンを無効化し、確認ボタンを有効化
+        if (currentStamps.length >= 2) {
+            document.getElementById('to-check-btn').disabled = false;
+            const qrBtn = document.getElementById('qr-scan-btn');
+            if (qrBtn) {
+                qrBtn.innerHTML = `<span>🎉</span> 2箇所クリア！`;
+                qrBtn.disabled = true;
+            }
+        }
     }
+    // 別タブで操作があった場合に自動で画面を同期
+    window.addEventListener('storage', syncStampUI);
+    window.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') syncStampUI(); });
 
-    const params = new URLSearchParams(window.location.search);
-    let rawId = params.get('id');
-    const id = (rawId === '1' || rawId === '2') ? rawId : null;
-    
-    let selectedCouponIndex = -1;
-
+    // 🌟 ハッピー通知
     function rallyNotif(txt) {
         const d = document.createElement('div');
-        d.style = "position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:linear-gradient(135deg, var(--accent), #ff8a80); color:#fff; padding:20px 40px; border-radius:30px; font-weight:900; font-size:1.6rem; z-index:1000; box-shadow: 0 10px 25px rgba(255,64,129,0.4); text-align:center; border: 4px solid #fff; display:flex; flex-direction:column; align-items:center; justify-content:center; white-space:nowrap; animation:fadeInPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), fadeOut 1s forwards; animation-delay: 0s, 2s;";
+        d.style = "position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:linear-gradient(135deg, var(--accent), #ff8a80); color:#fff; padding:20px 40px; border-radius:30px; font-weight:900; font-size:1.6rem; z-index:3000; box-shadow: 0 10px 25px rgba(255,64,129,0.4); text-align:center; border: 4px solid #fff; display:flex; flex-direction:column; align-items:center; justify-content:center; white-space:nowrap; animation:fadeInPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), fadeOut 1s forwards; animation-delay: 0s, 2s;";
         d.innerHTML = `<div style="font-size:3.5rem; margin-bottom:5px; animation:bounceIcon 0.8s infinite;">🎉</div><div>${txt}</div>`;
         document.body.appendChild(d);
         setTimeout(()=> d.remove(), 3000);
     }
-    const fadeStyle = document.createElement('style');
-    fadeStyle.innerHTML = "@keyframes fadeOut { from { opacity: 1; transform:translate(-50%,-50%) scale(1); } to { opacity: 0; transform:translate(-50%,-60%) scale(0.9); } } @keyframes fadeInPop { 0% { opacity:0; transform:translate(-50%,-40%) scale(0.5); } 80% { transform:translate(-50%,-50%) scale(1.1); } 100% { opacity:1; transform:translate(-50%,-50%) scale(1); } }";
-    document.head.appendChild(fadeStyle);
 
+    // 📷 内蔵カメラ（QRリーダー）の処理
+    let html5QrCode = null;
+
+    function openQRReader() {
+        document.getElementById('modal-qr').style.display = 'flex';
+        
+        if (!html5QrCode) {
+            html5QrCode = new Html5Qrcode("qr-reader");
+        }
+        
+        // 背面カメラを優先して起動
+        html5QrCode.start(
+            { facingMode: "environment" }, 
+            { fps: 10, qrbox: { width: 250, height: 250 } },
+            (decodedText, decodedResult) => {
+                // 読み取り成功！
+                html5QrCode.stop().then(() => {
+                    document.getElementById('modal-qr').style.display = 'none';
+                    handleQRResult(decodedText);
+                }).catch(err => console.log(err));
+            },
+            (errorMessage) => {
+                // 解析中のエラー（無視してOK）
+            }
+        ).catch((err) => {
+            alert("カメラの起動に失敗しました。\n・https://環境であるか確認してください。\n・ブラウザの設定でカメラを「許可」してください。");
+            document.getElementById('modal-qr').style.display = 'none';
+        });
+    }
+
+    function closeQRModal() {
+        if (html5QrCode) {
+            html5QrCode.stop().then(() => {
+                document.getElementById('modal-qr').style.display = 'none';
+            }).catch(() => {
+                document.getElementById('modal-qr').style.display = 'none';
+            });
+        } else {
+            document.getElementById('modal-qr').style.display = 'none';
+        }
+    }
+
+    // 💡 読み取ったQRコードの解析（URLにゴミ文字があっても賢く抽出！）
+    function handleQRResult(text) {
+        let id = null;
+        try {
+            // URLとして解析を試みる
+            const url = new URL(text);
+            let rawId = url.searchParams.get('id');
+            if (rawId) {
+                rawId = rawId.replace(/[^12]/g, ''); // 1,2以外のゴミを排除
+                if (rawId === '1' || rawId === '2') id = rawId;
+            }
+        } catch(e) {
+            // URLじゃない場合（ただの「1」などのテキストQRの場合）
+            let rawId = text.replace(/[^12]/g, '');
+            if (rawId === '1' || rawId === '2') id = rawId;
+        }
+
+        if (id) {
+            if (!stamps.includes(id) && stamps.length < 2) {
+                stamps.push(id);
+                localStorage.setItem('tp_stamps', JSON.stringify(stamps));
+                rallyNotif('スタンプ GET!!');
+                if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+                syncStampUI();
+            } else if (stamps.includes(id)) {
+                alert("このスタンプは既にGETしているよ！");
+            } else {
+                alert("スタンプは2箇所とも達成済みです！スタッフに見せよう！");
+            }
+        } else {
+            alert("このQRコードはスタンプ対象ではありません。");
+        }
+    }
+
+    // （※フォールバック用）標準カメラ等でURLを開いてしまった場合の処理
+    const params = new URLSearchParams(window.location.search);
+    let fallbackRawId = params.get('id');
+    if (fallbackRawId) fallbackRawId = fallbackRawId.replace(/[^12]/g, '');
+    const fallbackId = (fallbackRawId === '1' || fallbackRawId === '2') ? fallbackRawId : null;
+
+    // 起動時の初期化
     if (localStorage.getItem('tp_used') === todayStr) {
         document.getElementById('rally-content').style.display = 'none';
         document.getElementById('played-content').style.display = 'block';
         document.getElementById('main-box-btn').style.display = 'none';
     } else {
-        if (id && !stamps.includes(id) && stamps.length < 2) {
-            stamps.push(id);
+        if (fallbackId && !stamps.includes(fallbackId) && stamps.length < 2) {
+            stamps.push(fallbackId);
             localStorage.setItem('tp_stamps', JSON.stringify(stamps));
             rallyNotif('スタンプ GET!!');
             if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
         }
-        stamps.forEach(s => {
-            const el = document.getElementById(`st-${s}`);
-            if (el) el.classList.add('on');
-        });
-        if (stamps.length >= 2) document.getElementById('to-check-btn').disabled = false;
+        syncStampUI();
     }
 
     function showScreen(screenId) {
@@ -383,7 +482,7 @@
         }
     }
 
-    // 🎰 ソシャゲ風！激アツガチャ演出ロジック
+    // 🎰 激アツ！ガチャ演出ロジック
     function runGacha() {
         const btn = document.getElementById('draw-btn');
         const cap = document.getElementById('gacha-capsule');
@@ -398,21 +497,19 @@
         cap.classList.add('shake-anime');
         if (navigator.vibrate) navigator.vibrate([50, 50, 50, 50, 50, 50, 50, 50, 50, 50]);
         
-        // 1.5秒後にカプセルが弾けて光る
         setTimeout(() => {
             cap.classList.remove('shake-anime');
             
-            // カプセルを上下に開く
+            // カプセルをパカッと開く
             capTop.style.transform = 'translateY(-60px) rotate(-15deg)';
             capBot.style.transform = 'translateY(60px) rotate(15deg)';
             capTop.style.opacity = '0';
             capBot.style.opacity = '0';
             
-            // 画面を白く飛ばす
+            // ピカッとフラッシュ
             flash.style.opacity = '1';
-            if (navigator.vibrate) navigator.vibrate(200); // 弾けた瞬間に大きく震える
+            if (navigator.vibrate) navigator.vibrate(200); 
             
-            // 0.5秒後（画面が真っ白の瞬間）に結果を計算してモーダル表示
             setTimeout(() => {
                 const rand = Math.random() * 100;
                 let res = {};
@@ -440,7 +537,6 @@
                 document.getElementById('result-modal-box').style.borderColor = res.color;
                 createSparkles(res.color);
                 
-                // 次回のためにカプセルを元に戻す
                 setTimeout(() => {
                     capTop.style = '';
                     capBot.style = '';
@@ -448,8 +544,6 @@
                 }, 1000);
 
                 document.getElementById('modal-result').style.display = 'flex';
-                
-                // 光をフェードアウトさせて結果を見せる
                 flash.style.opacity = '0';
                 
             }, 500); 
