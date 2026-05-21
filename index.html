@@ -69,13 +69,35 @@
         .btn-staff:active { box-shadow: 0 0 0 #00e676; }
         .btn-close { background: #9e9e9e; box-shadow: 0 6px 0 #757575; margin-top: 10px; }
 
-        /* ガチャ演出CSS */
+        /* 🔥 ボタン強調用アニメーション（ピコンピコン） */
+        @keyframes superPulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255, 152, 0, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 152, 0, 0); }
+        }
+        .btn-highlight {
+            animation: superPulse 1.5s infinite;
+            background: linear-gradient(135deg, #ff9800, #ff5722) !important;
+            border: none !important;
+            color: #fff !important;
+            box-shadow: 0 6px 0 #e64a19 !important;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        .btn-highlight:active {
+            transform: translateY(6px) scale(0.98) !important;
+            box-shadow: 0 0 0 #e64a19 !important;
+            animation: none;
+        }
+
+        /* 🎰 ガチャ演出CSS（カプセルの色を反転） */
         #gacha-stage { position: relative; width: 100%; height: 280px; margin: 20px 0; display: flex; justify-content: center; align-items: center; overflow: hidden; }
         .sunburst { position: absolute; top: 50%; left: 50%; width: 600px; height: 600px; margin-top: -300px; margin-left: -300px; background: repeating-conic-gradient(#fff9c4 0 15deg, transparent 15deg 30deg); animation: rotateBg 15s infinite linear; z-index: 0; opacity: 0.8; }
         @keyframes rotateBg { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        
         .capsule { position: relative; width: 130px; height: 130px; z-index: 2; animation: floatCapsule 2.5s infinite ease-in-out; }
-        .capsule-top { width: 130px; height: 65px; background: linear-gradient(135deg, var(--accent), #ff8a80); border-radius: 65px 65px 0 0; border: 5px solid #fff; border-bottom: none; box-sizing: border-box; box-shadow: inset -10px -10px 20px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.2); position: relative; z-index: 3; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .capsule-bottom { width: 130px; height: 65px; background: #fffdf5; border-radius: 0 0 65px 65px; border: 5px solid #fff; box-sizing: border-box; box-shadow: inset -10px 10px 20px rgba(0,0,0,0.05), 0 5px 15px rgba(0,0,0,0.2); position: relative; z-index: 1; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .capsule-top { width: 130px; height: 65px; background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(4px); border-radius: 65px 65px 0 0; border: 5px solid #fff; border-bottom: none; box-sizing: border-box; box-shadow: inset -10px -10px 20px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.2); position: relative; z-index: 3; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .capsule-bottom { width: 130px; height: 65px; background: linear-gradient(135deg, var(--accent), #ff8a80); border-radius: 0 0 65px 65px; border: 5px solid #fff; box-sizing: border-box; box-shadow: inset -10px 10px 20px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.2); position: relative; z-index: 1; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
         .capsule-belt { position: absolute; top: 50%; left: -5px; width: calc(100% + 10px); height: 12px; background: #fff; transform: translateY(-50%); z-index: 4; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         @keyframes floatCapsule { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(5deg); } }
         .shake-anime { animation: shakeCapsule 0.1s infinite !important; }
@@ -106,9 +128,15 @@
         .coupon-card.used .c-grade, .coupon-card.used .c-desc, .coupon-card.used .c-expiry { color: #9e9e9e !important; }
         .used-stamp { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-20deg); font-size: 3rem; color: rgba(239, 154, 154, 0.85); font-weight: 900; border: 5px solid rgba(239, 154, 154, 0.85); padding: 5px 20px; border-radius: 15px; pointer-events: none; font-family: var(--pop-font); letter-spacing: 5px; z-index: 10; }
 
+        /* ✨ 演出用のパーティクル */
         .sparkle { position: absolute; font-size: 1.5rem; opacity: 0; animation: sparkleFloat 1.2s ease-out; }
+        .super-sparkle { position: absolute; font-size: 2.5rem; opacity: 0; animation: superSparkleFloat 1s ease-out forwards; z-index: 100;}
         @keyframes sparkleFloat { 0% { transform: translate(0,0) scale(0.5); opacity: 1; } 100% { transform: translate(var(--x), var(--y)) scale(1.5); opacity: 0; } }
-        @keyframes bounceIcon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes superSparkleFloat { 0% { transform: translate(0,0) scale(0) rotate(0deg); opacity: 1; } 50% { opacity: 1; } 100% { transform: translate(var(--x), var(--y)) scale(2) rotate(180deg); opacity: 0; } }
+        
+        /* 🌈 1等用の虹色背景 */
+        @keyframes rainbowBg { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
+        .rainbow-mode { animation: rainbowBg 1.5s infinite linear; border-width: 8px !important; }
 
         /* 🛡️ 偽造防止（アンチスクショ）用CSS */
         .anti-fraud-bar { background: repeating-linear-gradient(45deg, var(--accent), var(--accent) 15px, #ff80ab 15px, #ff80ab 30px); background-size: 42px 42px; animation: moveStripes 1s linear infinite; height: 12px; width: 100%; margin-bottom: 15px; border-radius: 6px; }
@@ -142,7 +170,7 @@
                 2箇所回るとガチャが回せるよ
             </p>
             <div class="stamp-rally">
-                <div id="st-1" class="stamp"><span class="stamp-icon">🔑</span><small>B1F<br>ミニクレ</small></div>
+                <div id="st-1" class="stamp"><span class="stamp-icon">🔑</span><small>B1<br>ミニクレ</small></div>
                 <div id="st-2" class="stamp"><span class="stamp-icon">🎮</span><small>3F<br>テクモピア</small></div>
             </div>
             
@@ -178,7 +206,7 @@
         <h3 style="color:var(--warning); font-size: 1.8rem; font-weight:900;">STAFF CHECK</h3>
         <p style="font-weight:bold; margin-top:10px; color:#555;">3Fカウンターのスタッフに<br>この画面を見せてください</p>
         <div style="font-size: 5rem; margin: 30px;">🎁</div>
-        <button class="btn btn-staff" onclick="staffApprove()">スタッフ確認済み(次へ)</button>
+        <button class="btn btn-staff btn-highlight" onclick="staffApprove()">スタッフ確認済み(次へ)</button>
         <button class="btn btn-close" onclick="showScreen('screen-rally')">戻る</button>
     </div>
 
@@ -195,7 +223,7 @@
             </div>
         </div>
         
-        <button id="draw-btn" class="btn" style="background:var(--accent); box-shadow: 0 6px 0 #c51162;" onclick="runGacha()">ガチャを回す！</button>
+        <button id="draw-btn" class="btn btn-highlight" onclick="runGacha()">ガチャを回す！</button>
     </div>
 
     <div id="screen-box" class="screen">
@@ -208,6 +236,19 @@
         <button class="btn btn-close" style="margin-top: 30px;" onclick="showScreen('screen-rally')">トップへ戻る</button>
     </div>
 
+</div>
+
+<div id="modal-browser-warning" class="overlay" style="z-index: 9999;">
+    <div class="modal" style="padding: 20px;">
+        <h3 class="modal-title" style="color:var(--warning); font-size:1.3rem;">⚠️ ブラウザの確認</h3>
+        <p style="font-size:0.95rem; text-align:left; color:#333; margin:15px 0; font-weight:bold; line-height: 1.5;">
+            現在一時的なブラウザで開いている可能性があります。<br><br>
+            このままだとスタンプが貯まらなかったり、獲得したクーポンが消滅してしまう等の不具合が発生します。<br><br>
+            以下のボタンからURLをコピーし、<span style="color:#d32f2f;">Safari</span> または <span style="color:#d32f2f;">Chrome</span> で開き直してください。
+        </p>
+        <button class="btn" style="background:#2196f3; box-shadow: 0 6px 0 #1976d2;" onclick="copyUrl()">🔗 URLをコピーする</button>
+        <button class="btn btn-close" style="font-size: 0.9rem;" onclick="document.getElementById('modal-browser-warning').style.display='none'">このまま続ける(非推奨)</button>
+    </div>
 </div>
 
 <div id="modal-qr" class="overlay">
@@ -241,7 +282,7 @@
         <p class="modal-desc" id="use-target-desc" style="background:#f5f5f5; padding:15px; border-radius:10px;"></p>
         <p style="color:var(--warning); font-size:1rem; font-weight:900; margin-bottom:20px;">⚠️ 注意 ⚠️<br>必ずスタッフの目の前で<br>「使用する」を押してください。</p>
         
-        <button class="btn btn-staff" onclick="executeCoupon()">スタッフ確認済み(使用)</button>
+        <button class="btn btn-staff btn-highlight" onclick="executeCoupon()">スタッフ確認済み(使用)</button>
         <button class="btn btn-close" onclick="closeModal()">キャンセル</button>
         
         <div class="anti-fraud-bar" style="margin-top: 15px; margin-bottom: 0;"></div>
@@ -251,10 +292,22 @@
 <script>
     const GAS_URL = "https://script.google.com/macros/s/AKfycbxZjLW33e4Kja4FIn2WiTtGM0o5Qs0-ND-v0Jq6K8gE82zNEkVM2tTHdoMU6SPIRKrcNg/exec";
     
-    const ua = navigator.userAgent.toLowerCase();
-    if (ua.indexOf('line') > -1 || ua.indexOf('twitter') > -1 || ua.indexOf('instagram') > -1) {
-        alert("【💡 お知らせ】\nLINE等のブラウザでも「QRコードを読み取る」ボタンを使えばスタンプを貯められます！\n※もしカメラが起動しない場合は「Safari」か「Chrome」で開き直してください。");
+    function copyUrl() {
+        const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+        navigator.clipboard.writeText(cleanUrl).then(() => {
+            alert("URLをコピーしました！\nホーム画面に戻ってSafariやChromeを開き、貼り付けてください。");
+        }).catch(err => {
+            alert("コピーに失敗しました。お手数ですが画面上部から手動でURLをコピーしてください。");
+        });
     }
+
+    window.onload = () => {
+        const ua = navigator.userAgent.toLowerCase();
+        const isAppBrowser = /line|twitter|instagram|fbav|fban/.test(ua);
+        if (isAppBrowser) {
+            document.getElementById('modal-browser-warning').style.display = 'flex';
+        }
+    };
 
     const today = new Date();
     const todayStr = today.toLocaleDateString();
@@ -272,7 +325,6 @@
     let myCoupons = [];
     let selectedCouponIndex = -1;
 
-    // 🛡️ 新機能1：クーポンの最新データを読み込む関数（同期用）
     function reloadCoupons() {
         let currentCoupons = JSON.parse(localStorage.getItem('tp_coupons')) || [];
         const originalLength = currentCoupons.length;
@@ -291,34 +343,36 @@
         myCoupons = currentCoupons;
     }
     
-    // 初回読み込み
     reloadCoupons();
 
-    // 🛡️ 新機能2：全データの最強同期機能（複数タブ対策）
     function syncAllData() {
-        // スタンプの同期
         let currentStamps = JSON.parse(localStorage.getItem('tp_stamps')) || [];
         stamps = currentStamps;
         currentStamps.forEach(s => {
             const el = document.getElementById(`st-${s}`);
             if (el && !el.classList.contains('on')) el.classList.add('on');
         });
+        
+        const toCheckBtn = document.getElementById('to-check-btn');
+        const qrBtn = document.getElementById('qr-scan-btn');
+        
         if (currentStamps.length >= 2) {
-            document.getElementById('to-check-btn').disabled = false;
-            const qrBtn = document.getElementById('qr-scan-btn');
-            if (qrBtn) { qrBtn.innerHTML = `<span>🎉</span> 2箇所クリア！`; qrBtn.disabled = true; }
+            if (toCheckBtn) {
+                toCheckBtn.disabled = false;
+                toCheckBtn.classList.add('btn-highlight'); 
+            }
+            if (qrBtn) { 
+                qrBtn.innerHTML = `<span>🎉</span> 2箇所クリア！`; 
+                qrBtn.disabled = true; 
+            }
         }
 
-        // クーポンの最新情報を再取得
         reloadCoupons();
-        
-        // もし今クーポンBOX画面を開いていたら、一瞬で最新状態（USED）に書き換える
         const boxScreen = document.getElementById('screen-box');
         if (boxScreen && boxScreen.classList.contains('active')) {
             openCouponBox();
         }
 
-        // ⚠️ 別のタブで使用された場合、今開いている使用モーダルを強制終了させる
         const useModal = document.getElementById('modal-use');
         if (useModal && useModal.style.display === 'flex' && selectedCouponIndex !== -1) {
             if (myCoupons[selectedCouponIndex] && myCoupons[selectedCouponIndex].used) {
@@ -329,7 +383,6 @@
         }
     }
 
-    // 裏でデータが変わった時＆タブを開き直した時に同期発動
     window.addEventListener('storage', syncAllData);
     window.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') syncAllData(); });
 
@@ -392,13 +445,11 @@
         } else { alert("このQRコードはスタンプ対象ではありません。"); }
     }
 
-    // 💡 URLのIDパラメータ処理
     const params = new URLSearchParams(window.location.search);
     let fallbackRawId = params.get('id');
     if (fallbackRawId) fallbackRawId = fallbackRawId.replace(/[^12]/g, '');
     const fallbackId = (fallbackRawId === '1' || fallbackRawId === '2') ? fallbackRawId : null;
 
-    // 🛡️ 新機能4：URLに残った「?id=1」を読み取り直後に消去する（翌日の自動付与バグ防止）
     if (window.history && window.history.replaceState && window.location.search) {
         const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
         window.history.replaceState(null, null, cleanUrl);
@@ -437,18 +488,26 @@
         if(confirm("スタッフ専用：ガチャを開始します。よろしいですか？")) showScreen('screen-gacha');
     }
 
-    function createSparkles(color) {
+    function createSparkles(color, rarity) {
         const area = document.getElementById('result-sparkles');
         area.innerHTML = '';
-        for (let i = 0; i < 20; i++) {
+        
+        const num = rarity === 5 ? 100 : (rarity >= 3 ? 50 : 20);
+        const className = rarity === 5 ? 'super-sparkle' : 'sparkle';
+        
+        for (let i = 0; i < num; i++) {
             const sp = document.createElement('div');
-            sp.className = 'sparkle';
+            sp.className = className;
             sp.innerText = '✨';
-            sp.style.color = color;
+            
+            sp.style.color = rarity === 5 ? `hsl(${Math.random()*360}, 100%, 50%)` : color;
             sp.style.left = '50%';
             sp.style.top = '10%';
-            sp.style.setProperty('--x', (Math.random() * 200 - 100) + 'px');
-            sp.style.setProperty('--y', (Math.random() * -150 - 50) + 'px');
+            
+            const spreadX = rarity === 5 ? 400 : 200;
+            const spreadY = rarity === 5 ? 300 : 150;
+            sp.style.setProperty('--x', (Math.random() * spreadX - (spreadX/2)) + 'px');
+            sp.style.setProperty('--y', (Math.random() * -spreadY - 50) + 'px');
             area.appendChild(sp);
         }
     }
@@ -476,15 +535,17 @@
             setTimeout(() => {
                 const rand = Math.random() * 100;
                 let res = {};
-                if (rand < 3.0) res = { g: "1等", d: "クレーンゲーム6回無料券", color: "#fbc02d" }; 
-                else if (rand < 7.0) res = { g: "2等", d: "メダル50枚 ＋ 増量券", color: "#9e9e9e" }; 
-                else if (rand < 12.0) res = { g: "3等", d: "クレーンゲーム3回無料券", color: "#f44336" }; 
-                else if (rand < 18.0) res = { g: "4等", d: "メダル30枚 ＋ 増量券", color: "#fbc02d" }; 
-                else if (rand < 25.0) res = { g: "5等", d: "クレーンゲーム1回無料券", color: "#e91e63" }; 
-                else if (rand < 40.0) res = { g: "6等", d: "メダル10枚 ＋ 増量券", color: "#00bcd4" }; 
-                else res = { g: "7等", d: "クレーンゲーム1回増量券", color: "#78909c" };
+                let rarity = 1; 
                 
-                // ガチャ結果保存前に一応最新情報を読み込む
+                // 🎯 ガチャ排出率の完璧な調整（王道バランス）
+                if (rand < 3.0) { res = { g: "1等", d: "クレーンゲーム6回無料券", color: "#fbc02d" }; rarity = 5; } // 3%
+                else if (rand < 8.0) { res = { g: "2等", d: "メダル50枚 ＋ 増量券", color: "#9e9e9e" }; rarity = 4; } // 5%
+                else if (rand < 16.0) { res = { g: "3等", d: "クレーンゲーム3回無料券", color: "#f44336" }; rarity = 3; } // 8%
+                else if (rand < 28.0) { res = { g: "4等", d: "メダル30枚 ＋ 増量券", color: "#fbc02d" }; rarity = 3; } // 12%
+                else if (rand < 48.0) { res = { g: "5等", d: "クレーンゲーム1回無料券", color: "#e91e63" }; rarity = 2; } // 20%
+                else if (rand < 70.0) { res = { g: "6等", d: "メダル10枚 ＋ 増量券", color: "#00bcd4" }; rarity = 2; } // 22%
+                else { res = { g: "7等", d: "クレーンゲーム1回増量券", color: "#78909c" }; rarity = 1; } // 30%
+                
                 reloadCoupons();
                 myCoupons.push({grade: res.g, desc: res.d, color: res.color, obtained: todayStr, expiry: expiryStr, expiryTime: expiryTimestamp, used: false});
                 localStorage.setItem('tp_coupons', JSON.stringify(myCoupons));
@@ -499,8 +560,19 @@
                 stamps = []; 
 
                 document.getElementById('result-desc').innerHTML = `<span style="font-size:2.2rem; color:${res.color};">${res.g}</span><br>${res.d}`;
-                document.getElementById('result-modal-box').style.borderColor = res.color;
-                createSparkles(res.color);
+                
+                const modalBox = document.getElementById('result-modal-box');
+                modalBox.style.borderColor = res.color;
+                modalBox.classList.remove('rainbow-mode');
+                
+                if (rarity === 5) {
+                    modalBox.classList.add('rainbow-mode');
+                    if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 400]);
+                } else if (rarity >= 3) {
+                    if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+                }
+
+                createSparkles(res.color, rarity);
                 
                 setTimeout(() => { capTop.style = ''; capBot.style = ''; btn.innerText = "ガチャを回す！"; }, 1000);
                 document.getElementById('modal-result').style.display = 'flex';
@@ -566,7 +638,6 @@
     function executeCoupon() {
         if (selectedCouponIndex === -1) return;
 
-        // 🛡️ 新機能3：使用ボタンを押した瞬間の「最終防衛ライン」
         reloadCoupons();
         if (myCoupons[selectedCouponIndex] && myCoupons[selectedCouponIndex].used) {
             closeModal();
