@@ -89,19 +89,112 @@
             animation: none;
         }
 
-        /* 🎰 ガチャ演出CSS（カプセルの色を反転） */
-        #gacha-stage { position: relative; width: 100%; height: 280px; margin: 20px 0; display: flex; justify-content: center; align-items: center; overflow: hidden; }
-        .sunburst { position: absolute; top: 50%; left: 50%; width: 600px; height: 600px; margin-top: -300px; margin-left: -300px; background: repeating-conic-gradient(#fff9c4 0 15deg, transparent 15deg 30deg); animation: rotateBg 15s infinite linear; z-index: 0; opacity: 0.8; }
+        /* 🎰 ガチャ演出CSS（ド派手な虹色オーブ版） */
+        #screen-gacha {
+            background: radial-gradient(circle at center, #ffe0e9 0%, #ff80ab 100%);
+            position: relative;
+            overflow: hidden;
+            border-radius: 0 0 20px 20px;
+        }
+
+        #gacha-stage { 
+            position: relative; 
+            width: 100%; 
+            height: 350px; 
+            margin: 20px 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            flex-direction: column;
+        }
+
+        .sunburst { 
+            position: absolute; 
+            top: 50%; left: 50%; 
+            width: 800px; height: 800px; 
+            margin-top: -400px; margin-left: -400px; 
+            background: repeating-conic-gradient(rgba(255,255,255,0.4) 0 15deg, transparent 15deg 30deg); 
+            animation: rotateBg 10s infinite linear; 
+            z-index: 0; 
+        }
         @keyframes rotateBg { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         
-        .capsule { position: relative; width: 130px; height: 130px; z-index: 2; animation: floatCapsule 2.5s infinite ease-in-out; }
-        .capsule-top { width: 130px; height: 65px; background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(4px); border-radius: 65px 65px 0 0; border: 5px solid #fff; border-bottom: none; box-sizing: border-box; box-shadow: inset -10px -10px 20px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.2); position: relative; z-index: 3; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .capsule-bottom { width: 130px; height: 65px; background: linear-gradient(135deg, var(--accent), #ff8a80); border-radius: 0 0 65px 65px; border: 5px solid #fff; box-sizing: border-box; box-shadow: inset -10px 10px 20px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.2); position: relative; z-index: 1; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        /* 台座 */
+        .pedestal {
+            position: absolute;
+            bottom: 40px;
+            width: 160px;
+            height: 60px;
+            background: linear-gradient(to bottom, #78909c, #455a64);
+            border-radius: 50% 50% 20% 20%;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4), inset 0 5px 15px rgba(255,255,255,0.5);
+            z-index: 1;
+            border: 4px solid #37474f;
+        }
+
+        /* 虹色オーブ (より鮮やかな発色に変更) */
+        .gacha-orb { 
+            position: relative; 
+            width: 180px; 
+            height: 180px; 
+            border-radius: 50%;
+            /* より明るいネオンカラーのグラデーション */
+            background: radial-gradient(circle at 30% 30%, #ffffff 0%, #fff100 20%, #ff0055 45%, #00e5ff 70%, #00ff55 90%, #ffaa00 100%);
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.9), inset -20px -20px 40px rgba(0,0,0,0.2), 0 20px 30px rgba(0,0,0,0.4);
+            z-index: 2; 
+            animation: floatOrb 2.5s infinite ease-in-out, hueShift 3s infinite linear; 
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.1s;
+            -webkit-tap-highlight-color: transparent;
+        }
         
-        .capsule-belt { position: absolute; top: 50%; left: -5px; width: calc(100% + 10px); height: 12px; background: #fff; transform: translateY(-50%); z-index: 4; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        @keyframes floatCapsule { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(5deg); } }
-        .shake-anime { animation: shakeCapsule 0.1s infinite !important; }
-        @keyframes shakeCapsule { 0% { transform: translate(4px, 4px) rotate(0deg); } 25% { transform: translate(-4px, -3px) rotate(-5deg); } 50% { transform: translate(-4px, 4px) rotate(5deg); } 75% { transform: translate(4px, -4px) rotate(-5deg); } 100% { transform: translate(4px, 4px) rotate(0deg); } }
+        /* オーブの光沢 */
+        .gacha-orb::after {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: 15%;
+            width: 40%;
+            height: 40%;
+            background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .gacha-orb:active { transform: scale(0.95); }
+
+        .tap-badge-orb {
+            background: #ff4081;
+            color: white;
+            font-family: var(--pop-font);
+            font-size: 1.8rem;
+            padding: 5px 20px;
+            border-radius: 30px;
+            border: 3px solid white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 0px #c51162;
+            animation: pulse-btn 1.2s infinite;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        @keyframes floatOrb { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes hueShift { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
+        
+        .shake-anime { animation: shakeOrb 0.1s infinite !important; }
+        @keyframes shakeOrb { 0% { transform: translate(4px, 4px) scale(1.05); } 25% { transform: translate(-4px, -3px) scale(1.05); } 50% { transform: translate(-4px, 4px) scale(1.05); } 75% { transform: translate(4px, -4px) scale(1.05); } 100% { transform: translate(4px, 4px) scale(1.05); } }
+        
+        /* 破裂アニメーション */
+        .burst-anime { animation: burstOrb 0.6s forwards !important; }
+        @keyframes burstOrb { 
+            0% { transform: scale(1); filter: brightness(1); } 
+            50% { transform: scale(1.5); filter: brightness(2); } 
+            100% { transform: scale(0); opacity: 0; filter: brightness(3); } 
+        }
+
         #full-flash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; opacity: 0; pointer-events: none; z-index: 9999; transition: opacity 0.3s ease-in; }
 
         .modal { background: #fff; width: 100%; max-width: 420px; border-radius: 30px; padding: 30px; text-align: center; box-shadow: 0 15px 30px rgba(0,0,0,0.2); position: relative; border: 5px solid white; box-sizing: border-box; overflow: hidden; }
@@ -211,19 +304,16 @@
     </div>
 
     <div id="screen-gacha" class="screen" style="text-align:center;">
-        <h3 style="color:var(--primary); font-size: 2rem; font-family: var(--pop-font); margin-top: 0;">GACHA TIME!</h3>
-        <p style="font-weight:bold; color:#555; margin-top:0;">タップしてガチャを引こう！</p>
+        <h3 style="color:white; font-size: 2.5rem; font-family: var(--pop-font); margin-top: 10px; text-shadow: 2px 3px 0px #c51162, 0 0 15px rgba(255,255,255,0.8);">GACHA TIME!</h3>
+        <p style="font-weight:900; color:white; font-size: 1.4rem; margin-top:0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5), 0 0 10px rgba(255,255,255,0.8);">＼ ガチャに挑戦！ ／</p>
         
         <div id="gacha-stage">
             <div class="sunburst"></div>
-            <div class="capsule" id="gacha-capsule">
-                <div class="capsule-top" id="capsule-top"></div>
-                <div class="capsule-belt"></div>
-                <div class="capsule-bottom" id="capsule-bottom"></div>
+            <div class="pedestal"></div>
+            <div class="gacha-orb" id="gacha-orb" onclick="runGacha()">
+                <div class="tap-badge-orb">TAP!</div>
             </div>
         </div>
-        
-        <button id="draw-btn" class="btn btn-highlight" onclick="runGacha()">ガチャを回す！</button>
     </div>
 
     <div id="screen-box" class="screen">
@@ -513,23 +603,19 @@
     }
 
     function runGacha() {
-        const btn = document.getElementById('draw-btn');
-        const cap = document.getElementById('gacha-capsule');
-        const capTop = document.getElementById('capsule-top');
-        const capBot = document.getElementById('capsule-bottom');
+        const orb = document.getElementById('gacha-orb');
         const flash = document.getElementById('full-flash');
         
-        btn.disabled = true;
-        btn.innerText = "抽選中...";
-        cap.classList.add('shake-anime');
+        // 連打防止
+        if (orb.classList.contains('shake-anime') || orb.classList.contains('burst-anime')) return;
+
+        orb.classList.add('shake-anime');
         if (navigator.vibrate) navigator.vibrate([50, 50, 50, 50, 50, 50, 50, 50, 50, 50]);
         
         setTimeout(() => {
-            cap.classList.remove('shake-anime');
-            capTop.style.transform = 'translateY(-60px) rotate(-15deg)';
-            capBot.style.transform = 'translateY(60px) rotate(15deg)';
-            capTop.style.opacity = '0'; capBot.style.opacity = '0';
-            flash.style.opacity = '1';
+            orb.classList.remove('shake-anime');
+            orb.classList.add('burst-anime'); // 弾ける演出
+            flash.style.opacity = '1'; // 画面全体が白くフラッシュ
             if (navigator.vibrate) navigator.vibrate(200); 
             
             setTimeout(() => {
@@ -574,11 +660,13 @@
 
                 createSparkles(res.color, rarity);
                 
-                setTimeout(() => { capTop.style = ''; capBot.style = ''; btn.innerText = "ガチャを回す！"; }, 1000);
+                // 次回のためにオーブの状態をリセット
+                setTimeout(() => { orb.classList.remove('burst-anime'); }, 1000);
+
                 document.getElementById('modal-result').style.display = 'flex';
                 flash.style.opacity = '0';
-            }, 500); 
-        }, 1500); 
+            }, 500); // フラッシュから結果表示までの時間
+        }, 1500); // 揺れる時間
     }
 
     function openCouponBox() {
