@@ -673,7 +673,6 @@
         if (localStorage.getItem('tp_used') === todayStr) {
             document.getElementById('rally-content').style.display = 'none';
             document.getElementById('played-content').style.display = 'block';
-            document.getElementById('main-box-btn').style.display = 'none';
         } else {
             if (fallbackId && !stamps.includes(fallbackId) && stamps.length < 2) {
                 stamps.push(fallbackId);
@@ -711,15 +710,8 @@
 
         const boxBtn = document.getElementById('main-box-btn');
         if (boxBtn) {
-            if (screenId === 'screen-rally') {
-                if (document.getElementById('played-content').style.display === 'block') { 
-                    boxBtn.style.display = 'none'; 
-                } else { 
-                    boxBtn.style.display = 'flex'; 
-                }
-            } else if (screenId === 'screen-closed') {
-                // お休み中画面でもクーポンBOXへのボタンは表示する
-                boxBtn.style.display = 'flex'; 
+            if (screenId === 'screen-rally' || screenId === 'screen-closed') {
+                boxBtn.style.display = 'flex'; // 無条件で常に表示
             } else { 
                 boxBtn.style.display = 'none'; 
             }
@@ -802,7 +794,6 @@
                 
                 document.getElementById('rally-content').style.display = 'none';
                 document.getElementById('played-content').style.display = 'block';
-                document.getElementById('main-box-btn').style.display = 'none'; 
                 stamps = []; 
 
                 document.getElementById('result-desc').innerHTML = `<span style="font-size:2.2rem; color:${res.color};">${res.g}</span><br>${res.d}`;
