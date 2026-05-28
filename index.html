@@ -102,7 +102,6 @@
         .btn-staff { background: var(--staff-color); color: #fff; box-shadow: 0 6px 0 #d5006d; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
         .btn-staff:active { box-shadow: 0 0 0 #d5006d; }
         .btn-close { background: #9e9e9e; box-shadow: 0 6px 0 #757575; margin-top: 10px; }
-        .btn:disabled { background: #e0e0e0 !important; color: #9e9e9e !important; box-shadow: 0 6px 0 #bdbdbd !important; pointer-events: none; }
 
         @keyframes superPulse {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7); }
@@ -244,7 +243,6 @@
         .c-expiry { color: var(--warning); font-weight: bold; }
         .empty-msg { text-align: center; color: #999; margin-top: 40px; font-weight: bold; font-size: 1.1rem; }
 
-        /* 使用済み・期限切れクーポンのスタイル */
         .coupon-card.used { border-left-color: #bdbdbd !important; background: #f5f5f5; box-shadow: none; cursor: default; }
         .coupon-card.used:hover { transform: none; }
         .coupon-card.used .c-grade, .coupon-card.used .c-desc, .coupon-card.used .c-expiry { color: #9e9e9e !important; }
@@ -306,20 +304,17 @@
         <p>スタンプを集めてガチャをひこう</p>
     </div>
 
-    <!-- 常に表示されるメインのクーポンBOXボタン -->
     <button id="main-box-btn" class="box-btn" onclick="openCouponBox()">
         <span class="box-icon">🎁</span>
         <span>クーポンBOXを開く</span>
     </button>
 
-    <!-- メイン画面（ラリー画面） -->
     <div id="screen-rally" class="screen active">
         <div id="rally-content" style="width:100%; text-align:center;">
             
             <div class="mission-card">
                 <div class="mission-badge" id="mission-badge-text">📍 MISSION 📍</div>
                 
-                <!-- 営業時間内のミッション表示 -->
                 <div id="mission-text-active">
                     <p style="color:var(--primary); font-size: 1.4rem; font-weight: 900; margin: 15px 0 10px;">
                         スタンプを集めよう！
@@ -332,7 +327,6 @@
                     </p>
                 </div>
 
-                <!-- 営業時間外（受付終了）のミッション表示 -->
                 <div id="mission-text-closed" style="display:none;">
                     <p style="color:#78909c; font-size: 1.4rem; font-weight: 900; margin: 15px 0 10px;">
                         🌙 受付終了
@@ -350,12 +344,10 @@
                 <div id="st-2" class="stamp"><span class="stamp-icon">🎮</span><small>3F<br>テクモピア</small></div>
             </div>
             
-            <!-- スキャンボタン（営業時間内） -->
             <button id="qr-scan-btn" class="btn" onclick="openQRReader()">
                 <span style="font-size: 1.5rem;">📷</span> 二次元コードを読み取る
             </button>
 
-            <!-- スキャンボタン（営業時間外で無効化状態） -->
             <button id="qr-scan-btn-disabled" class="btn" style="display:none; background:#9e9e9e; box-shadow: 0 6px 0 #757575; cursor:not-allowed;" onclick="alert('本日のガチャ受付は終了しました。\n営業時間内（10:00〜20:00）にご利用ください。')">
                 🌙 現在は受付時間外です
             </button>
@@ -365,13 +357,17 @@
             </button>
         </div>
         
-        <!-- クリア済みの画面 -->
         <div id="played-content" style="display:none; text-align:center; width:100%;">
             <div style="font-size: 6rem; margin: 20px 0;">🎉</div>
             <h2 style="font-family: var(--pop-font); color: var(--gold); font-size: 2.5rem; margin:0; text-shadow: 2px 2px 0 #fff9c4;">CLEAR!</h2>
             <p style="color: var(--primary); margin-top: 10px; font-weight:900; font-size: 1.2rem;">本日の探検は終了！<br>また明日遊んでね！</p>
             
-            <div style="background: #f0f8ff; border: 3px solid #1da1f2; border-radius: 15px; padding: 15px; margin: 25px auto 0; width: 85%; max-width: 320px; box-sizing: border-box;">
+            <button class="box-btn" style="margin: 25px auto 25px; width: 80%; max-width: 300px;" onclick="openCouponBox()">
+                <span class="box-icon">🎁</span>
+                <span>クーポンBOXを見る</span>
+            </button>
+
+            <div style="background: #f0f8ff; border: 3px solid #1da1f2; border-radius: 15px; padding: 15px; margin: 0 auto; width: 85%; max-width: 320px; box-sizing: border-box;">
                 <p style="color: #1da1f2; font-weight: 900; margin: 0 0 10px 0; font-size: 1.1rem;">最新情報をチェックしよう！</p>
                 <a href="https://x.com/tec_kouzunomori" target="_blank" style="display: block; background: #000; color: #fff; text-decoration: none; padding: 12px; border-radius: 10px; font-weight: bold; font-size: 0.95rem; box-shadow: 0 4px 0 #333; transition: 0.2s;">
                     <span style="font-size: 1.4rem; margin-right:5px; vertical-align: middle;">𝕏</span>
@@ -382,7 +378,30 @@
         </div>
     </div>
 
-    <!-- その他画面群 -->
+    <div id="screen-closed" class="screen" style="text-align:center;">
+        <div style="font-size: 6rem; margin: 20px 0;">🌙</div>
+        <h2 style="font-family: var(--pop-font); color: #78909c; font-size: 2.5rem; margin:0; text-shadow: 2px 2px 0 #e0e0e0;">CLOSE</h2>
+        <p style="color: var(--primary); margin-top: 15px; font-weight:900; font-size: 1.3rem; line-height: 1.6;">
+            本日のガチャ受付は<br>終了しました<br>
+            <span style="color:#555; font-size:1rem;">(受付時間 10:00〜20:00)</span><br>
+            また明日遊びにきてね！
+        </p>
+        
+        <button class="box-btn" style="margin: 25px auto 25px; width: 80%; max-width: 300px;" onclick="openCouponBox()">
+            <span class="box-icon">🎁</span>
+            <span>クーポンBOXを見る</span>
+        </button>
+
+        <div style="background: #f0f8ff; border: 3px solid #1da1f2; border-radius: 15px; padding: 15px; margin: 0 auto; width: 85%; max-width: 320px; box-sizing: border-box;">
+            <p style="color: #1da1f2; font-weight: 900; margin: 0 0 10px 0; font-size: 1.1rem;">最新情報をチェックしよう！</p>
+            <a href="https://x.com/tec_kouzunomori" target="_blank" style="display: block; background: #000; color: #fff; text-decoration: none; padding: 12px; border-radius: 10px; font-weight: bold; font-size: 0.95rem; box-shadow: 0 4px 0 #333; transition: 0.2s;">
+                <span style="font-size: 1.4rem; margin-right:5px; vertical-align: middle;">𝕏</span>
+                <span style="vertical-align: middle;">テクモピア公津の杜店</span><br>
+                <span style="font-size: 0.8rem; color:#aaa;">@tec_kouzunomori</span>
+            </a>
+        </div>
+    </div>
+
     <div id="screen-check" class="screen" style="text-align:center;">
         <h3 style="color:var(--warning); font-size: 1.8rem; font-weight:900;">STAFF CHECK</h3>
         <p style="font-weight:bold; margin-top:10px; color:#555;">3Fカウンターのスタッフに<br>この画面を見せてください</p>
@@ -407,7 +426,7 @@
     <div id="screen-box" class="screen">
         <div class="box-header">
             <h3 class="box-title">🎁 クーポンBOX</h3>
-            <div class="tap-badge">👇 使いたいクーポンをタップしてね 👇</div>
+            <div class="tap-badge" id="box-top-badge">👇 使いたいクーポンをタップしてね 👇</div>
         </div>
         
         <div id="coupon-list" class="coupon-list"></div>
@@ -416,7 +435,6 @@
 
 </div>
 
-<!-- 各種モーダル -->
 <div id="modal-browser-warning" class="overlay" style="z-index: 9999;">
     <div class="modal" style="padding: 20px;">
         <h3 class="modal-title" style="color:var(--warning); font-size:1.3rem;">⚠️ ブラウザの確認</h3>
@@ -461,7 +479,6 @@
         <p class="modal-desc" id="use-target-desc" style="background:#f5f5f5; padding:15px; border-radius:10px;"></p>
         <p style="color:var(--warning); font-size:1rem; font-weight:900; margin-bottom:20px;">⚠️ 注意 ⚠️<br>必ずスタッフの目の前で<br>「使用する」を押してください。</p>
         
-        <!-- 💡 営業時間外はここが動的にグレーアウトされます -->
         <button id="modal-use-btn" class="btn btn-staff btn-highlight" onclick="executeCoupon()">スタッフ確認済み(使用)</button>
         <button class="btn btn-close" onclick="closeModal()">キャンセル</button>
         
@@ -472,13 +489,30 @@
 <script>
     const GAS_URL = "https://script.google.com/macros/s/AKfycbx9V1hCpK3m6g5YFa-KkNH6S703w_8WnWN4MY4laX9bkmeKgG-DLTca-BnDmh2A2oVK-A/exec";
     
+    // 🛡️ 致命的なエラーを防ぐための安全なJSONパース関数
+    function safeParse(key, fallbackValue) {
+        try {
+            const data = localStorage.getItem(key);
+            if (!data) return fallbackValue;
+            const parsed = JSON.parse(data);
+            return Array.isArray(parsed) ? parsed : fallbackValue;
+        } catch (e) {
+            console.error(key + "の読み込みに失敗し、初期化しました");
+            return fallbackValue;
+        }
+    }
+
     function copyUrl() {
-        const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-        navigator.clipboard.writeText(cleanUrl).then(() => {
-            alert("URLをコピーしました！\nホーム画面に戻ってSafariやChromeを開き、貼り付けてください。");
-        }).catch(err => {
-            alert("コピーに失敗しました。お手数ですが画面上部から手動でURLをコピーしてください。");
-        });
+        try {
+            const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            navigator.clipboard.writeText(cleanUrl).then(function() {
+                alert("URLをコピーしました！\nホーム画面に戻ってSafariやChromeを開き、貼り付けてください。");
+            }).catch(function(err) {
+                alert("コピーに失敗しました。お手数ですが画面上部から手動でURLをコピーしてください。");
+            });
+        } catch (e) {
+            alert("お使いのブラウザではコピー機能が使用できません。");
+        }
     }
 
     // ⌚ 営業時間の判定 (10:00 〜 19:59までを営業時間とする)
@@ -487,12 +521,15 @@
         return h >= 10 && h < 20;
     }
 
-    window.onload = () => {
-        const ua = navigator.userAgent.toLowerCase();
-        const isAppBrowser = /line|twitter|instagram|fbav|fban/.test(ua);
-        if (isAppBrowser) {
-            document.getElementById('modal-browser-warning').style.display = 'flex';
-        }
+    window.onload = function() {
+        try {
+            const ua = navigator.userAgent.toLowerCase();
+            const isAppBrowser = /line|twitter|instagram|fbav|fban/.test(ua);
+            if (isAppBrowser) {
+                const modal = document.getElementById('modal-browser-warning');
+                if (modal) modal.style.display = 'flex';
+            }
+        } catch (e) { console.error(e); }
     };
 
     const today = new Date();
@@ -500,10 +537,10 @@
     
     // 📅 獲得日から7日後の「19:59:59」を有効期限に設定
     const validUntilDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 7, 19, 59, 59);
-    const expiryStr = `${validUntilDate.getFullYear()}/${validUntilDate.getMonth() + 1}/${validUntilDate.getDate()} 19:59`;
+    const expiryStr = validUntilDate.getFullYear() + "/" + (validUntilDate.getMonth() + 1) + "/" + validUntilDate.getDate() + " 19:59";
     const expiryTimestamp = validUntilDate.getTime();
     
-    // 🗑️ 削除タイミングは「有効期限の月の末日」の「19:59:59」に設定（実績確認のため表示を残す）
+    // 🗑️ 削除タイミングは「有効期限の月の末日」の「19:59:59」に設定
     const deleteDate = new Date(validUntilDate.getFullYear(), validUntilDate.getMonth() + 1, 0, 19, 59, 59);
     const deleteTimestamp = deleteDate.getTime();
     
@@ -512,155 +549,215 @@
         localStorage.setItem('tp_stamp_date', todayStr);
     }
 
-    let stamps = JSON.parse(localStorage.getItem('tp_stamps')) || [];
+    // 🛡️ 初期データの安全な読み込み
+    let stamps = safeParse('tp_stamps', []);
     let myCoupons = [];
     let selectedCouponIndex = -1;
 
+    // ✨ エラー耐性を極限まで高めたクーポン更新処理
     function reloadCoupons() {
-        let currentCoupons = JSON.parse(localStorage.getItem('tp_coupons')) || [];
-        const originalLength = currentCoupons.length;
-        const nowTime = new Date().getTime();
-        
-        currentCoupons = currentCoupons.filter(c => {
-            let delTime = c.deleteTime; 
-            if (!delTime) {
-                let expTime = c.expiryTime;
-                if (!expTime) {
-                    const expDate = new Date(c.expiry.replace(/\//g, '-'));
-                    expDate.setHours(19, 59, 59, 999);
-                    expTime = expDate.getTime();
+        try {
+            let currentCoupons = safeParse('tp_coupons', []);
+            const originalLength = currentCoupons.length;
+            const nowTime = new Date().getTime();
+            
+            let activeCoupons = [];
+            for (let i = 0; i < currentCoupons.length; i++) {
+                let c = currentCoupons[i];
+                if (!c) continue;
+
+                let delTime = c.deleteTime; 
+                if (!delTime) {
+                    let expTime = c.expiryTime;
+                    if (!expTime) {
+                        try {
+                            if (c.expiry) {
+                                // ⚠️ Safariクラッシュ対策: ハイフンではなく必ずスラッシュを使う
+                                const cleanExp = c.expiry.replace(/-/g, '/'); 
+                                const expDate = new Date(cleanExp);
+                                if (!isNaN(expDate.getTime())) {
+                                    expTime = expDate.getTime();
+                                } else {
+                                    expTime = 0; 
+                                }
+                            } else {
+                                expTime = 0;
+                            }
+                        } catch(e) { expTime = 0; }
+                    }
+                    delTime = expTime; 
                 }
-                delTime = expTime; 
+                
+                // 有効期限内のもの（または実績用として月末まで残すもの）を保持
+                if (nowTime <= delTime) {
+                    activeCoupons.push(c);
+                }
             }
-            return nowTime <= delTime;
-        });
-        
-        if (currentCoupons.length !== originalLength) {
-            localStorage.setItem('tp_coupons', JSON.stringify(currentCoupons));
+            
+            if (activeCoupons.length !== originalLength) {
+                localStorage.setItem('tp_coupons', JSON.stringify(activeCoupons));
+            }
+            myCoupons = activeCoupons;
+        } catch(e) {
+            console.error("クーポンの読み込み処理でエラーを回避しました", e);
         }
-        myCoupons = currentCoupons;
     }
     
     reloadCoupons();
 
-    // 🔄 画面の状態を最新化する処理
+    // 🔄 画面の状態を最新化する処理（安全装置付き）
     function syncAllData() {
-        let currentStamps = JSON.parse(localStorage.getItem('tp_stamps')) || [];
-        stamps = currentStamps;
-        
-        // スタンプの見た目を更新
-        [1, 2].forEach(id => {
-            const el = document.getElementById(`st-${id}`);
-            if (el) {
-                if (stamps.includes(String(id))) el.classList.add('on');
-                else el.classList.remove('on');
+        try {
+            stamps = safeParse('tp_stamps', []);
+            
+            // スタンプの見た目を更新
+            const stampIds = [1, 2];
+            for (let i = 0; i < stampIds.length; i++) {
+                const id = stampIds[i];
+                const el = document.getElementById('st-' + id);
+                if (el) {
+                    // 文字列または数値として検索し、存在すればONにする
+                    if (stamps.indexOf(String(id)) !== -1 || stamps.indexOf(id) !== -1) {
+                        el.classList.add('on');
+                    } else {
+                        el.classList.remove('on');
+                    }
+                }
             }
-        });
-        
-        const isOpen = isOperatingHours();
-        
-        // 💡 営業時間に応じたメイン画面（ミッションカード）の表示切り替え
-        document.getElementById('mission-text-active').style.display = isOpen ? 'block' : 'none';
-        document.getElementById('mission-text-closed').style.display = isOpen ? 'none' : 'block';
-        
-        const badge = document.getElementById('mission-badge-text');
-        if (isOpen) {
-            badge.style.background = '#ffc107';
-            badge.style.color = '#d50000';
-            badge.style.boxShadow = '0 4px 0 #ff9800';
-            badge.innerHTML = '📍 MISSION 📍';
-        } else {
-            badge.style.background = '#90a4ae';
-            badge.style.color = '#fff';
-            badge.style.boxShadow = '0 4px 0 #607d8b';
-            badge.innerHTML = '💤 CLOSE 💤';
-        }
-        
-        // 💡 営業時間とスタンプ数に応じたボタンの表示切り替え
-        const qrActive = document.getElementById('qr-scan-btn');
-        const qrDisabled = document.getElementById('qr-scan-btn-disabled');
-        const toCheckBtn = document.getElementById('to-check-btn');
-        
-        if (stamps.length >= 2) {
-            if (isOpen) {
-                toCheckBtn.style.display = 'flex';
-                qrActive.style.display = 'none';
-                qrDisabled.style.display = 'none';
+            
+            const isOpen = isOperatingHours();
+            
+            const activeText = document.getElementById('mission-text-active');
+            if (activeText) activeText.style.display = isOpen ? 'block' : 'none';
+            const closedText = document.getElementById('mission-text-closed');
+            if (closedText) closedText.style.display = isOpen ? 'none' : 'block';
+            
+            const badge = document.getElementById('mission-badge-text');
+            if (badge) {
+                if (isOpen) {
+                    badge.style.background = '#ffc107';
+                    badge.style.color = '#d50000';
+                    badge.style.boxShadow = '0 4px 0 #ff9800';
+                    badge.innerHTML = '📍 MISSION 📍';
+                } else {
+                    badge.style.background = '#90a4ae';
+                    badge.style.color = '#fff';
+                    badge.style.boxShadow = '0 4px 0 #607d8b';
+                    badge.innerHTML = '💤 CLOSE 💤';
+                }
+            }
+            
+            const qrActive = document.getElementById('qr-scan-btn');
+            const qrDisabled = document.getElementById('qr-scan-btn-disabled');
+            const toCheckBtn = document.getElementById('to-check-btn');
+            
+            if (stamps.length >= 2) {
+                if (isOpen) {
+                    if (toCheckBtn) { toCheckBtn.style.display = 'flex'; toCheckBtn.disabled = false; }
+                    if (qrActive) qrActive.style.display = 'none';
+                    if (qrDisabled) qrDisabled.style.display = 'none';
+                } else {
+                    if (toCheckBtn) toCheckBtn.style.display = 'none';
+                    if (qrActive) qrActive.style.display = 'none';
+                    if (qrDisabled) {
+                        qrDisabled.style.display = 'flex';
+                        qrDisabled.innerHTML = '🌙 明日スタッフに見せてね';
+                    }
+                }
             } else {
-                toCheckBtn.style.display = 'none';
-                qrActive.style.display = 'none';
-                qrDisabled.style.display = 'flex';
-                qrDisabled.innerHTML = '🌙 明日スタッフに見せてね';
+                if (toCheckBtn) toCheckBtn.style.display = 'none';
+                if (isOpen) {
+                    if (qrActive) qrActive.style.display = 'flex';
+                    if (qrDisabled) qrDisabled.style.display = 'none';
+                } else {
+                    if (qrActive) qrActive.style.display = 'none';
+                    if (qrDisabled) {
+                        qrDisabled.style.display = 'flex';
+                        qrDisabled.innerHTML = '🌙 現在は受付時間外です';
+                    }
+                }
             }
-        } else {
-            toCheckBtn.style.display = 'none';
-            if (isOpen) {
-                qrActive.style.display = 'flex';
-                qrDisabled.style.display = 'none';
-            } else {
-                qrActive.style.display = 'none';
-                qrDisabled.style.display = 'flex';
-                qrDisabled.innerHTML = '🌙 現在は受付時間外です';
-            }
-        }
 
-        reloadCoupons();
-        const boxScreen = document.getElementById('screen-box');
-        if (boxScreen && boxScreen.classList.contains('active')) {
-            openCouponBox();
-        }
-
-        const useModal = document.getElementById('modal-use');
-        if (useModal && useModal.style.display === 'flex' && selectedCouponIndex !== -1) {
-            if (myCoupons[selectedCouponIndex] && myCoupons[selectedCouponIndex].used) {
-                closeModal();
-                alert("⚠️ このクーポンは別のタブですでに使用されました！");
+            reloadCoupons();
+            const boxScreen = document.getElementById('screen-box');
+            if (boxScreen && boxScreen.classList.contains('active')) {
                 openCouponBox();
             }
+
+            const useModal = document.getElementById('modal-use');
+            if (useModal && useModal.style.display === 'flex' && selectedCouponIndex !== -1) {
+                if (myCoupons[selectedCouponIndex] && myCoupons[selectedCouponIndex].used) {
+                    closeModal();
+                    alert("⚠️ このクーポンは別のタブですでに使用されました！");
+                    openCouponBox();
+                }
+            }
+        } catch(e) {
+            console.error("画面状態の同期に失敗しましたが、プログラムは続行されます", e);
         }
     }
 
     window.addEventListener('storage', syncAllData);
-    window.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') syncAllData(); });
+    window.addEventListener('visibilitychange', function() { 
+        if (document.visibilityState === 'visible') syncAllData(); 
+    });
 
     function rallyNotif(txt) {
-        const d = document.createElement('div');
-        d.className = 'rally-notification';
-        d.innerHTML = `<div style="font-size:3.5rem; margin-bottom:5px; animation:bounceIcon 0.8s infinite;">🎉</div><div style="width: 100%;">${txt}</div>`;
-        document.body.appendChild(d);
-        setTimeout(()=> d.remove(), 4500); 
+        try {
+            const d = document.createElement('div');
+            d.className = 'rally-notification';
+            d.innerHTML = '<div style="font-size:3.5rem; margin-bottom:5px; animation:bounceIcon 0.8s infinite;">🎉</div><div style="width: 100%;">' + txt + '</div>';
+            document.body.appendChild(d);
+            setTimeout(function() { d.remove(); }, 4500); 
+        } catch (e) { console.error(e); }
     }
 
     let html5QrCode = null;
 
     function openQRReader() {
-        document.getElementById('modal-qr').style.display = 'flex';
-        if (!html5QrCode) html5QrCode = new Html5Qrcode("qr-reader");
-        html5QrCode.start(
-            { facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } },
-            (decodedText) => {
-                html5QrCode.stop().then(() => {
-                    document.getElementById('modal-qr').style.display = 'none';
-                    handleQRResult(decodedText);
-                }).catch(err => console.log(err));
-            },
-            (errorMessage) => {}
-        ).catch((err) => {
-            alert("カメラの起動に失敗しました。\n・https://環境であるか確認してください。n・ブラウザの設定でカメラを「許可」してください。");
-            document.getElementById('modal-qr').style.display = 'none';
-        });
-    }
-
-    function closeQRModal() {
-        if (html5QrCode) {
-            html5QrCode.stop().then(() => document.getElementById('modal-qr').style.display = 'none').catch(() => document.getElementById('modal-qr').style.display = 'none');
-        } else {
-            document.getElementById('modal-qr').style.display = 'none';
+        try {
+            const modalQr = document.getElementById('modal-qr');
+            if (modalQr) modalQr.style.display = 'flex';
+            
+            if (!html5QrCode) html5QrCode = new Html5Qrcode("qr-reader");
+            html5QrCode.start(
+                { facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } },
+                function(decodedText) {
+                    html5QrCode.stop().then(function() {
+                        const m = document.getElementById('modal-qr');
+                        if (m) m.style.display = 'none';
+                        handleQRResult(decodedText);
+                    }).catch(function(err) { console.log(err); });
+                },
+                function(errorMessage) {}
+            ).catch(function(err) {
+                alert("カメラの起動に失敗しました。\n・https://環境であるか確認してください。\n・ブラウザの設定でカメラを「許可」してください。");
+                const m = document.getElementById('modal-qr');
+                if (m) m.style.display = 'none';
+            });
+        } catch (e) {
+            alert("QRリーダーの起動に失敗しました。");
         }
     }
 
+    function closeQRModal() {
+        try {
+            if (html5QrCode) {
+                html5QrCode.stop().then(function() { 
+                    const m = document.getElementById('modal-qr');
+                    if (m) m.style.display = 'none'; 
+                }).catch(function() { 
+                    const m = document.getElementById('modal-qr');
+                    if (m) m.style.display = 'none'; 
+                });
+            } else {
+                const m = document.getElementById('modal-qr');
+                if (m) m.style.display = 'none';
+            }
+        } catch (e) { console.error(e); }
+    }
+
     function handleQRResult(text) {
-        // 🚨 営業時間外の場合はスタンプ読み取りを無効化
         if (!isOperatingHours()) {
             alert("現在はガチャの受付時間外（10:00〜20:00）です。また明日遊びにきてね！");
             return;
@@ -677,7 +774,10 @@
         }
 
         if (id) {
-            if (!stamps.includes(id) && stamps.length < 2) {
+            // 安全な検索（数値型と文字列型の両方に対応）
+            const isAlreadyGot = stamps.indexOf(String(id)) !== -1 || stamps.indexOf(id) !== -1;
+            
+            if (!isAlreadyGot && stamps.length < 2) {
                 stamps.push(id);
                 localStorage.setItem('tp_stamps', JSON.stringify(stamps));
                 
@@ -694,10 +794,15 @@
                 
                 rallyNotif(msg);
                 if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-                syncAllData();
-            } else if (stamps.includes(id)) { alert("このスタンプは既にGETしているよ！"); } 
-            else { alert("スタンプは2箇所とも達成済みです！スタッフに見せよう！"); }
-        } else { alert("このQRコードはスタンプ対象ではありません。"); }
+                syncAllData(); // 💡 即座に画面を更新
+            } else if (isAlreadyGot) { 
+                alert("このスタンプは既にGETしているよ！"); 
+            } else { 
+                alert("スタンプは2箇所とも達成済みです！スタッフに見せよう！"); 
+            }
+        } else { 
+            alert("このQRコードはスタンプ対象ではありません。"); 
+        }
     }
 
     const params = new URLSearchParams(window.location.search);
@@ -710,304 +815,403 @@
         window.history.replaceState(null, null, cleanUrl);
     }
 
-    // 🚀 起動時の画面切り替え判定
-    if (localStorage.getItem('tp_used') === todayStr) {
-        // 本日プレイ済みの場合はクリア画面を表示
-        document.getElementById('rally-content').style.display = 'none';
-        document.getElementById('played-content').style.display = 'block';
-    } else {
-        // 未プレイ時はメイン画面を表示（営業時間外の表示はsyncAllDataで行う）
-        document.getElementById('rally-content').style.display = 'block';
-        document.getElementById('played-content').style.display = 'none';
-        
-        if (!isOperatingHours() && fallbackId) {
-            alert("現在はガチャの受付時間外（10:00〜20:00）です。\nスタンプは営業時間内に読み取ってください。");
-        } else if (isOperatingHours() && fallbackId && !stamps.includes(fallbackId) && stamps.length < 2) {
-            stamps.push(fallbackId);
-            localStorage.setItem('tp_stamps', JSON.stringify(stamps));
+    // 🚀 起動時の初期化処理
+    try {
+        if (localStorage.getItem('tp_used') === todayStr) {
+            const rallyContent = document.getElementById('rally-content');
+            const playedContent = document.getElementById('played-content');
+            if (rallyContent) rallyContent.style.display = 'none';
+            if (playedContent) playedContent.style.display = 'block';
+        } else {
+            const rallyContent = document.getElementById('rally-content');
+            const playedContent = document.getElementById('played-content');
+            if (rallyContent) rallyContent.style.display = 'block';
+            if (playedContent) playedContent.style.display = 'none';
             
-            let msg = '';
-            if (stamps.length === 1) {
-                if (fallbackId === '1') {
-                    msg = 'スタンプゲット！<br><span style="font-size: 1.1rem; display:block; margin-top:12px; line-height:1.4;">次はエスカレーターに乗って<br>3Fテクモピアを目指そう！</span>';
-                } else if (fallbackId === '2') {
-                    msg = 'スタンプゲット！<br><span style="font-size: 1.1rem; display:block; margin-top:12px; line-height:1.4;">次はエスカレーターに乗って<br>B1ミニクレコーナーを目指そう！</span>';
+            const isAlreadyGotFb = fallbackId ? (stamps.indexOf(String(fallbackId)) !== -1 || stamps.indexOf(fallbackId) !== -1) : false;
+
+            if (!isOperatingHours() && fallbackId) {
+                alert("現在はガチャの受付時間外（10:00〜20:00）です。\nスタンプは営業時間内に読み取ってください。");
+            } else if (isOperatingHours() && fallbackId && !isAlreadyGotFb && stamps.length < 2) {
+                stamps.push(fallbackId);
+                localStorage.setItem('tp_stamps', JSON.stringify(stamps));
+                
+                let msg = '';
+                if (stamps.length === 1) {
+                    if (fallbackId === '1') {
+                        msg = 'スタンプゲット！<br><span style="font-size: 1.1rem; display:block; margin-top:12px; line-height:1.4;">次はエスカレーターに乗って<br>3Fテクモピアを目指そう！</span>';
+                    } else if (fallbackId === '2') {
+                        msg = 'スタンプゲット！<br><span style="font-size: 1.1rem; display:block; margin-top:12px; line-height:1.4;">次はエスカレーターに乗って<br>B1ミニクレコーナーを目指そう！</span>';
+                    }
+                } else if (stamps.length === 2) {
+                    msg = 'スタンプコンプリート！<br><span style="font-size: 1.1rem; display:block; margin-top:12px; line-height:1.4; color: #fff9c4;">ガチャに挑戦できます！<br>スタッフに声を掛けてね！</span>';
                 }
-            } else if (stamps.length === 2) {
-                msg = 'スタンプコンプリート！<br><span style="font-size: 1.1rem; display:block; margin-top:12px; line-height:1.4; color: #fff9c4;">ガチャに挑戦できます！<br>スタッフに声を掛けてね！</span>';
+                rallyNotif(msg);
+                if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
             }
-            rallyNotif(msg);
-            if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+        }
+        showScreen('screen-rally');
+        syncAllData();
+    } catch (e) {
+        console.error("初期化中にエラーが発生しました", e);
+    }
+
+    // ✨ エラーで止まらないように完全に守られた画面切り替え機能
+    function showScreen(screenId) {
+        try {
+            closeModal();
+            
+            if (screenId === 'screen-rally' && !isOperatingHours()) {
+                screenId = 'screen-closed';
+            }
+
+            // 安全なループで画面を全て非表示
+            const screens = document.querySelectorAll('.screen');
+            for (let i = 0; i < screens.length; i++) {
+                screens[i].classList.remove('active');
+            }
+
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) {
+                targetScreen.classList.add('active');
+            }
+            
+            window.scrollTo(0,0);
+
+            // メインのBOXボタンの表示制御
+            const boxBtn = document.getElementById('main-box-btn');
+            if (boxBtn) {
+                const playedContent = document.getElementById('played-content');
+                if (screenId === 'screen-rally' && playedContent && playedContent.style.display !== 'block') {
+                    boxBtn.style.display = 'flex'; 
+                } else { 
+                    boxBtn.style.display = 'none'; 
+                }
+            }
+        } catch (e) {
+            console.error("画面切り替え中にエラーが発生しました", e);
         }
     }
-    showScreen('screen-rally');
-    syncAllData();
 
-    function showScreen(screenId) {
-        closeModal();
-
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        const targetScreen = document.getElementById(screenId);
-        if (targetScreen) targetScreen.classList.add('active');
-        window.scrollTo(0,0);
-
-        // クーポンBOXボタンはメイン画面（ラリー画面）にいる時のみ表示する
-        const boxBtn = document.getElementById('main-box-btn');
-        if (boxBtn) {
-            if (screenId === 'screen-rally') {
-                boxBtn.style.display = 'flex'; 
-            } else { 
-                boxBtn.style.display = 'none'; 
+    function closeModal() {
+        try {
+            const overlays = document.querySelectorAll('.overlay');
+            for (let i = 0; i < overlays.length; i++) {
+                overlays[i].style.display = 'none';
             }
+            selectedCouponIndex = -1;
+            if (typeof clockInterval !== 'undefined') clearInterval(clockInterval);
+        } catch (e) {
+            console.error(e);
         }
     }
 
     function staffApprove() {
-        if(confirm("スタッフ専用：ガチャを開始します。よろしいですか？")) showScreen('screen-gacha');
-    }
-
-    function createSparkles(color, rarity) {
-        const area = document.getElementById('result-sparkles');
-        area.innerHTML = '';
-        
-        const num = rarity === 5 ? 100 : (rarity >= 3 ? 50 : 20);
-        const className = rarity === 5 ? 'super-sparkle' : 'sparkle';
-        
-        for (let i = 0; i < num; i++) {
-            const sp = document.createElement('div');
-            sp.className = className;
-            sp.innerText = '✨';
-            
-            sp.style.color = rarity === 5 ? `hsl(${Math.random()*360}, 100%, 50%)` : color;
-            sp.style.left = '50%';
-            sp.style.top = '10%';
-            
-            const spreadX = rarity === 5 ? 400 : 200;
-            const spreadY = rarity === 5 ? 300 : 150;
-            sp.style.setProperty('--x', (Math.random() * spreadX - (spreadX/2)) + 'px');
-            sp.style.setProperty('--y', (Math.random() * -spreadY - 50) + 'px');
-            area.appendChild(sp);
+        if(confirm("スタッフ専用：ガチャを開始します。よろしいですか？")) {
+            showScreen('screen-gacha');
         }
     }
 
-    function runGacha() {
-        const orb = document.getElementById('gacha-orb');
-        const flash = document.getElementById('full-flash');
-        
-        if (orb.classList.contains('shake-anime') || orb.classList.contains('burst-anime')) return;
-
-        orb.classList.add('shake-anime');
-        if (navigator.vibrate) navigator.vibrate([50, 50, 50, 50, 50, 50, 50, 50, 50, 50]);
-        
-        setTimeout(() => {
-            orb.classList.remove('shake-anime');
-            orb.classList.add('burst-anime'); 
-            flash.style.opacity = '1'; 
-            if (navigator.vibrate) navigator.vibrate(200); 
+    function createSparkles(color, rarity) {
+        try {
+            const area = document.getElementById('result-sparkles');
+            if (!area) return;
+            area.innerHTML = '';
             
-            setTimeout(() => {
-                const rand = Math.random() * 100;
-                let res = {};
-                let rarity = 1; 
+            const num = rarity === 5 ? 100 : (rarity >= 3 ? 50 : 20);
+            const className = rarity === 5 ? 'super-sparkle' : 'sparkle';
+            
+            for (let i = 0; i < num; i++) {
+                const sp = document.createElement('div');
+                sp.className = className;
+                sp.innerText = '✨';
                 
-                if (rand < 1.0) { res = { g: "1等", d: "クレーンゲーム6回無料券", color: "#fbc02d" }; rarity = 5; }
-                else if (rand < 10.0) { res = { g: "2等", d: "メダル50枚 ＋ 増量券", color: "#9e9e9e" }; rarity = 4; }
-                else if (rand < 13.0) { res = { g: "3等", d: "クレーンゲーム3回無料券", color: "#f44336" }; rarity = 3; }
-                else if (rand < 33.0) { res = { g: "4等", d: "メダル30枚 ＋ 増量券", color: "#fbc02d" }; rarity = 3; }
-                else if (rand < 48.0) { res = { g: "5等", d: "クレーンゲーム1回無料券", color: "#e91e63" }; rarity = 2; }
-                else if (rand < 70.0) { res = { g: "6等", d: "メダル10枚 ＋ 増量券", color: "#00bcd4" }; rarity = 2; }
-                else { res = { g: "7等", d: "クレーンゲーム1回増量券", color: "#78909c" }; rarity = 1; }
+                sp.style.color = rarity === 5 ? `hsl(${Math.random()*360}, 100%, 50%)` : color;
+                sp.style.left = '50%';
+                sp.style.top = '10%';
                 
-                reloadCoupons();
-                
-                myCoupons.push({
-                    grade: res.g, 
-                    desc: res.d, 
-                    color: res.color, 
-                    obtained: todayStr, 
-                    expiry: expiryStr, 
-                    expiryTime: expiryTimestamp, 
-                    deleteTime: deleteTimestamp,
-                    used: false
-                });
-                localStorage.setItem('tp_coupons', JSON.stringify(myCoupons));
-                
-                fetch(`${GAS_URL}?grade=${encodeURIComponent(res.g)}`, { mode: 'no-cors' });
-                localStorage.setItem('tp_used', todayStr);
-                localStorage.removeItem('tp_stamps');
-                
-                document.getElementById('rally-content').style.display = 'none';
-                document.getElementById('played-content').style.display = 'block';
-                stamps = []; 
+                const spreadX = rarity === 5 ? 400 : 200;
+                const spreadY = rarity === 5 ? 300 : 150;
+                sp.style.setProperty('--x', (Math.random() * spreadX - (spreadX/2)) + 'px');
+                sp.style.setProperty('--y', (Math.random() * -spreadY - 50) + 'px');
+                area.appendChild(sp);
+            }
+        } catch (e) { console.error(e); }
+    }
 
-                document.getElementById('result-desc').innerHTML = `<span style="font-size:2.2rem; color:${res.color};">${res.g}</span><br>${res.d}`;
-                
-                const modalBox = document.getElementById('result-modal-box');
-                modalBox.style.borderColor = res.color;
-                modalBox.classList.remove('rainbow-mode');
-                
-                if (rarity === 5) {
-                    modalBox.classList.add('rainbow-mode');
-                    if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 400]);
-                } else if (rarity >= 3) {
-                    if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-                }
+    function runGacha() {
+        try {
+            const orb = document.getElementById('gacha-orb');
+            const flash = document.getElementById('full-flash');
+            
+            if (!orb || orb.classList.contains('shake-anime') || orb.classList.contains('burst-anime')) return;
 
-                createSparkles(res.color, rarity);
+            orb.classList.add('shake-anime');
+            if (navigator.vibrate) navigator.vibrate([50, 50, 50, 50, 50, 50, 50, 50, 50, 50]);
+            
+            setTimeout(function() {
+                orb.classList.remove('shake-anime');
+                orb.classList.add('burst-anime'); 
+                if (flash) flash.style.opacity = '1'; 
+                if (navigator.vibrate) navigator.vibrate(200); 
                 
-                setTimeout(() => { orb.classList.remove('burst-anime'); }, 1000);
+                setTimeout(function() {
+                    const rand = Math.random() * 100;
+                    let res = {};
+                    let rarity = 1; 
+                    
+                    if (rand < 1.0) { res = { g: "1等", d: "クレーンゲーム6回無料券", color: "#fbc02d" }; rarity = 5; }
+                    else if (rand < 10.0) { res = { g: "2等", d: "メダル50枚 ＋ 増量券", color: "#9e9e9e" }; rarity = 4; }
+                    else if (rand < 13.0) { res = { g: "3等", d: "クレーンゲーム3回無料券", color: "#f44336" }; rarity = 3; }
+                    else if (rand < 33.0) { res = { g: "4等", d: "メダル30枚 ＋ 増量券", color: "#fbc02d" }; rarity = 3; }
+                    else if (rand < 48.0) { res = { g: "5等", d: "クレーンゲーム1回無料券", color: "#e91e63" }; rarity = 2; }
+                    else if (rand < 70.0) { res = { g: "6等", d: "メダル10枚 ＋ 増量券", color: "#00bcd4" }; rarity = 2; }
+                    else { res = { g: "7等", d: "クレーンゲーム1回増量券", color: "#78909c" }; rarity = 1; }
+                    
+                    reloadCoupons();
+                    
+                    myCoupons.push({
+                        grade: res.g, 
+                        desc: res.d, 
+                        color: res.color, 
+                        obtained: todayStr, 
+                        expiry: expiryStr, 
+                        expiryTime: expiryTimestamp, 
+                        deleteTime: deleteTimestamp,
+                        used: false
+                    });
+                    localStorage.setItem('tp_coupons', JSON.stringify(myCoupons));
+                    
+                    try {
+                        fetch(GAS_URL + "?grade=" + encodeURIComponent(res.g), { mode: 'no-cors' });
+                    } catch(e) {}
+                    
+                    localStorage.setItem('tp_used', todayStr);
+                    localStorage.removeItem('tp_stamps');
+                    
+                    const rContent = document.getElementById('rally-content');
+                    const pContent = document.getElementById('played-content');
+                    const mBoxBtn = document.getElementById('main-box-btn');
+                    if (rContent) rContent.style.display = 'none';
+                    if (pContent) pContent.style.display = 'block';
+                    if (mBoxBtn) mBoxBtn.style.display = 'none'; 
+                    stamps = []; 
 
-                document.getElementById('modal-result').style.display = 'flex';
-                flash.style.opacity = '0';
-            }, 500); 
-        }, 1500); 
+                    const rDesc = document.getElementById('result-desc');
+                    if (rDesc) rDesc.innerHTML = '<span style="font-size:2.2rem; color:' + res.color + ';">' + res.g + '</span><br>' + res.d;
+                    
+                    const modalBox = document.getElementById('result-modal-box');
+                    if (modalBox) {
+                        modalBox.style.borderColor = res.color;
+                        modalBox.classList.remove('rainbow-mode');
+                        if (rarity === 5) {
+                            modalBox.classList.add('rainbow-mode');
+                        }
+                    }
+                    
+                    if (rarity === 5) {
+                        if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 400]);
+                    } else if (rarity >= 3) {
+                        if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+                    }
+
+                    createSparkles(res.color, rarity);
+                    
+                    setTimeout(function() { orb.classList.remove('burst-anime'); }, 1000);
+
+                    const mResult = document.getElementById('modal-result');
+                    if (mResult) mResult.style.display = 'flex';
+                    if (flash) flash.style.opacity = '0';
+                }, 500); 
+            }, 1500); 
+        } catch (e) {
+            console.error(e);
+            alert("ガチャの処理中にエラーが発生しました。");
+        }
     }
 
     function openCouponBox() {
-        showScreen('screen-box');
-        const listDiv = document.getElementById('coupon-list');
-        listDiv.innerHTML = '';
-        
-        const nowTime = new Date().getTime();
-        
-        if (myCoupons.length === 0) {
-            listDiv.innerHTML = '<div class="empty-msg">現在使えるクーポンはありません。<br>ラリーに参加してGETしよう！</div>';
-            document.querySelector('.tap-badge').style.display = 'none';
-        } else {
-            const tapBadge = document.querySelector('.tap-badge');
-            tapBadge.style.display = 'inline-block';
+        try {
+            showScreen('screen-box');
+            const listDiv = document.getElementById('coupon-list');
+            if (!listDiv) return;
+            listDiv.innerHTML = '';
             
-            // 💡 営業時間外の場合は上部のバッジを警告文に変更
-            if (!isOperatingHours()) {
-                tapBadge.innerHTML = '⚠️ 営業時間外のため現在は使用できません';
-                tapBadge.style.background = '#9e9e9e';
-                tapBadge.style.boxShadow = '0 4px 0 #757575';
-                tapBadge.style.animation = 'none';
+            const nowTime = new Date().getTime();
+            
+            if (myCoupons.length === 0) {
+                listDiv.innerHTML = '<div class="empty-msg">現在使えるクーポンはありません。<br>ラリーに参加してGETしよう！</div>';
+                const tapBadge = document.getElementById('box-top-badge');
+                if (tapBadge) tapBadge.style.display = 'none';
             } else {
-                tapBadge.innerHTML = '👇 使いたいクーポンをタップしてね 👇';
-                tapBadge.style.background = 'var(--accent)';
-                tapBadge.style.boxShadow = '0 4px 0 #c5005c, 0 6px 10px rgba(239, 108, 0, 0.3)';
-                tapBadge.style.animation = 'bounceBadge 2s infinite';
-            }
+                const tapBadge = document.getElementById('box-top-badge');
+                if (tapBadge) {
+                    tapBadge.style.display = 'inline-block';
+                    
+                    if (!isOperatingHours()) {
+                        tapBadge.innerHTML = '⚠️ 営業時間外のため現在は使用できません';
+                        tapBadge.style.background = '#9e9e9e';
+                        tapBadge.style.boxShadow = '0 4px 0 #757575';
+                        tapBadge.style.animation = 'none';
+                    } else {
+                        tapBadge.innerHTML = '👇 使いたいクーポンをタップしてね 👇';
+                        tapBadge.style.background = 'var(--accent)';
+                        tapBadge.style.boxShadow = '0 4px 0 #c5005c, 0 6px 10px rgba(239, 108, 0, 0.3)';
+                        tapBadge.style.animation = 'bounceBadge 2s infinite';
+                    }
+                }
 
-            myCoupons.slice().reverse().forEach((c, index) => {
-                const originalIndex = myCoupons.length - 1 - index; 
-                
-                let expTime = c.expiryTime; 
-                if (!expTime) {
-                    const expDate = new Date(c.expiry.replace(/\//g, '-'));
-                    expDate.setHours(19, 59, 59, 999);
-                    expTime = expDate.getTime();
+                // 古いブラウザでも絶対に動く安全なループ
+                const reversed = myCoupons.slice().reverse();
+                for (let i = 0; i < reversed.length; i++) {
+                    const c = reversed[i];
+                    const originalIndex = myCoupons.length - 1 - i; 
+                    
+                    let expTime = c.expiryTime; 
+                    if (!expTime) {
+                        try {
+                            if (c.expiry) {
+                                const cleanExp = c.expiry.replace(/-/g, '/');
+                                const expDate = new Date(cleanExp);
+                                expTime = isNaN(expDate.getTime()) ? 0 : expDate.getTime();
+                            } else {
+                                expTime = 0;
+                            }
+                        } catch(e) { expTime = 0; }
+                    }
+                    
+                    const isExpired = !c.used && (nowTime > expTime);
+                    const isUsed = c.used;
+                    
+                    let statusClass = '';
+                    let clickEvent = '';
+                    let overlayMark = '';
+                    
+                    if (isUsed) {
+                        statusClass = 'used';
+                        overlayMark = '<div class="used-stamp">USED</div>';
+                    } else if (isExpired) {
+                        statusClass = 'expired';
+                        overlayMark = '<div class="expired-stamp">期限切れ</div>';
+                    } else {
+                        clickEvent = 'onclick="openUseModal(' + originalIndex + ')"';
+                    }
+                    
+                    listDiv.innerHTML += `
+                        <div class="coupon-card ${statusClass}" style="border-left-color: ${c.color}" ${clickEvent}>
+                            ${overlayMark}
+                            <p class="c-grade" style="color:${c.color}">${c.grade}</p>
+                            <p class="c-desc">${c.desc}</p>
+                            <p class="c-date">獲得日: ${c.obtained} <br> <span class="c-expiry">有効期限: ${c.expiry}まで</span></p>
+                        </div>
+                    `;
                 }
-                
-                const isExpired = !c.used && (nowTime > expTime);
-                const isUsed = c.used;
-                
-                let statusClass = '';
-                let clickEvent = '';
-                let overlayMark = '';
-                
-                if (isUsed) {
-                    statusClass = 'used';
-                    overlayMark = '<div class="used-stamp">USED</div>';
-                } else if (isExpired) {
-                    statusClass = 'expired';
-                    overlayMark = '<div class="expired-stamp">期限切れ</div>';
-                } else {
-                    clickEvent = `onclick="openUseModal(${originalIndex})"`;
-                }
-                
-                listDiv.innerHTML += `
-                    <div class="coupon-card ${statusClass}" style="border-left-color: ${c.color}" ${clickEvent}>
-                        ${overlayMark}
-                        <p class="c-grade" style="color:${c.color}">${c.grade}</p>
-                        <p class="c-desc">${c.desc}</p>
-                        <p class="c-date">獲得日: ${c.obtained} <br> <span class="c-expiry">有効期限: ${c.expiry}まで</span></p>
-                    </div>
-                `;
-            });
+            }
+        } catch(e) {
+            console.error("クーポン一覧の作成に失敗しました", e);
         }
     }
 
     let clockInterval;
     function updateClock() {
-        const now = new Date();
-        const h = String(now.getHours()).padStart(2, '0');
-        const m = String(now.getMinutes()).padStart(2, '0');
-        const s = String(now.getSeconds()).padStart(2, '0');
-        document.getElementById('live-clock').innerText = `${h}:${m}:${s}`;
+        try {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            const lc = document.getElementById('live-clock');
+            if (lc) lc.innerText = h + ":" + m + ":" + s;
+        } catch(e){}
     }
 
     function openUseModal(index) {
-        selectedCouponIndex = index;
-        const c = myCoupons[index];
-        
-        let expTime = c.expiryTime; 
-        if (!expTime) {
-            const expDate = new Date(c.expiry.replace(/\//g, '-'));
-            expDate.setHours(19, 59, 59, 999);
-            expTime = expDate.getTime();
-        }
-        if (new Date().getTime() > expTime) {
-            alert("このクーポンは有効期限切れです。");
-            openCouponBox();
-            return;
-        }
+        try {
+            if (!isOperatingHours()) {
+                alert("現在は営業時間外（10:00〜20:00）です。\nクーポンの使用は営業時間内にお願いいたします。");
+                return;
+            }
 
-        document.getElementById('use-target-desc').innerHTML = `<strong style="color:${c.color}; font-size:1.4rem;">${c.grade}</strong><br>${c.desc}`;
-        
-        // 💡 営業時間外の場合は、モーダルは開くが「使用ボタン」を無効化（グレーアウト）する
-        const useBtn = document.getElementById('modal-use-btn');
-        if (!isOperatingHours()) {
-            useBtn.disabled = true;
-            useBtn.classList.remove('btn-highlight');
-            useBtn.innerHTML = '🌙 営業時間外 (使用不可)';
-        } else {
-            useBtn.disabled = false;
-            useBtn.classList.add('btn-highlight');
-            useBtn.innerHTML = 'スタッフ確認済み(使用)';
+            selectedCouponIndex = index;
+            const c = myCoupons[index];
+            
+            let expTime = c.expiryTime; 
+            if (!expTime) {
+                try {
+                    if (c.expiry) {
+                        const expDate = new Date(c.expiry.replace(/-/g, '/'));
+                        expTime = isNaN(expDate.getTime()) ? 0 : expDate.getTime();
+                    } else {
+                        expTime = 0;
+                    }
+                } catch(e) { expTime = 0; }
+            }
+
+            if (new Date().getTime() > expTime) {
+                alert("このクーポンは有効期限切れです。");
+                openCouponBox();
+                return;
+            }
+
+            const utDesc = document.getElementById('use-target-desc');
+            if (utDesc) utDesc.innerHTML = '<strong style="color:' + c.color + '; font-size:1.4rem;">' + c.grade + '</strong><br>' + c.desc;
+            
+            const useBtn = document.getElementById('modal-use-btn');
+            if (useBtn) {
+                if (!isOperatingHours()) {
+                    useBtn.disabled = true;
+                    useBtn.classList.remove('btn-highlight');
+                    useBtn.innerHTML = '🌙 営業時間外 (使用不可)';
+                } else {
+                    useBtn.disabled = false;
+                    useBtn.classList.add('btn-highlight');
+                    useBtn.innerHTML = 'スタッフ確認済み(使用)';
+                }
+            }
+
+            const mUse = document.getElementById('modal-use');
+            if (mUse) mUse.style.display = 'flex';
+            
+            updateClock();
+            clockInterval = setInterval(updateClock, 1000);
+        } catch (e) {
+            console.error(e);
         }
-
-        document.getElementById('modal-use').style.display = 'flex';
-        
-        updateClock();
-        clockInterval = setInterval(updateClock, 1000);
-    }
-
-    function closeModal() {
-        document.querySelectorAll('.overlay').forEach(m => m.style.display = 'none');
-        selectedCouponIndex = -1;
-        clearInterval(clockInterval);
     }
 
     function executeCoupon() {
-        if (selectedCouponIndex === -1) return;
+        try {
+            if (selectedCouponIndex === -1) return;
 
-        // 念のためここでもブロック
-        if (!isOperatingHours()) {
-            alert("営業時間外のため、クーポンの使用処理ができません。");
+            if (!isOperatingHours()) {
+                alert("営業時間外のため、クーポンの使用処理ができません。");
+                closeModal();
+                return;
+            }
+
+            reloadCoupons();
+            if (myCoupons[selectedCouponIndex] && myCoupons[selectedCouponIndex].used) {
+                closeModal();
+                alert("⚠️ エラー：このクーポンはすでに使用済みです！");
+                openCouponBox();
+                return;
+            }
+
+            const usedCoupon = myCoupons[selectedCouponIndex];
+            
+            try {
+                fetch(GAS_URL + "?grade=" + encodeURIComponent("【BOX利用】" + usedCoupon.grade), { mode: 'no-cors' });
+            } catch(e) {}
+            
+            myCoupons[selectedCouponIndex].used = true;
+            localStorage.setItem('tp_coupons', JSON.stringify(myCoupons));
+            
             closeModal();
-            return;
+            alert("クーポンを使用しました！\nスタッフの案内に従ってください。");
+            openCouponBox(); 
+        } catch(e) {
+            console.error(e);
+            alert("エラーが発生しました。もう一度お試しください。");
         }
-
-        reloadCoupons();
-        if (myCoupons[selectedCouponIndex] && myCoupons[selectedCouponIndex].used) {
-            closeModal();
-            alert("⚠️ エラー：このクーポンはすでに使用済みです！");
-            openCouponBox();
-            return;
-        }
-
-        const usedCoupon = myCoupons[selectedCouponIndex];
-        
-        fetch(`${GAS_URL}?grade=${encodeURIComponent("【BOX利用】" + usedCoupon.grade)}`, { mode: 'no-cors' });
-        
-        myCoupons[selectedCouponIndex].used = true;
-        localStorage.setItem('tp_coupons', JSON.stringify(myCoupons));
-        
-        closeModal();
-        alert("クーポンを使用しました！\nスタッフの案内に従ってください。");
-        openCouponBox(); 
     }
 </script>
 </body>
