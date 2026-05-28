@@ -1245,11 +1245,11 @@
             
             // 🎯 【変更部分】増量クーポンの場合は名前を変えて送信する
             let sendGrade = usedCoupon.grade; // 基本は「2等」など
-            if (usedCoupon.desc.indexOf("10パーセント増量") !== -1) {
+            if (usedCoupon.desc.indexOf("10%増量") !== -1) {
                 sendGrade = "10%増量クーポン";
-            } else if (usedCoupon.desc.indexOf("30パーセント増量") !== -1) {
+            } else if (usedCoupon.desc.indexOf("30%増量") !== -1) {
                 sendGrade = "30%増量クーポン";
-            } else if (usedCoupon.desc.indexOf("50パーセント増量") !== -1) {
+            } else if (usedCoupon.desc.indexOf("50%増量") !== -1) {
                 sendGrade = "50%増量クーポン";
             }
             
