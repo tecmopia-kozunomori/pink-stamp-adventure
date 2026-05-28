@@ -305,6 +305,7 @@
         <p>スタンプを集めてガチャをひこう</p>
     </div>
 
+    <!-- 上部のメインクーポンBOXボタン（特定画面では非表示制御） -->
     <button id="main-box-btn" class="box-btn" onclick="openCouponBox()">
         <span class="box-icon">🎁</span>
         <span>クーポンBOXを開く</span>
@@ -339,12 +340,18 @@
             </button>
         </div>
         
+        <!-- 探検クリア（当日プレイ済み）画面 -->
         <div id="played-content" style="display:none; text-align:center; width:100%;">
             <div style="font-size: 6rem; margin: 20px 0;">🎉</div>
             <h2 style="font-family: var(--pop-font); color: var(--gold); font-size: 2.5rem; margin:0; text-shadow: 2px 2px 0 #fff9c4;">CLEAR!</h2>
             <p style="color: var(--primary); margin-top: 10px; font-weight:900; font-size: 1.2rem;">本日の探検は終了！<br>また明日遊んでね！</p>
             
-            <div style="background: #f0f8ff; border: 3px solid #1da1f2; border-radius: 15px; padding: 15px; margin: 25px auto 0; width: 85%; max-width: 320px; box-sizing: border-box;">
+            <button class="box-btn" style="margin: 25px auto 25px; width: 80%; max-width: 300px;" onclick="openCouponBox()">
+                <span class="box-icon">🎁</span>
+                <span>クーポンBOXを見る</span>
+            </button>
+
+            <div style="background: #f0f8ff; border: 3px solid #1da1f2; border-radius: 15px; padding: 15px; margin: 0 auto; width: 85%; max-width: 320px; box-sizing: border-box;">
                 <p style="color: #1da1f2; font-weight: 900; margin: 0 0 10px 0; font-size: 1.1rem;">最新情報をチェックしよう！</p>
                 <a href="https://x.com/tec_kouzunomori" target="_blank" style="display: block; background: #000; color: #fff; text-decoration: none; padding: 12px; border-radius: 10px; font-weight: bold; font-size: 0.95rem; box-shadow: 0 4px 0 #333; transition: 0.2s;">
                     <span style="font-size: 1.4rem; margin-right:5px; vertical-align: middle;">𝕏</span>
@@ -355,16 +362,22 @@
         </div>
     </div>
 
+    <!-- 🌙 受付終了（営業時間外）の案内画面 -->
     <div id="screen-closed" class="screen" style="text-align:center;">
         <div style="font-size: 6rem; margin: 20px 0;">🌙</div>
         <h2 style="font-family: var(--pop-font); color: #78909c; font-size: 2.5rem; margin:0; text-shadow: 2px 2px 0 #e0e0e0;">CLOSE</h2>
-        <p style="color: var(--primary); margin-top: 15px; font-weight:900; font-size: 1.2rem; line-height: 1.6;">
-            本日の営業は終了しました。<br>
-            <span style="color:#555; font-size:1rem;">(営業時間 10:00〜20:00)</span><br>
+        <p style="color: var(--primary); margin-top: 15px; font-weight:900; font-size: 1.3rem; line-height: 1.6;">
+            本日のガチャ受付は<br>終了しました<br>
+            <span style="color:#555; font-size:1rem;">(受付時間 10:00〜20:00)</span><br>
             また明日遊びにきてね！
         </p>
         
-        <div style="background: #f0f8ff; border: 3px solid #1da1f2; border-radius: 15px; padding: 15px; margin: 25px auto 0; width: 85%; max-width: 320px; box-sizing: border-box;">
+        <button class="box-btn" style="margin: 25px auto 25px; width: 80%; max-width: 300px;" onclick="openCouponBox()">
+            <span class="box-icon">🎁</span>
+            <span>クーポンBOXを見る</span>
+        </button>
+
+        <div style="background: #f0f8ff; border: 3px solid #1da1f2; border-radius: 15px; padding: 15px; margin: 0 auto; width: 85%; max-width: 320px; box-sizing: border-box;">
             <p style="color: #1da1f2; font-weight: 900; margin: 0 0 10px 0; font-size: 1.1rem;">最新情報をチェックしよう！</p>
             <a href="https://x.com/tec_kouzunomori" target="_blank" style="display: block; background: #000; color: #fff; text-decoration: none; padding: 12px; border-radius: 10px; font-weight: bold; font-size: 0.95rem; box-shadow: 0 4px 0 #333; transition: 0.2s;">
                 <span style="font-size: 1.4rem; margin-right:5px; vertical-align: middle;">𝕏</span>
@@ -596,7 +609,7 @@
             },
             (errorMessage) => {}
         ).catch((err) => {
-            alert("カメラの起動に失敗しました。\n・https://環境であるか確認してください。\n・ブラウザの設定でカメラを「許可」してください。");
+            alert("カメラの起動に失敗しました。\n・https://環境であるか確認してください。n・ブラウザの設定でカメラを「許可」してください。");
             document.getElementById('modal-qr').style.display = 'none';
         });
     }
@@ -612,7 +625,7 @@
     function handleQRResult(text) {
         // 🚨 営業時間外の場合はスタンプ読み取りを無効化
         if (!isOperatingHours()) {
-            alert("現在は営業時間外（10:00〜20:00）です。また明日遊びにきてね！");
+            alert("現在はガチャの受付時間外（10:00〜20:00）です。また明日遊びにきてね！");
             showScreen('screen-closed');
             return;
         }
@@ -663,37 +676,37 @@
 
     // 🚀 起動時の画面切り替え判定
     if (!isOperatingHours()) {
-        // 営業時間外の場合
-        document.getElementById('rally-content').style.display = 'none';
-        document.getElementById('played-content').style.display = 'none';
-        showScreen('screen-closed');
-        syncAllData();
-    } else {
-        // 営業時間内の場合
-        if (localStorage.getItem('tp_used') === todayStr) {
-            document.getElementById('rally-content').style.display = 'none';
-            document.getElementById('played-content').style.display = 'block';
-        } else {
-            if (fallbackId && !stamps.includes(fallbackId) && stamps.length < 2) {
-                stamps.push(fallbackId);
-                localStorage.setItem('tp_stamps', JSON.stringify(stamps));
-                
-                let msg = '';
-                if (stamps.length === 1) {
-                    if (fallbackId === '1') {
-                        msg = 'スタンプゲット！<br><span style="font-size: 1.1rem; display:block; margin-top:12px; line-height:1.4;">次はエスカレーターに乗って<br>3Fテクモピアを目指そう！</span>';
-                    } else if (fallbackId === '2') {
-                        msg = 'スタンプゲット！<br><span style="font-size: 1.1rem; display:block; margin-top:12px; line-height:1.4;">次はエスカレーターに乗って<br>B1ミニクレコーナーを目指そう！</span>';
-                    }
-                } else if (stamps.length === 2) {
-                    msg = 'スタンプコンプリート！<br><span style="font-size: 1.1rem; display:block; margin-top:12px; line-height:1.4; color: #fff9c4;">ガチャに挑戦できます！<br>スタッフに声を掛けてね！</span>';
-                }
-                rallyNotif(msg);
-                if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-            }
+        if (fallbackId) {
+            alert("現在はガチャの受付時間外（10:00〜20:00）です。\nスタンプは営業時間内に読み取ってください。");
         }
-        syncAllData();
+        showScreen('screen-closed');
+    } else if (localStorage.getItem('tp_used') === todayStr) {
+        document.getElementById('rally-content').style.display = 'none';
+        document.getElementById('played-content').style.display = 'block';
+        showScreen('screen-rally');
+    } else {
+        if (fallbackId && !stamps.includes(fallbackId) && stamps.length < 2) {
+            stamps.push(fallbackId);
+            localStorage.setItem('tp_stamps', JSON.stringify(stamps));
+            
+            let msg = '';
+            if (stamps.length === 1) {
+                if (fallbackId === '1') {
+                    msg = 'スタンプゲット！<br><span style="font-size: 1.1rem; display:block; margin-top:12px; line-height:1.4;">次はエスカレーターに乗って<br>3Fテクモピアを目指そう！</span>';
+                } else if (fallbackId === '2') {
+                    msg = 'スタンプゲット！<br><span style="font-size: 1.1rem; display:block; margin-top:12px; line-height:1.4;">次はエスカレーターに乗って<br>B1ミニクレコーナーを目指そう！</span>';
+                }
+            } else if (stamps.length === 2) {
+                msg = 'スタンプコンプリート！<br><span style="font-size: 1.1rem; display:block; margin-top:12px; line-height:1.4; color: #fff9c4;">ガチャに挑戦できます！<br>スタッフに声を掛けてね！</span>';
+            }
+            rallyNotif(msg);
+            if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+        }
+        document.getElementById('rally-content').style.display = 'block';
+        document.getElementById('played-content').style.display = 'none';
+        showScreen('screen-rally');
     }
+    syncAllData();
 
     function showScreen(screenId) {
         closeModal();
@@ -708,11 +721,13 @@
         if (targetScreen) targetScreen.classList.add('active');
         window.scrollTo(0,0);
 
+        // 画面上部のメインBOXボタンは、「未クリアのラリー画面」でのみ表示する
         const boxBtn = document.getElementById('main-box-btn');
         if (boxBtn) {
-            if (screenId === 'screen-rally' || screenId === 'screen-closed') {
-                boxBtn.style.display = 'flex'; // 無条件で常に表示
+            if (screenId === 'screen-rally' && document.getElementById('played-content').style.display !== 'block') {
+                boxBtn.style.display = 'flex'; 
             } else { 
+                // クリア画面・営業時間外の画面にはそれぞれの画面内に専用ボタンを配置しているため上部は消す
                 boxBtn.style.display = 'none'; 
             }
         }
@@ -830,8 +845,22 @@
             listDiv.innerHTML = '<div class="empty-msg">現在使えるクーポンはありません。<br>ラリーに参加してGETしよう！</div>';
             document.querySelector('.tap-badge').style.display = 'none';
         } else {
-            document.querySelector('.tap-badge').style.display = 'inline-block';
+            const tapBadge = document.querySelector('.tap-badge');
+            tapBadge.style.display = 'inline-block';
             
+            // 🚨 営業時間外の場合はタップを促すバッジを警告文に変更
+            if (!isOperatingHours()) {
+                tapBadge.innerHTML = '⚠️ 営業時間外のため現在は使用できません';
+                tapBadge.style.background = '#9e9e9e';
+                tapBadge.style.boxShadow = '0 4px 0 #757575';
+                tapBadge.style.animation = 'none';
+            } else {
+                tapBadge.innerHTML = '👇 使いたいクーポンをタップしてね 👇';
+                tapBadge.style.background = 'var(--accent)';
+                tapBadge.style.boxShadow = '0 4px 0 #c5005c, 0 6px 10px rgba(239, 108, 0, 0.3)';
+                tapBadge.style.animation = 'bounceBadge 2s infinite';
+            }
+
             myCoupons.slice().reverse().forEach((c, index) => {
                 const originalIndex = myCoupons.length - 1 - index; 
                 
@@ -881,6 +910,12 @@
     }
 
     function openUseModal(index) {
+        // 🚨 営業時間外の場合はモーダルを開かずアラートを出す
+        if (!isOperatingHours()) {
+            alert("現在は営業時間外（10:00〜20:00）です。\nクーポンの使用は営業時間内にお願いいたします。");
+            return;
+        }
+
         selectedCouponIndex = index;
         const c = myCoupons[index];
         
@@ -911,6 +946,13 @@
 
     function executeCoupon() {
         if (selectedCouponIndex === -1) return;
+
+        // 念のためここでも営業時間チェック
+        if (!isOperatingHours()) {
+            alert("営業時間外のため、クーポンの使用処理ができません。");
+            closeModal();
+            return;
+        }
 
         reloadCoupons();
         if (myCoupons[selectedCouponIndex] && myCoupons[selectedCouponIndex].used) {
