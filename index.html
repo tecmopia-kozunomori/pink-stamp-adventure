@@ -488,7 +488,8 @@
 </div>
 
 <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbx9V1hCpK3m6g5YFa-KkNH6S703w_8WnWN4MY4laX9bkmeKgG-DLTca-BnDmh2A2oVK-A/exec";
+    // 💡 新しいGAS_URLに差し替え済み
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbwCOljqMBfs_qth_iSZTysqcyDIaRbLABJq2S-r6FOiWE7ySocdJDNPQpCAdBG7GK0EcQ/exec";
     
     // 🛡️ 致命的なエラーを防ぐための安全なJSONパース関数
     function safeParse(key, fallbackValue) {
@@ -974,7 +975,7 @@
                     else if (rand < 10.0) { 
                         resGrade = "2等"; resDesc = "メダル50枚 ＋ 50%増量券"; resColor = "#9e9e9e"; rarity = 4; 
                         couponsToPush.push({ g: resGrade, d: "メダル50枚", c: resColor });
-                        couponsToPush.push({ g: resGrade, d: "メダル50%増量クーポン", c: resColor, img: "https://raw.githubusercontent.com/tecmopia-kozunomori/pink-stamp-adventure/refs/heads/main/ChatGPT%20Image%202026%E5%B9%B45%E6%9C%8828%E6%97%A5%2010_46_48.png", extra: "メダル貸出前にスタッフにご提示ください。" });
+                        couponsToPush.push({ g: resGrade, d: "メダル50パーセント増量クーポン", c: resColor, img: "https://raw.githubusercontent.com/tecmopia-kozunomori/pink-stamp-adventure/refs/heads/main/ChatGPT%20Image%202026%E5%B9%B45%E6%9C%8828%E6%97%A5%2010_46_48.png", extra: "メダル貸出前にスタッフにご提示ください。" });
                     }
                     else if (rand < 13.0) { 
                         resGrade = "3等"; resDesc = "クレーンゲーム3回無料券"; resColor = "#f44336"; rarity = 3; 
@@ -983,7 +984,7 @@
                     else if (rand < 33.0) { 
                         resGrade = "4等"; resDesc = "メダル30枚 ＋ 30%増量券"; resColor = "#fbc02d"; rarity = 3; 
                         couponsToPush.push({ g: resGrade, d: "メダル30枚", c: resColor });
-                        couponsToPush.push({ g: resGrade, d: "メダル30%増量クーポン", c: resColor, img: "https://raw.githubusercontent.com/tecmopia-kozunomori/pink-stamp-adventure/refs/heads/main/ChatGPT%20Image%202026%E5%B9%B45%E6%9C%8828%E6%97%A5%2010_43_53.png", extra: "メダル貸出前にスタッフにご提示ください。" });
+                        couponsToPush.push({ g: resGrade, d: "メダル30パーセント増量クーポン", c: resColor, img: "https://raw.githubusercontent.com/tecmopia-kozunomori/pink-stamp-adventure/refs/heads/main/ChatGPT%20Image%202026%E5%B9%B45%E6%9C%8828%E6%97%A5%2010_43_53.png", extra: "メダル貸出前にスタッフにご提示ください。" });
                     }
                     else if (rand < 48.0) { 
                         resGrade = "5等"; resDesc = "クレーンゲーム1回無料券"; resColor = "#e91e63"; rarity = 2; 
@@ -992,7 +993,7 @@
                     else if (rand < 70.0) { 
                         resGrade = "6等"; resDesc = "メダル10枚 ＋ 10%増量券"; resColor = "#00bcd4"; rarity = 2; 
                         couponsToPush.push({ g: resGrade, d: "メダル10枚", c: resColor });
-                        couponsToPush.push({ g: resGrade, d: "メダル10%増量クーポン", c: resColor, img: "https://raw.githubusercontent.com/tecmopia-kozunomori/pink-stamp-adventure/refs/heads/main/ChatGPT%20Image%202026%E5%B9%B45%E6%9C%8828%E6%97%A5%2010_41_20.png", extra: "メダル貸出前にスタッフにご提示ください。" });
+                        couponsToPush.push({ g: resGrade, d: "メダル10パーセント増量クーポン", c: resColor, img: "https://raw.githubusercontent.com/tecmopia-kozunomori/pink-stamp-adventure/refs/heads/main/ChatGPT%20Image%202026%E5%B9%B45%E6%9C%8828%E6%97%A5%2010_41_20.png", extra: "メダル貸出前にスタッフにご提示ください。" });
                     }
                     else { 
                         resGrade = "7等"; resDesc = "クレーンゲーム1回増量券"; resColor = "#78909c"; rarity = 1; 
