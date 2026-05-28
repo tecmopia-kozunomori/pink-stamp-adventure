@@ -243,6 +243,7 @@
         .c-expiry { color: var(--warning); font-weight: bold; }
         .empty-msg { text-align: center; color: #999; margin-top: 40px; font-weight: bold; font-size: 1.1rem; }
 
+        /* 使用済み・期限切れクーポンのスタイル */
         .coupon-card.used { border-left-color: #bdbdbd !important; background: #f5f5f5; box-shadow: none; cursor: default; }
         .coupon-card.used:hover { transform: none; }
         .coupon-card.used .c-grade, .coupon-card.used .c-desc, .coupon-card.used .c-expiry { color: #9e9e9e !important; }
@@ -304,11 +305,13 @@
         <p>スタンプを集めてガチャをひこう</p>
     </div>
 
+    <!-- 常に表示されるメインのクーポンBOXボタン -->
     <button id="main-box-btn" class="box-btn" onclick="openCouponBox()">
         <span class="box-icon">🎁</span>
         <span>クーポンBOXを開く</span>
     </button>
 
+    <!-- メイン画面（ラリー画面） -->
     <div id="screen-rally" class="screen active">
         <div id="rally-content" style="width:100%; text-align:center;">
             
@@ -357,6 +360,7 @@
             </button>
         </div>
         
+        <!-- クリア済みの画面 -->
         <div id="played-content" style="display:none; text-align:center; width:100%;">
             <div style="font-size: 6rem; margin: 20px 0;">🎉</div>
             <h2 style="font-family: var(--pop-font); color: var(--gold); font-size: 2.5rem; margin:0; text-shadow: 2px 2px 0 #fff9c4;">CLEAR!</h2>
@@ -378,6 +382,7 @@
         </div>
     </div>
 
+    <!-- 🌙 受付終了（営業時間外）の案内画面 -->
     <div id="screen-closed" class="screen" style="text-align:center;">
         <div style="font-size: 6rem; margin: 20px 0;">🌙</div>
         <h2 style="font-family: var(--pop-font); color: #78909c; font-size: 2.5rem; margin:0; text-shadow: 2px 2px 0 #e0e0e0;">CLOSE</h2>
@@ -435,6 +440,7 @@
 
 </div>
 
+<!-- 各種モーダル -->
 <div id="modal-browser-warning" class="overlay" style="z-index: 9999;">
     <div class="modal" style="padding: 20px;">
         <h3 class="modal-title" style="color:var(--warning); font-size:1.3rem;">⚠️ ブラウザの確認</h3>
@@ -476,7 +482,7 @@
         
         <div id="live-clock" class="live-clock">--:--:--</div>
         
-        <p class="modal-desc" id="use-target-desc" style="background:#f5f5f5; padding:15px; border-radius:10px;"></p>
+        <p class="modal-desc" id="use-target-desc" style="background:#f5f5f5; padding:15px; border-radius:10px; text-align:left;"></p>
         <p style="color:var(--warning); font-size:1rem; font-weight:900; margin-bottom:20px;">⚠️ 注意 ⚠️<br>必ずスタッフの目の前で<br>「使用する」を押してください。</p>
         
         <button id="modal-use-btn" class="btn btn-staff btn-highlight" onclick="executeCoupon()">スタッフ確認済み(使用)</button>
@@ -572,7 +578,6 @@
                     if (!expTime) {
                         try {
                             if (c.expiry) {
-                                // ⚠️ Safariクラッシュ対策: ハイフンではなく必ずスラッシュを使う
                                 const cleanExp = c.expiry.replace(/-/g, '/'); 
                                 const expDate = new Date(cleanExp);
                                 if (!isNaN(expDate.getTime())) {
@@ -588,7 +593,6 @@
                     delTime = expTime; 
                 }
                 
-                // 有効期限内のもの（または実績用として月末まで残すもの）を保持
                 if (nowTime <= delTime) {
                     activeCoupons.push(c);
                 }
@@ -616,7 +620,6 @@
                 const id = stampIds[i];
                 const el = document.getElementById('st-' + id);
                 if (el) {
-                    // 文字列または数値として検索し、存在すればONにする
                     if (stamps.indexOf(String(id)) !== -1 || stamps.indexOf(id) !== -1) {
                         el.classList.add('on');
                     } else {
@@ -731,7 +734,7 @@
                 },
                 function(errorMessage) {}
             ).catch(function(err) {
-                alert("カメラの起動に失敗しました。\n・https://環境であるか確認してください。\n・ブラウザの設定でカメラを「許可」してください。");
+                alert("カメラの起動に失敗しました。\n・https://環境であるか確認してください。n・ブラウザの設定でカメラを「許可」してください。");
                 const m = document.getElementById('modal-qr');
                 if (m) m.style.display = 'none';
             });
@@ -774,7 +777,6 @@
         }
 
         if (id) {
-            // 安全な検索（数値型と文字列型の両方に対応）
             const isAlreadyGot = stamps.indexOf(String(id)) !== -1 || stamps.indexOf(id) !== -1;
             
             if (!isAlreadyGot && stamps.length < 2) {
@@ -794,7 +796,7 @@
                 
                 rallyNotif(msg);
                 if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-                syncAllData(); // 💡 即座に画面を更新
+                syncAllData(); // 即座に画面を更新
             } else if (isAlreadyGot) { 
                 alert("このスタンプは既にGETしているよ！"); 
             } else { 
@@ -865,7 +867,6 @@
                 screenId = 'screen-closed';
             }
 
-            // 安全なループで画面を全て非表示
             const screens = document.querySelectorAll('.screen');
             for (let i = 0; i < screens.length; i++) {
                 screens[i].classList.remove('active');
@@ -878,7 +879,6 @@
             
             window.scrollTo(0,0);
 
-            // メインのBOXボタンの表示制御
             const boxBtn = document.getElementById('main-box-btn');
             if (boxBtn) {
                 const playedContent = document.getElementById('played-content');
@@ -957,33 +957,66 @@
                 
                 setTimeout(function() {
                     const rand = Math.random() * 100;
-                    let res = {};
-                    let rarity = 1; 
                     
-                    if (rand < 1.0) { res = { g: "1等", d: "クレーンゲーム6回無料券", color: "#fbc02d" }; rarity = 5; }
-                    else if (rand < 10.0) { res = { g: "2等", d: "メダル50枚 ＋ 増量券", color: "#9e9e9e" }; rarity = 4; }
-                    else if (rand < 13.0) { res = { g: "3等", d: "クレーンゲーム3回無料券", color: "#f44336" }; rarity = 3; }
-                    else if (rand < 33.0) { res = { g: "4等", d: "メダル30枚 ＋ 増量券", color: "#fbc02d" }; rarity = 3; }
-                    else if (rand < 48.0) { res = { g: "5等", d: "クレーンゲーム1回無料券", color: "#e91e63" }; rarity = 2; }
-                    else if (rand < 70.0) { res = { g: "6等", d: "メダル10枚 ＋ 増量券", color: "#00bcd4" }; rarity = 2; }
-                    else { res = { g: "7等", d: "クレーンゲーム1回増量券", color: "#78909c" }; rarity = 1; }
+                    let resGrade = "";
+                    let resDesc = "";
+                    let resColor = "";
+                    let couponsToPush = [];
+                    let rarity = 1;
+                    
+                    // 🎯 複数クーポンの発行ロジック
+                    if (rand < 1.0) { 
+                        resGrade = "1等"; resDesc = "クレーンゲーム6回無料券"; resColor = "#fbc02d"; rarity = 5; 
+                        couponsToPush.push({ g: resGrade, d: resDesc, c: resColor });
+                    }
+                    else if (rand < 10.0) { 
+                        resGrade = "2等"; resDesc = "メダル50枚 ＋ 50%増量券"; resColor = "#9e9e9e"; rarity = 4; 
+                        couponsToPush.push({ g: resGrade, d: "メダル50枚", c: resColor });
+                        couponsToPush.push({ g: resGrade, d: "メダル50パーセント増量クーポン", c: resColor, img: "https://raw.githubusercontent.com/tecmopia-kozunomori/pink-stamp-adventure/refs/heads/main/ChatGPT%20Image%202026%E5%B9%B45%E6%9C%8828%E6%97%A5%2010_46_48.png", extra: "メダル貸出前にスタッフにご提示ください。" });
+                    }
+                    else if (rand < 13.0) { 
+                        resGrade = "3等"; resDesc = "クレーンゲーム3回無料券"; resColor = "#f44336"; rarity = 3; 
+                        couponsToPush.push({ g: resGrade, d: resDesc, c: resColor });
+                    }
+                    else if (rand < 33.0) { 
+                        resGrade = "4等"; resDesc = "メダル30枚 ＋ 30%増量券"; resColor = "#fbc02d"; rarity = 3; 
+                        couponsToPush.push({ g: resGrade, d: "メダル30枚", c: resColor });
+                        couponsToPush.push({ g: resGrade, d: "メダル30パーセント増量クーポン", c: resColor, img: "https://raw.githubusercontent.com/tecmopia-kozunomori/pink-stamp-adventure/refs/heads/main/ChatGPT%20Image%202026%E5%B9%B45%E6%9C%8828%E6%97%A5%2010_43_53.png", extra: "メダル貸出前にスタッフにご提示ください。" });
+                    }
+                    else if (rand < 48.0) { 
+                        resGrade = "5等"; resDesc = "クレーンゲーム1回無料券"; resColor = "#e91e63"; rarity = 2; 
+                        couponsToPush.push({ g: resGrade, d: resDesc, c: resColor });
+                    }
+                    else if (rand < 70.0) { 
+                        resGrade = "6等"; resDesc = "メダル10枚 ＋ 10%増量券"; resColor = "#00bcd4"; rarity = 2; 
+                        couponsToPush.push({ g: resGrade, d: "メダル10枚", c: resColor });
+                        couponsToPush.push({ g: resGrade, d: "メダル10パーセント増量クーポン", c: resColor, img: "https://raw.githubusercontent.com/tecmopia-kozunomori/pink-stamp-adventure/refs/heads/main/ChatGPT%20Image%202026%E5%B9%B45%E6%9C%8828%E6%97%A5%2010_41_20.png", extra: "メダル貸出前にスタッフにご提示ください。" });
+                    }
+                    else { 
+                        resGrade = "7等"; resDesc = "クレーンゲーム1回増量券"; resColor = "#78909c"; rarity = 1; 
+                        couponsToPush.push({ g: resGrade, d: resDesc, c: resColor });
+                    }
                     
                     reloadCoupons();
                     
-                    myCoupons.push({
-                        grade: res.g, 
-                        desc: res.d, 
-                        color: res.color, 
-                        obtained: todayStr, 
-                        expiry: expiryStr, 
-                        expiryTime: expiryTimestamp, 
-                        deleteTime: deleteTimestamp,
-                        used: false
-                    });
+                    for(let i=0; i<couponsToPush.length; i++) {
+                        myCoupons.push({
+                            grade: couponsToPush[i].g, 
+                            desc: couponsToPush[i].d, 
+                            color: couponsToPush[i].c, 
+                            img: couponsToPush[i].img || null,
+                            extraDesc: couponsToPush[i].extra || null,
+                            obtained: todayStr, 
+                            expiry: expiryStr, 
+                            expiryTime: expiryTimestamp, 
+                            deleteTime: deleteTimestamp,
+                            used: false
+                        });
+                    }
                     localStorage.setItem('tp_coupons', JSON.stringify(myCoupons));
                     
                     try {
-                        fetch(GAS_URL + "?grade=" + encodeURIComponent(res.g), { mode: 'no-cors' });
+                        fetch(GAS_URL + "?grade=" + encodeURIComponent(resGrade), { mode: 'no-cors' });
                     } catch(e) {}
                     
                     localStorage.setItem('tp_used', todayStr);
@@ -998,11 +1031,11 @@
                     stamps = []; 
 
                     const rDesc = document.getElementById('result-desc');
-                    if (rDesc) rDesc.innerHTML = '<span style="font-size:2.2rem; color:' + res.color + ';">' + res.g + '</span><br>' + res.d;
+                    if (rDesc) rDesc.innerHTML = '<span style="font-size:2.2rem; color:' + resColor + ';">' + resGrade + '</span><br>' + resDesc;
                     
                     const modalBox = document.getElementById('result-modal-box');
                     if (modalBox) {
-                        modalBox.style.borderColor = res.color;
+                        modalBox.style.borderColor = resColor;
                         modalBox.classList.remove('rainbow-mode');
                         if (rarity === 5) {
                             modalBox.classList.add('rainbow-mode');
@@ -1015,7 +1048,7 @@
                         if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
                     }
 
-                    createSparkles(res.color, rarity);
+                    createSparkles(resColor, rarity);
                     
                     setTimeout(function() { orb.classList.remove('burst-anime'); }, 1000);
 
@@ -1061,7 +1094,6 @@
                     }
                 }
 
-                // 古いブラウザでも絶対に動く安全なループ
                 const reversed = myCoupons.slice().reverse();
                 for (let i = 0; i < reversed.length; i++) {
                     const c = reversed[i];
@@ -1153,7 +1185,16 @@
             }
 
             const utDesc = document.getElementById('use-target-desc');
-            if (utDesc) utDesc.innerHTML = '<strong style="color:' + c.color + '; font-size:1.4rem;">' + c.grade + '</strong><br>' + c.desc;
+            if (utDesc) {
+                let html = '<strong style="color:' + c.color + '; font-size:1.4rem;">' + c.grade + '</strong><br>' + c.desc;
+                if (c.extraDesc) {
+                    html += '<div style="margin-top:10px; font-size:0.95rem; color:#d5006d; font-weight:bold;">' + c.extraDesc + '</div>';
+                }
+                if (c.img) {
+                    html += '<img src="' + c.img + '" style="width:100%; border-radius:10px; margin-top:10px; border: 2px solid #eee; box-sizing:border-box;">';
+                }
+                utDesc.innerHTML = html;
+            }
             
             const useBtn = document.getElementById('modal-use-btn');
             if (useBtn) {
