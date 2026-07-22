@@ -375,6 +375,25 @@
         .store-chip { color:#fff; border:1px solid rgba(255,255,255,.46); background:rgba(255,255,255,.12); backdrop-filter:blur(6px); }
         .header h1 { margin:0; font-size:2.35rem; line-height:1; letter-spacing:.07em; text-shadow:0 4px 0 rgba(91,0,45,.5); }
         .header h1 span { color:var(--gold); }
+        .header-logo {
+            width:min(88%, 360px);
+            margin:0 auto;
+            padding:10px 17px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            border-radius:18px;
+            background:rgba(255,255,255,.96);
+            border:1px solid rgba(255,255,255,.98);
+            box-shadow:0 8px 22px rgba(91,0,45,.24), inset 0 1px 0 #fff;
+        }
+        .header-logo img {
+            display:block;
+            width:100%;
+            height:auto;
+            max-height:66px;
+            object-fit:contain;
+        }
         .header-en { margin:8px 0 16px!important; font-family:var(--pop-font); font-size:.78rem!important; letter-spacing:.25em; color:#ffd8ea!important; text-shadow:none!important; }
         .header-title { font-size:1.62rem; font-weight:900; line-height:1.2; text-shadow:0 3px 0 rgba(91,0,45,.35); }
         .header-title strong { display:inline-block; margin-top:3px; font-size:2.18rem; color:#fff9c4; }
@@ -519,6 +538,7 @@
         @media (max-width:370px) {
             .header { min-height:270px; padding-left:17px; padding-right:17px; }
             .header-title { font-size:1.43rem; }
+            .header-logo { width:92%; padding:9px 14px; border-radius:16px; }
             .header-title strong { font-size:1.9rem; }
             .stamp { height:145px; }
             .stamp strong { font-size:.78rem; }
@@ -625,7 +645,9 @@
             <span class="season-chip">SUMMER QUEST</span>
             <span class="store-chip">公津の杜店</span>
         </div>
-        <h1>TECMOPIA <span>★</span></h1>
+        <div class="header-logo" aria-label="TECMOPIA">
+            <img src="main.png" alt="TECMOPIA">
+        </div>
         <p class="header-en">2 SPOT STAMP RALLY</p>
         <div class="header-title">2か所を巡って<br><strong>ガチャに挑戦！</strong></div>
         <div class="header-rule">1日1回 ｜ 受付 10:00〜20:00</div>
