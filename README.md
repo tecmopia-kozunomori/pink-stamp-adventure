@@ -74,3 +74,12 @@
 ## Final clear sparkle update
 - Added sparkle effects around the final clear image.
 - Upgraded the CLEAR! title with glow, outline, bounce, and shiny gold styling.
+
+
+## In-app camera anti-fraud update
+- QR stamp acquisition now requires a short-lived, one-use ticket created only by the website's built-in camera scanner.
+- Opening a QR URL with `?id=1` or `?id=2` from the phone's normal camera no longer grants a stamp.
+- External scan query parameters are removed immediately and a guidance notice is displayed.
+- Existing printed QR URLs remain usable when scanned from the in-site scanner.
+
+> This is a client-side protection for a static GitHub Pages site. It blocks ordinary external-camera scans, but a fully tamper-resistant system would require server-side verification.
