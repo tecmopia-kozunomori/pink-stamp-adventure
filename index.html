@@ -369,7 +369,7 @@
             border-radius:50%;
             background:repeating-conic-gradient(#fff36c 0 9deg,transparent 9deg 20deg);
             opacity:.88;
-            animation:notifLocalRaysSpin 5s linear infinite;
+            animation:notifRaysSpin 5s linear infinite;
         }
         .rally-notification .notif-stamp-wrap::after {
             content:"STAMP GET!";
@@ -439,7 +439,6 @@
         }
         @keyframes notifIconBounce { 50% { transform:translateY(-8px) rotate(7deg) scale(1.09); } }
         @keyframes notifRaysSpin { to { transform:translate(-50%,-50%) rotate(360deg); } }
-        @keyframes notifLocalRaysSpin { to { transform:rotate(360deg); } }
         @keyframes notifDashSpin { to { transform:rotate(360deg); } }
         @keyframes stampBurstFly {
             0% { opacity:0; transform:translate(-50%,-50%) scale(.15); }
@@ -788,7 +787,104 @@
         @keyframes resultImpact{0%{transform:scale(.45) rotate(-5deg);opacity:0}65%{transform:scale(1.06) rotate(2deg)}100%{transform:scale(1);opacity:1}}
         @media(max-width:370px){.bottom-nav{padding-left:8px;padding-right:8px;gap:6px}.nav-tab{padding-left:7px;padding-right:7px;gap:7px}.nav-tab-copy strong{font-size:.76rem}.energy-ring{width:230px;height:230px}.energy-ring.ring-two{width:285px;height:285px}}
 
-    </style>
+    
+        .final-clear-celebration { position:relative; max-width:520px; margin:0 auto; padding:8px 0 12px; }
+        .clear-art-wrap { position:relative; margin: 4px auto 18px; }
+        .clear-art-wrap::before {
+            content:"";
+            position:absolute;
+            inset:12px 28px;
+            border-radius:40px;
+            background:radial-gradient(circle, rgba(255,248,187,.9) 0%, rgba(255,219,96,.5) 30%, rgba(255,255,255,0) 72%);
+            filter:blur(10px);
+            z-index:0;
+            animation: clearGlowPulse 2.2s ease-in-out infinite;
+        }
+        .clear-art-wrap img { position:relative; z-index:2; }
+        .clear-sparkle {
+            position:absolute;
+            z-index:3;
+            color:#fff7b8;
+            text-shadow:0 0 10px rgba(255,223,88,.8), 0 0 24px rgba(255,255,255,.9);
+            animation: clearSparkleFloat 2.6s ease-in-out infinite;
+            pointer-events:none;
+        }
+        .clear-sparkle.s1 { top:10px; left:8%; font-size:2rem; animation-delay:0s; }
+        .clear-sparkle.s2 { top:40px; right:10%; font-size:1.6rem; animation-delay:.5s; }
+        .clear-sparkle.s3 { top:52%; left:1%; font-size:1.4rem; animation-delay:1s; }
+        .clear-sparkle.s4 { top:58%; right:2%; font-size:1.9rem; animation-delay:1.4s; }
+        .clear-sparkle.s5 { bottom:88px; left:18%; font-size:1.3rem; animation-delay:.8s; }
+        .clear-sparkle.s6 { bottom:92px; right:18%; font-size:1.5rem; animation-delay:1.8s; }
+        .final-clear-title {
+            margin:0;
+            font-family: var(--pop-font);
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            line-height:1;
+            letter-spacing:.05em;
+            color:transparent;
+            background:linear-gradient(180deg, #fffef6 0%, #fff7a8 18%, #ffd83b 45%, #ffb300 70%, #fff7a8 100%);
+            -webkit-background-clip:text;
+            background-clip:text;
+            text-shadow:
+                0 3px 0 #fff9c4,
+                0 6px 0 #ff7cbd,
+                0 10px 18px rgba(128,0,67,.34),
+                0 0 22px rgba(255,226,84,.65);
+            transform-origin:center;
+            animation: clearTitleBounce 2.2s ease-in-out infinite, clearTitleShine 3s linear infinite;
+            position:relative;
+            z-index:2;
+        }
+        .final-clear-title::before {
+            content:"CLEAR!";
+            position:absolute;
+            inset:0;
+            z-index:-1;
+            color:transparent;
+            -webkit-text-stroke: 10px #ffffff;
+            text-stroke: 10px #ffffff;
+            filter: drop-shadow(0 6px 0 rgba(255,86,164,.55));
+        }
+        .final-clear-sub {
+            position:relative;
+            z-index:2;
+            color: var(--primary);
+            margin-top: 12px;
+            font-weight: 900;
+            font-size: 1.2rem;
+            text-shadow:0 2px 0 #fff, 0 0 14px rgba(255,173,215,.5);
+        }
+        .final-clear-mini-burst {
+            display:flex; justify-content:center; gap:10px; align-items:center;
+            margin: 8px 0 12px; color:#ffd54f; font-weight:900; letter-spacing:.08em;
+            text-shadow:0 0 10px rgba(255,232,123,.85);
+        }
+        .final-clear-mini-burst span { animation: clearMiniBlink 1.6s ease-in-out infinite; }
+        .final-clear-mini-burst span:nth-child(2){ animation-delay:.3s; }
+        .final-clear-mini-burst span:nth-child(3){ animation-delay:.6s; }
+        @keyframes clearGlowPulse {
+            0%,100% { transform:scale(.96); opacity:.72; }
+            50% { transform:scale(1.04); opacity:1; }
+        }
+        @keyframes clearSparkleFloat {
+            0%,100% { transform:translateY(0) scale(.9) rotate(0deg); opacity:.55; }
+            50% { transform:translateY(-8px) scale(1.14) rotate(12deg); opacity:1; }
+        }
+        @keyframes clearTitleBounce {
+            0%,100% { transform:translateY(0) scale(1); }
+            50% { transform:translateY(-3px) scale(1.03); }
+        }
+        @keyframes clearTitleShine {
+            0% { filter: drop-shadow(0 0 0 rgba(255,255,255,0)); }
+            50% { filter: drop-shadow(0 0 12px rgba(255,255,255,.75)); }
+            100% { filter: drop-shadow(0 0 0 rgba(255,255,255,0)); }
+        }
+        @keyframes clearMiniBlink {
+            0%,100% { transform:scale(.9); opacity:.55; }
+            50% { transform:scale(1.18); opacity:1; }
+        }
+
+</style>
 </head>
 <body>
 
@@ -878,9 +974,20 @@
         </div>
         
         <div id="played-content" style="display:none; text-align:center; width:100%;">
-            <div style="font-size: 6rem; margin: 20px 0;">🎉</div>
-            <h2 style="font-family: var(--pop-font); color: var(--gold); font-size: 2.5rem; margin:0; text-shadow: 2px 2px 0 #fff9c4;">CLEAR!</h2>
-            <p style="color: var(--primary); margin-top: 10px; font-weight:900; font-size: 1.2rem;">本日の探検は終了！<br>また明日遊んでね！</p>
+            <div class="final-clear-celebration">
+                <span class="clear-sparkle s1">✦</span>
+                <span class="clear-sparkle s2">✦</span>
+                <span class="clear-sparkle s3">✨</span>
+                <span class="clear-sparkle s4">✨</span>
+                <span class="clear-sparkle s5">✦</span>
+                <span class="clear-sparkle s6">✦</span>
+                <div class="clear-art-wrap">
+                    <img src="assets/clear_finish.webp" alt="また明日！" style="display:block; width:min(92vw, 430px); margin:0 auto; filter: drop-shadow(0 10px 20px rgba(119,0,62,.22));">
+                </div>
+                <div class="final-clear-mini-burst"><span>✨</span><span>MISSION COMPLETE</span><span>✨</span></div>
+                <h2 class="final-clear-title">CLEAR!</h2>
+                <p class="final-clear-sub">本日の探検は終了！<br>また遊んでね！</p>
+            </div>
             
             <button class="box-btn" style="margin: 25px auto 25px; width: 80%; max-width: 300px;" onclick="openCouponBox()">
                 <span class="box-icon">🎁</span>
@@ -1457,6 +1564,7 @@
                 }
                 
                 rallyNotif(msg, stamps.length === 2 ? 1600 : 4500, getStampImageInfo(id));
+                if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
                 syncAllData(); // 💡 即座に画面を更新
                 if (stamps.length === 2) moveToGachaAutomatically(1500);
             } else if (isAlreadyGot) { 
@@ -1512,6 +1620,7 @@
                     msg = 'スタンプコンプリート！<br><span style="font-size: 1.1rem; display:block; margin-top:12px; line-height:1.4; color: #fff9c4;">ガチャ画面へ自動で移動します！</span>';
                 }
                 rallyNotif(msg, stamps.length === 2 ? 1600 : 4500, getStampImageInfo(fallbackId));
+                if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
                 if (stamps.length === 2) moveToGachaAutomatically(1500);
             }
         }

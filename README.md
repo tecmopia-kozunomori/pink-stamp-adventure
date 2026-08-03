@@ -64,3 +64,13 @@
 - Gold double-frame and stronger shadow around the acquired stamp.
 - Impact-style stamp animation, rotating rays, sparkle burst, confetti, and vibration.
 - Stamp-complete popup uses a stronger celebration effect.
+
+
+## Final clear screen update
+- The final CLEAR screen now shows `assets/clear_finish.webp` instead of the 🎉 emoji.
+- Message updated to: 「本日の探検は終了！また遊んでね！」
+
+
+## Final clear sparkle update
+- Added sparkle effects around the final clear image.
+- Upgraded the CLEAR! title with glow, outline, bounce, and shiny gold styling.
