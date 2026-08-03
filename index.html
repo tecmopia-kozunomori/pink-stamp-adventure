@@ -1460,7 +1460,8 @@
                 if (navigator.vibrate) navigator.vibrate(200); 
                 
                 setTimeout(function() {
-                    const rand = Math.random() * 100;
+                    // 全140口：1〜6等は従来比率を維持、7等は70口＝50％
+                    const rand = Math.floor(Math.random() * 140);
                     
                     let resGrade = "";
                     let resDesc = "";
@@ -1469,29 +1470,29 @@
                     let rarity = 1;
                     
                     // 🎯 複数クーポンの発行ロジック
-                    if (rand < 1.0) { 
+                    if (rand < 1) { 
                         resGrade = "1等"; resDesc = "クレーンゲーム6回無料券"; resColor = "#fbc02d"; rarity = 5; 
                         couponsToPush.push({ g: resGrade, d: resDesc, c: resColor });
                     }
-                    else if (rand < 10.0) { 
+                    else if (rand < 10) { 
                         resGrade = "2等"; resDesc = "メダル50枚 ＋ 50%増量券"; resColor = "#9e9e9e"; rarity = 4; 
                         couponsToPush.push({ g: resGrade, d: "メダル50枚", c: resColor });
                         couponsToPush.push({ g: resGrade, d: "メダル50%増量クーポン", c: resColor, img: "assets/medal_50.webp", extra: "メダル貸出前にスタッフにご提示ください。" });
                     }
-                    else if (rand < 13.0) { 
+                    else if (rand < 13) { 
                         resGrade = "3等"; resDesc = "クレーンゲーム3回無料券"; resColor = "#f44336"; rarity = 3; 
                         couponsToPush.push({ g: resGrade, d: resDesc, c: resColor });
                     }
-                    else if (rand < 33.0) { 
+                    else if (rand < 33) { 
                         resGrade = "4等"; resDesc = "メダル30枚 ＋ 30%増量券"; resColor = "#fbc02d"; rarity = 3; 
                         couponsToPush.push({ g: resGrade, d: "メダル30枚", c: resColor });
                         couponsToPush.push({ g: resGrade, d: "メダル30%増量クーポン", c: resColor, img: "assets/medal_30.webp", extra: "メダル貸出前にスタッフにご提示ください。" });
                     }
-                    else if (rand < 48.0) { 
+                    else if (rand < 48) { 
                         resGrade = "5等"; resDesc = "クレーンゲーム1回無料券"; resColor = "#e91e63"; rarity = 2; 
                         couponsToPush.push({ g: resGrade, d: resDesc, c: resColor });
                     }
-                    else if (rand < 70.0) { 
+                    else if (rand < 70) { 
                         resGrade = "6等"; resDesc = "メダル10枚 ＋ 10%増量券"; resColor = "#00bcd4"; rarity = 2; 
                         couponsToPush.push({ g: resGrade, d: "メダル10枚", c: resColor });
                         couponsToPush.push({ g: resGrade, d: "メダル10%増量クーポン", c: resColor, img: "assets/medal_10.webp", extra: "メダル貸出前にスタッフにご提示ください。" });
