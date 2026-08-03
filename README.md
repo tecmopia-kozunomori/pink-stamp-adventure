@@ -53,3 +53,14 @@
 | 5等 | 15 / 140 | 約10.7143％ |
 | 6等 | 22 / 140 | 約15.7143％ |
 | 7等 | 70 / 140 | 50％ |
+
+
+## Stamp UI updates
+- Stamp images inside the progress cards are displayed larger.
+- The stamp-get popup now also shows the stamp image that was acquired.
+
+
+## Deluxe stamp popup
+- Gold double-frame and stronger shadow around the acquired stamp.
+- Impact-style stamp animation, rotating rays, sparkle burst, confetti, and vibration.
+- Stamp-complete popup uses a stronger celebration effect.

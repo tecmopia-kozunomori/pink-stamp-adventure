@@ -295,7 +295,161 @@
         }
         @keyframes fadeInPop { 0% { opacity: 0; transform: translate(-50%, -40%) scale(0.8); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
         @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
-
+        .rally-notification {
+            overflow:visible;
+            isolation:isolate;
+            outline:4px solid var(--gold);
+            outline-offset:4px;
+            background:
+                radial-gradient(circle at 50% 8%, rgba(255,255,255,.30), transparent 32%),
+                linear-gradient(145deg, #ff3b9b 0%, #d9086b 48%, #980047 100%);
+            box-shadow:
+                0 24px 60px rgba(90,0,45,.48),
+                0 0 0 9px rgba(255,255,255,.14),
+                0 0 48px rgba(255,214,45,.65);
+            animation:stampNotifIn .55s cubic-bezier(.16,.9,.22,1.28),fadeOut .55s forwards;
+            animation-delay:0s,var(--fade-delay,3.8s);
+        }
+        .rally-notification::before,
+        .rally-notification::after {
+            content:"";
+            position:absolute;
+            pointer-events:none;
+            z-index:-2;
+        }
+        .rally-notification::before {
+            left:50%; top:43%;
+            width:390px; height:390px;
+            transform:translate(-50%,-50%);
+            border-radius:50%;
+            background:repeating-conic-gradient(rgba(255,232,87,.48) 0 8deg,transparent 8deg 18deg);
+            mask:radial-gradient(circle,transparent 0 42%,#000 43% 70%,transparent 71%);
+            -webkit-mask:radial-gradient(circle,transparent 0 42%,#000 43% 70%,transparent 71%);
+            animation:notifRaysSpin 8s linear infinite;
+        }
+        .rally-notification::after {
+            inset:-15px;
+            border-radius:40px;
+            border:2px dashed rgba(255,248,169,.75);
+            animation:notifDashSpin 11s linear infinite;
+        }
+        .rally-notification.is-complete {
+            outline-width:6px;
+            box-shadow:0 26px 70px rgba(90,0,45,.55),0 0 0 12px rgba(255,255,255,.18),0 0 76px rgba(255,225,60,.95);
+        }
+        .rally-notification .notif-celebrate-icon {
+            font-size:3.65rem;
+            margin-bottom:2px;
+            filter:drop-shadow(0 7px 8px rgba(78,0,39,.35));
+            animation:notifIconBounce .7s ease-in-out infinite;
+        }
+        .rally-notification .notif-stamp-wrap {
+            position:relative;
+            width:184px;
+            min-height:184px;
+            margin:8px auto 11px;
+            padding:12px 10px 9px;
+            border-radius:28px;
+            background:linear-gradient(145deg,#ffffff 0%,#fff8d8 100%);
+            border:5px solid #fff;
+            outline:5px solid var(--gold);
+            outline-offset:1px;
+            box-shadow:
+                0 15px 28px rgba(75,0,37,.35),
+                0 0 0 10px rgba(255,201,40,.20),
+                inset 0 2px 0 rgba(255,255,255,.95);
+            transform:rotate(-2deg);
+            animation:stampFrameImpact .78s cubic-bezier(.12,.89,.25,1.35) both;
+        }
+        .rally-notification .notif-stamp-wrap::before {
+            content:"";
+            position:absolute;
+            inset:-21px;
+            z-index:-1;
+            border-radius:50%;
+            background:repeating-conic-gradient(#fff36c 0 9deg,transparent 9deg 20deg);
+            opacity:.88;
+            animation:notifLocalRaysSpin 5s linear infinite;
+        }
+        .rally-notification .notif-stamp-wrap::after {
+            content:"STAMP GET!";
+            position:absolute;
+            left:50%; bottom:-18px;
+            transform:translateX(-50%) rotate(2deg);
+            padding:5px 14px;
+            border-radius:999px;
+            color:#8c4300;
+            background:linear-gradient(#fff78b,#ffc928);
+            border:3px solid #fff;
+            box-shadow:0 5px 0 #e69500,0 8px 15px rgba(83,39,0,.24);
+            font-family:var(--pop-font);
+            font-size:.72rem;
+            letter-spacing:.10em;
+            white-space:nowrap;
+        }
+        .rally-notification .notif-stamp-image {
+            position:relative;
+            z-index:2;
+            display:block;
+            width:148px;
+            height:148px;
+            margin:0 auto;
+            object-fit:contain;
+            filter:drop-shadow(0 11px 12px rgba(82,0,43,.30));
+            animation:stampImageHit .72s .08s cubic-bezier(.15,.88,.24,1.28) both;
+        }
+        .rally-notification .notif-stamp-label {
+            position:relative;
+            z-index:3;
+            margin-top:-3px;
+            font-size:.82rem;
+            letter-spacing:.05em;
+            color:#8c3d00;
+            text-shadow:0 1px 0 #fff;
+        }
+        .stamp-burst-particle {
+            position:fixed;
+            left:50%; top:50%;
+            z-index:2999;
+            width:var(--size,10px);
+            height:var(--size,10px);
+            border-radius:50%;
+            pointer-events:none;
+            background:hsl(var(--hue,50),100%,62%);
+            box-shadow:0 0 15px currentColor;
+            animation:stampBurstFly var(--life,1.15s) cubic-bezier(.12,.66,.22,1) forwards;
+            animation-delay:var(--delay,0s);
+        }
+        @keyframes stampNotifIn {
+            0% { opacity:0; transform:translate(-50%,-43%) scale(.45) rotate(-5deg); }
+            58% { opacity:1; transform:translate(-50%,-51%) scale(1.08) rotate(2deg); }
+            100% { opacity:1; transform:translate(-50%,-50%) scale(1) rotate(0); }
+        }
+        @keyframes stampFrameImpact {
+            0% { opacity:0; transform:scale(2.1) rotate(-14deg); filter:brightness(2.1); }
+            55% { opacity:1; transform:scale(.90) rotate(4deg); }
+            78% { transform:scale(1.07) rotate(-3deg); }
+            100% { transform:scale(1) rotate(-2deg); filter:brightness(1); }
+        }
+        @keyframes stampImageHit {
+            0% { opacity:0; transform:scale(2.3) rotate(14deg); }
+            55% { opacity:1; transform:scale(.82) rotate(-5deg); }
+            78% { transform:scale(1.10) rotate(3deg); }
+            100% { transform:scale(1) rotate(0); }
+        }
+        @keyframes notifIconBounce { 50% { transform:translateY(-8px) rotate(7deg) scale(1.09); } }
+        @keyframes notifRaysSpin { to { transform:translate(-50%,-50%) rotate(360deg); } }
+        @keyframes notifLocalRaysSpin { to { transform:rotate(360deg); } }
+        @keyframes notifDashSpin { to { transform:rotate(360deg); } }
+        @keyframes stampBurstFly {
+            0% { opacity:0; transform:translate(-50%,-50%) scale(.15); }
+            12% { opacity:1; }
+            100% { opacity:0; transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) scale(1.6) rotate(540deg); }
+        }
+        @media(max-width:370px) {
+            .rally-notification .notif-stamp-wrap { width:166px; min-height:166px; }
+            .rally-notification .notif-stamp-image { width:132px; height:132px; }
+        }
 
         /* ===== v2 visual polish ===== */
         :root {
@@ -454,7 +608,7 @@
         .progress-track { width:100%; height:10px; margin:12px 0 18px; padding:2px; overflow:hidden; border-radius:999px; background:#f2e7ed; }
         .progress-track span { display:block; width:0; height:100%; border-radius:999px; background:linear-gradient(90deg,var(--gold),var(--accent)); box-shadow:0 0 12px rgba(255,47,143,.32); transition:width .55s cubic-bezier(.2,.8,.2,1); }
         .stamp-rally { position:relative; justify-content:center; align-items:center; gap:8px; margin:0; }
-        .stamp { position:relative; width:calc((100% - 54px)/2); height:152px; padding:27px 8px 12px; border:2px dashed #d6cbd2; border-radius:22px; background:#fbf8fa; overflow:hidden; }
+        .stamp { position:relative; width:calc((100% - 54px)/2); height:168px; padding:25px 8px 12px; border:2px dashed #d6cbd2; border-radius:22px; background:#fbf8fa; overflow:hidden; }
         .stamp::before { content:""; position:absolute; inset:5px; border:1px solid rgba(255,255,255,.9); border-radius:16px; pointer-events:none; }
         .stamp-step { position:absolute; top:8px; left:10px; color:#a797a1; font-family:var(--pop-font); font-size:.63rem; letter-spacing:.08em; }
         .stamp-icon { font-size:2.55rem; line-height:1; }
@@ -462,12 +616,12 @@
 
         .stamp-image {
             display:block;
-            width:88px;
-            height:88px;
+            width:108px;
+            height:108px;
             object-fit:contain;
             filter: grayscale(1) opacity(0.35);
             transition: filter 0.35s ease, transform 0.35s ease;
-            margin: 2px auto 0;
+            margin: 0 auto 0;
         }
         .stamp.on .stamp-image {
             filter: none;
@@ -1141,13 +1295,74 @@
         if (document.visibilityState === 'visible') syncAllData(); 
     });
 
-    function rallyNotif(txt, duration) {
+    function getStampImageInfo(id) {
         try {
+            const stampEl = document.querySelector('#st-' + id + ' .stamp-image');
+            if (!stampEl) return null;
+            const labelEl = document.querySelector('#st-' + id + ' strong');
+            return {
+                src: stampEl.getAttribute('src') || '',
+                label: labelEl ? labelEl.textContent : ''
+            };
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function createStampCelebration(isComplete) {
+        try {
+            const particleCount = isComplete ? 30 : 20;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('span');
+                particle.className = 'stamp-burst-particle';
+                const angle = (Math.PI * 2 / particleCount) * i + Math.random() * .22;
+                const distance = (isComplete ? 170 : 125) + Math.random() * (isComplete ? 150 : 90);
+                particle.style.setProperty('--x', Math.cos(angle) * distance + 'px');
+                particle.style.setProperty('--y', Math.sin(angle) * distance + 'px');
+                particle.style.setProperty('--size', (6 + Math.random() * 10) + 'px');
+                particle.style.setProperty('--hue', Math.floor(Math.random() * 360));
+                particle.style.setProperty('--life', (.85 + Math.random() * .75) + 's');
+                particle.style.setProperty('--delay', (Math.random() * .16) + 's');
+                document.body.appendChild(particle);
+                setTimeout(function() { particle.remove(); }, 1900);
+            }
+
+            const confettiCount = isComplete ? 58 : 30;
+            for (let i = 0; i < confettiCount; i++) {
+                const piece = document.createElement('span');
+                piece.className = 'result-confetti';
+                piece.style.left = (Math.random() * 100) + 'vw';
+                piece.style.background = 'hsl(' + Math.floor(Math.random() * 360) + ',95%,58%)';
+                piece.style.setProperty('--drift', (Math.random() * 180 - 90) + 'px');
+                piece.style.setProperty('--spin', (Math.random() * 900 - 450) + 'deg');
+                piece.style.setProperty('--fall', (1.5 + Math.random() * 1.5) + 's');
+                piece.style.animationDelay = (Math.random() * .22) + 's';
+                document.body.appendChild(piece);
+                setTimeout(function() { piece.remove(); }, 3400);
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    function rallyNotif(txt, duration, stampInfo) {
+        try {
+            const showTime = duration || 4500;
+            const isComplete = String(txt).indexOf('コンプリート') !== -1;
             const d = document.createElement('div');
-            d.className = 'rally-notification';
-            d.innerHTML = '<div style="font-size:3.5rem; margin-bottom:5px; animation:bounceIcon 0.8s infinite;">🎉</div><div style="width: 100%;">' + txt + '</div>';
+            d.className = 'rally-notification' + (isComplete ? ' is-complete' : '');
+            d.style.setProperty('--fade-delay', Math.max(700, showTime - 550) + 'ms');
+            let imageHtml = '';
+            if (stampInfo && stampInfo.src) {
+                imageHtml = '<div class="notif-stamp-wrap"><img class="notif-stamp-image" src="' + stampInfo.src + '" alt="獲得したスタンプ"><div class="notif-stamp-label">' + (stampInfo.label || 'スタンプ獲得') + '</div></div>';
+            }
+            d.innerHTML = '<div class="notif-celebrate-icon">' + (isComplete ? '🏆' : '🎉') + '</div>' + imageHtml + '<div style="width:100%; position:relative; z-index:3;">' + txt + '</div>';
             document.body.appendChild(d);
-            setTimeout(function() { d.remove(); }, duration || 4500); 
+            createStampCelebration(isComplete);
+            if (navigator.vibrate) {
+                navigator.vibrate(isComplete ? [80,45,120,45,180] : [70,35,100]);
+            }
+            setTimeout(function() { d.remove(); }, showTime);
         } catch (e) { console.error(e); }
     }
 
@@ -1241,8 +1456,7 @@
                     msg = 'スタンプコンプリート！<br><span style="font-size: 1.1rem; display:block; margin-top:12px; line-height:1.4; color: #fff9c4;">ガチャ画面へ自動で移動します！</span>';
                 }
                 
-                rallyNotif(msg, stamps.length === 2 ? 1600 : 4500);
-                if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+                rallyNotif(msg, stamps.length === 2 ? 1600 : 4500, getStampImageInfo(id));
                 syncAllData(); // 💡 即座に画面を更新
                 if (stamps.length === 2) moveToGachaAutomatically(1500);
             } else if (isAlreadyGot) { 
@@ -1297,8 +1511,7 @@
                 } else if (stamps.length === 2) {
                     msg = 'スタンプコンプリート！<br><span style="font-size: 1.1rem; display:block; margin-top:12px; line-height:1.4; color: #fff9c4;">ガチャ画面へ自動で移動します！</span>';
                 }
-                rallyNotif(msg, stamps.length === 2 ? 1600 : 4500);
-                if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+                rallyNotif(msg, stamps.length === 2 ? 1600 : 4500, getStampImageInfo(fallbackId));
                 if (stamps.length === 2) moveToGachaAutomatically(1500);
             }
         }
